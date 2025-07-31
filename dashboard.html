@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>لوحة التحكم - MASHROU3Y</title>
+
+  <!-- Tailwind CSS -->
+  <script src="https://cdn.tailwindcss.com"></script>
+
+  <!-- Google Fonts -->
+  <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@400;500;700&display=swap" rel="stylesheet" />
+
+  <!-- Font Awesome -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
+
+  <!-- Custom Styles -->
+  <link rel="stylesheet" href="../styles/style.css" />
+
+  <!-- Supabase -->
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
+  <!-- Scripts -->
+  <script type="module" src="../scripts/dashboard.js" defer></script>
+  <script type="module" src="../scripts/auth-guard.js" defer></script>
+  <script type="module" src="../scripts/supabase-config.js" defer></script>
+  <script type="module" src="../scripts/translations.js" defer></script>
+  <script type="module" src="../scripts/theme.js" defer></script>
+  <script type="module" src="../scripts/utils.js" defer></script>
+  
+  <!-- Preload Critical Assets -->
+  <link rel="preload" href="../images/logo2.jpg" as="image">
+
+  <style>
+    body {
+      font-family: 'Tajawal', sans-serif;
+    }
+    .gradient-bg {
+      background: linear-gradient(135deg, #4f46e5, #7c3aed);
+    }
+    .text-gradient {
+      background: linear-gradient(90deg, #60a5fa, #a78bfa);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+  </style>
+</head>
+<body class="bg-gray-50 min-h-screen">
+  <!-- Header -->
+  <header class="gradient-bg text-white py-6">
+    <div class="container mx-auto px-4 flex justify-between items-center">
+      <div class="flex items-center space-x-3 space-x-reverse">
+        <img src="../images/logo2.jpg" alt="شعار MASHROU3Y" class="w-10 h-10 rounded-lg" />
+        <div>
+          <h1 class="text-2xl font-bold">
+            مرحباً، <span id="userName" data-translate="user">المستخدم</span>
+          </h1>
+          <a href="profile.html" class="text-sm text-blue-200 underline hover:text-white">
+            <i class="fas fa-user ml-1"></i> <span data-translate="profile">الملف الشخصي</span>
+          </a>
+        </div>
+      </div>
+      <div class="flex items-center space-x-3 space-x-reverse">
+        <!-- Language Toggle -->
+        <button data-language-toggle class="bg-white/10 hover:bg-white/20 text-white px-3 py-2 rounded-lg transition-all duration-200 flex items-center space-x-2 space-x-reverse">
+          <i class="fas fa-globe"></i>
+          <span class="text-sm font-medium" data-translate="arabic">العربية</span>
+        </button>
+        
+        <!-- Theme Toggle -->
+        <button data-theme-toggle class="bg-white/10 hover:bg-white/20 text-white px-3 py-2 rounded-lg transition-all duration-200 flex items-center space-x-2 space-x-reverse">
+          <i class="fas fa-sun" data-theme-icon></i>
+          <span class="text-sm font-medium" data-translate="light">فاتح</span>
+        </button>
+        
+        <button id="logoutBtn" class="bg-white text-indigo-600 px-4 py-2 rounded-lg font-medium hover:bg-gray-100 transition">
+          <i class="fas fa-sign-out-alt ml-1"></i> <span data-translate="logout">تسجيل الخروج</span>
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <!-- Navigation -->
+  <nav class="bg-white shadow border-b">
+    <div class="container mx-auto px-4 flex space-x-8 space-x-reverse overflow-x-auto">
+      <a href="materials.html" class="py-4 px-2 border-b-2 border-transparent hover:border-indigo-500 text-gray-600 hover:text-indigo-600 transition"><i class="fas fa-book ml-2"></i> <span data-translate="materials">المواد الدراسية</span></a>
+      <a href="projects.html" class="py-4 px-2 border-b-2 border-transparent hover:border-indigo-500 text-gray-600 hover:text-indigo-600 transition"><i class="fas fa-code ml-2"></i> <span data-translate="projects">المشاريع الجاهزة</span></a>
+      <a href="presentations.html" class="py-4 px-2 border-b-2 border-transparent hover:border-indigo-500 text-gray-600 hover:text-indigo-600 transition"><i class="fas fa-presentation ml-2"></i> <span data-translate="presentations">العروض التقديمية</span></a>
+      <a href="store.html" class="py-4 px-2 border-b-2 border-transparent hover:border-indigo-500 text-gray-600 hover:text-indigo-600 transition"><i class="fas fa-store ml-2"></i> <span data-translate="store">المتجر</span></a>
+    </div>
+  </nav>
+
+  <!-- Main Content -->
+  <main class="container mx-auto px-4 py-8">
+    <!-- Stats Cards -->
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
+      <div class="bg-white rounded-xl shadow p-6 flex items-center">
+        <div class="p-4 rounded-full bg-blue-100 text-blue-600"><i class="fas fa-book text-2xl"></i></div>
+        <div class="mr-4">
+          <p class="text-sm text-gray-600" data-translate="materials_count">المواد المتاحة</p>
+          <p class="text-2xl font-bold" id="materialsCount">0</p>
+        </div>
+      </div>
+
+      <div class="bg-white rounded-xl shadow p-6 flex items-center">
+        <div class="p-4 rounded-full bg-green-100 text-green-600"><i class="fas fa-check-circle text-2xl"></i></div>
+        <div class="mr-4">
+          <p class="text-sm text-gray-600" data-translate="access_count">الصلاحيات الممنوحة</p>
+          <p class="text-2xl font-bold" id="accessCount">0</p>
+        </div>
+      </div>
+
+      <div class="bg-white rounded-xl shadow p-6 flex items-center">
+        <div class="p-4 rounded-full bg-purple-100 text-purple-600"><i class="fas fa-shopping-cart text-2xl"></i></div>
+        <div class="mr-4">
+          <p class="text-sm text-gray-600" data-translate="total_spent">إجمالي المشتريات</p>
+          <p class="text-2xl font-bold" id="totalSpent">0 جنيه</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- Recent Purchases -->
+    <div class="bg-white rounded-xl shadow">
+      <div class="px-6 py-4 border-b">
+        <h2 class="text-xl font-bold"><i class="fas fa-history ml-2"></i> <span data-translate="recent_purchases">آخر المشتريات</span></h2>
+      </div>
+      <div class="p-6">
+        <div id="recentPurchases" class="space-y-4 text-center text-gray-500">
+          <i class="fas fa-spinner fa-spin ml-2"></i> <span data-translate="loading">جاري التحميل...</span>
+        </div>
+      </div>
+    </div>
+  </main>
+
+  <!-- WhatsApp Button -->
+  <a href="https://wa.me/201007289679" target="_blank" class="fixed bottom-6 left-6 bg-green-500 w-14 h-14 rounded-full flex items-center justify-center shadow-lg hover:bg-green-600 transition">
+    <i class="fab fa-whatsapp text-white text-2xl"></i>
+  </a>
+</body>
+</html>

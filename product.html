@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>تفاصيل المنتج - MASHROU3Y</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@400;500;700&display=swap" rel="stylesheet">
+  <script type="module" src="../scripts/product.js" defer></script>
+  <script type="module" src="../scripts/auth-guard.js"></script>
+  <style>
+    body { font-family: 'Tajawal', sans-serif; }
+  </style>
+</head>
+<body class="bg-gray-100 min-h-screen">
+  <div class="container mx-auto px-4 py-8">
+    <div id="productDetails" class="bg-white rounded-lg shadow p-6 mb-8"></div>
+    <div id="reviewsSection" class="bg-white rounded-lg shadow p-6 mb-8">
+      <h2 class="text-xl font-bold mb-4">المراجعات والتقييمات</h2>
+      <div id="reviewsList" class="space-y-4"></div>
+      <div id="addReviewSection" class="mt-6 hidden">
+        <h3 class="text-lg font-bold mb-2">أضف مراجعتك</h3>
+        <form id="reviewForm" class="space-y-2">
+          <div>
+            <label for="rating" class="block mb-1 text-sm font-medium">التقييم</label>
+            <select id="rating" required class="w-full px-4 py-2 border rounded-lg">
+              <option value="">اختر التقييم</option>
+              <option value="5">5 - ممتاز</option>
+              <option value="4">4 - جيد جداً</option>
+              <option value="3">3 - جيد</option>
+              <option value="2">2 - مقبول</option>
+              <option value="1">1 - ضعيف</option>
+            </select>
+          </div>
+          <div>
+            <label for="comment" class="block mb-1 text-sm font-medium">تعليقك</label>
+            <textarea id="comment" rows="2" class="w-full px-4 py-2 border rounded-lg"></textarea>
+          </div>
+          <button type="submit" class="bg-blue-600 text-white px-6 py-2 rounded-lg hover:bg-blue-700 transition">إرسال المراجعة</button>
+        </form>
+        <div id="reviewMsg" class="mt-2 p-2 bg-green-100 border border-green-400 text-green-700 rounded hidden"></div>
+      </div>
+    </div>
+  </div>
+</body>
+</html> 

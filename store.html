@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>المتجر الرقمي - MASHROU3Y</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@400;500;700&display=swap" rel="stylesheet">
+  <script type="module" src="../scripts/store.js" defer></script>
+  <script type="module" src="../scripts/auth-guard.js"></script>
+  <style>
+    body { font-family: 'Tajawal', sans-serif; }
+  </style>
+</head>
+<body class="bg-gray-100 min-h-screen">
+  <div class="container mx-auto px-4 py-8">
+    <h1 class="text-3xl font-bold text-center mb-8">المتجر الرقمي</h1>
+    <div class="mb-6 flex flex-col md:flex-row gap-4 items-center justify-between">
+      <input id="searchInput" type="text" placeholder="ابحث عن منتج أو مادة..." class="w-full md:w-1/3 px-4 py-2 border rounded-lg">
+      <select id="typeFilter" class="w-full md:w-1/6 px-4 py-2 border rounded-lg">
+        <option value="">الكل</option>
+        <option value="video">فيديوهات</option>
+        <option value="project">مشاريع</option>
+        <option value="presentation">عروض تقديمية</option>
+      </select>
+    </div>
+    <div id="storeLoading" class="flex justify-center items-center mb-4 hidden">
+      <svg class="animate-spin h-8 w-8 text-blue-600" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"><circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle><path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8v8z"></path></svg>
+      <span class="ml-2 text-blue-700 font-bold">جاري تحميل المنتجات...</span>
+    </div>
+    <div id="storeList" class="grid grid-cols-1 md:grid-cols-3 gap-8"></div>
+    <div id="storeMsg" class="mt-4 p-3 bg-green-100 border border-green-400 text-green-700 rounded hidden flex items-center">
+      <svg class="w-5 h-5 mr-2 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg>
+      <span id="storeMsgText"></span>
+    </div>
+    <div id="storeErrorMsg" class="mt-4 p-3 bg-red-100 border border-red-400 text-red-700 rounded hidden flex items-center">
+      <svg class="w-5 h-5 mr-2 text-red-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/></svg>
+      <span id="storeErrorMsgText"></span>
+    </div>
+  </div>
+</body>
+</html> 

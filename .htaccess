@@ -1,0 +1,70 @@
+# MASHROU3Y .htaccess Configuration
+# تكوين خادم الويب لموقع MASHROU3Y
+
+# تفعيل إعادة الكتابة
+RewriteEngine On
+
+# إعدادات الأمان الأساسية
+<IfModule mod_headers.c>
+    Header always set X-Content-Type-Options nosniff
+    Header always set X-Frame-Options DENY
+    Header always set X-XSS-Protection "1; mode=block"
+    Header always set Referrer-Policy "strict-origin-when-cross-origin"
+</IfModule>
+
+# منع الوصول للملفات الحساسة
+<FilesMatch "\.(env|config|sql|log|bak|backup)$">
+    Order allow,deny
+    Deny from all
+</FilesMatch>
+
+# تفعيل الضغط
+<IfModule mod_deflate.c>
+    AddOutputFilterByType DEFLATE text/plain
+    AddOutputFilterByType DEFLATE text/html
+    AddOutputFilterByType DEFLATE text/xml
+    AddOutputFilterByType DEFLATE text/css
+    AddOutputFilterByType DEFLATE application/xml
+    AddOutputFilterByType DEFLATE application/xhtml+xml
+    AddOutputFilterByType DEFLATE application/rss+xml
+    AddOutputFilterByType DEFLATE application/javascript
+    AddOutputFilterByType DEFLATE application/x-javascript
+</IfModule>
+
+# تفعيل التخزين المؤقت
+<IfModule mod_expires.c>
+    ExpiresActive On
+    ExpiresByType text/css "access plus 1 month"
+    ExpiresByType application/javascript "access plus 1 month"
+    ExpiresByType image/png "access plus 1 month"
+    ExpiresByType image/jpg "access plus 1 month"
+    ExpiresByType image/jpeg "access plus 1 month"
+    ExpiresByType image/gif "access plus 1 month"
+    ExpiresByType image/svg+xml "access plus 1 month"
+    ExpiresByType font/woff "access plus 1 month"
+    ExpiresByType font/woff2 "access plus 1 month"
+</IfModule>
+
+# إعادة توجيه الأخطاء
+ErrorDocument 404 /index.html
+ErrorDocument 500 /index.html
+
+# منع الوصول لمجلد admin-pages من الخارج
+<IfModule mod_rewrite.c>
+    RewriteCond %{REQUEST_URI} ^/admin-pages/
+    RewriteCond %{HTTP_REFERER} !^https?://(www\.)?mashrou3y\.com
+    RewriteRule ^(.*)$ /index.html [L,R=301]
+</IfModule>
+
+# تحسين الأداء
+<IfModule mod_expires.c>
+    ExpiresActive On
+    ExpiresDefault "access plus 1 month"
+</IfModule>
+
+# إعدادات CORS
+<IfModule mod_headers.c>
+    Header set Access-Control-Allow-Origin "*"
+    Header set Access-Control-Allow-Methods "GET, POST, PUT, DELETE, OPTIONS"
+    Header set Access-Control-Allow-Headers "Content-Type, Authorization"
+</IfModule> 

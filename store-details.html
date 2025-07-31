@@ -1,0 +1,339 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>تفاصيل المتجر - MASHROU3Y</title>
+    
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <!-- Custom Styles -->
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        
+        .product-card {
+            transition: all 0.3s ease;
+        }
+        
+        .product-card:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+        }
+        
+        .tab-button {
+            transition: all 0.2s ease;
+        }
+        
+        .tab-button.active {
+            background-color: #3b82f6;
+            color: white;
+        }
+        
+        /* تحسينات للعربية */
+        .rtl {
+            direction: rtl;
+        }
+        
+        .space-x-reverse > :not([hidden]) ~ :not([hidden]) {
+            --tw-space-x-reverse: 1;
+        }
+    </style>
+</head>
+<body class="bg-gray-50 rtl">
+    <!-- Header -->
+    <header class="bg-white shadow-sm border-b sticky top-0 z-40">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between items-center py-4">
+                <div class="flex items-center space-x-4 space-x-reverse">
+                    <a href="stores.html" class="text-gray-500 hover:text-gray-700">
+                        <i class="fas fa-arrow-right"></i>
+                    </a>
+                    <h1 class="text-2xl font-bold text-gray-900">
+                        <i class="fas fa-store text-blue-600 ml-2"></i>
+                        <span id="storeName">تفاصيل المتجر</span>
+                    </h1>
+                </div>
+                
+                <div class="flex items-center space-x-4 space-x-reverse">
+                    <!-- Visitor Mode Indicator -->
+                    <div id="visitorModeIndicator" class="hidden bg-yellow-100 text-yellow-800 px-3 py-1 rounded-full text-sm">
+                        <i class="fas fa-user ml-1"></i>
+                        <span id="visitorRoleText">وضع تجريبي</span>
+                    </div>
+                    
+                    <!-- Search -->
+                    <div class="relative">
+                        <input type="text" id="searchInput" placeholder="ابحث في المنتجات..." 
+                               class="w-64 px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500">
+                        <i class="fas fa-search absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400"></i>
+                    </div>
+                    
+                    <!-- User Menu -->
+                    <div class="relative">
+                        <button id="userMenuBtn" class="flex items-center space-x-2 space-x-reverse text-gray-700 hover:text-gray-900">
+                            <img id="userAvatar" src="../images/default-avatar.png" alt="صورة المستخدم" class="w-8 h-8 rounded-full">
+                            <span id="userName">زائر</span>
+                            <i class="fas fa-chevron-down"></i>
+                        </button>
+                        
+                        <div id="userMenu" class="absolute left-0 mt-2 w-48 bg-white rounded-lg shadow-lg border hidden z-50">
+                            <div class="py-2">
+                                <a href="dashboard.html" class="block px-4 py-2 text-gray-700 hover:bg-gray-100">
+                                    <i class="fas fa-tachometer-alt ml-2"></i>
+                                    لوحة التحكم
+                                </a>
+                                <a href="profile.html" class="block px-4 py-2 text-gray-700 hover:bg-gray-100">
+                                    <i class="fas fa-user ml-2"></i>
+                                    الملف الشخصي
+                                </a>
+                                <hr class="my-2">
+                                <button id="logoutBtn" class="block w-full text-right px-4 py-2 text-red-600 hover:bg-gray-100">
+                                    <i class="fas fa-sign-out-alt ml-2"></i>
+                                    تسجيل الخروج
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Content -->
+    <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+        <!-- Store Info -->
+        <div class="bg-white rounded-lg shadow-sm p-6 mb-8" id="storeInfo">
+            <div class="flex items-center justify-between mb-6">
+                <div class="flex items-center space-x-4 space-x-reverse">
+                    <div class="w-16 h-16 bg-blue-100 rounded-lg flex items-center justify-center">
+                        <i class="fas fa-store text-blue-600 text-2xl"></i>
+                    </div>
+                    <div>
+                        <h2 class="text-2xl font-bold text-gray-800" id="storeTitle">اسم المتجر</h2>
+                        <p class="text-gray-600" id="storeCategory">التخصص</p>
+                    </div>
+                </div>
+                <div class="text-right">
+                    <div class="text-sm text-gray-500">أنشئ في</div>
+                    <div class="font-semibold" id="storeCreatedAt">التاريخ</div>
+                </div>
+            </div>
+            
+            <p class="text-gray-700 mb-6" id="storeDescription">وصف المتجر</p>
+            
+            <!-- Store Stats -->
+            <div class="grid grid-cols-1 md:grid-cols-4 gap-4">
+                <div class="bg-blue-50 p-4 rounded-lg text-center">
+                    <div class="text-2xl font-bold text-blue-600" id="materialsCount">0</div>
+                    <div class="text-sm text-blue-600">مواد دراسية</div>
+                </div>
+                <div class="bg-green-50 p-4 rounded-lg text-center">
+                    <div class="text-2xl font-bold text-green-600" id="projectsCount">0</div>
+                    <div class="text-sm text-green-600">مشاريع</div>
+                </div>
+                <div class="bg-yellow-50 p-4 rounded-lg text-center">
+                    <div class="text-2xl font-bold text-yellow-600" id="presentationsCount">0</div>
+                    <div class="text-sm text-yellow-600">عروض تقديمية</div>
+                </div>
+                <div class="bg-purple-50 p-4 rounded-lg text-center">
+                    <div class="text-2xl font-bold text-purple-600" id="totalProducts">0</div>
+                    <div class="text-sm text-purple-600">إجمالي المنتجات</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Tabs -->
+        <div class="bg-white rounded-lg shadow-sm mb-8">
+            <div class="border-b">
+                <nav class="flex space-x-8 space-x-reverse">
+                    <button class="tab-button active px-4 py-3 text-sm font-medium border-b-2 border-blue-500" data-tab="materials">
+                        <i class="fas fa-book ml-2"></i>
+                        المواد الدراسية
+                    </button>
+                    <button class="tab-button px-4 py-3 text-sm font-medium text-gray-500 hover:text-gray-700" data-tab="projects">
+                        <i class="fas fa-code ml-2"></i>
+                        المشاريع
+                    </button>
+                    <button class="tab-button px-4 py-3 text-sm font-medium text-gray-500 hover:text-gray-700" data-tab="presentations">
+                        <i class="fas fa-presentation ml-2"></i>
+                        العروض التقديمية
+                    </button>
+                </nav>
+            </div>
+            
+            <!-- Tab Content -->
+            <div class="p-6">
+                <!-- Materials Tab -->
+                <div id="materials-tab" class="tab-content">
+                    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6" id="materialsGrid">
+                        <!-- Materials will be loaded here -->
+                    </div>
+                </div>
+                
+                <!-- Projects Tab -->
+                <div id="projects-tab" class="tab-content hidden">
+                    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6" id="projectsGrid">
+                        <!-- Projects will be loaded here -->
+                    </div>
+                </div>
+                
+                <!-- Presentations Tab -->
+                <div id="presentations-tab" class="tab-content hidden">
+                    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6" id="presentationsGrid">
+                        <!-- Presentations will be loaded here -->
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Loading State -->
+        <div id="loadingState" class="text-center py-12 hidden">
+            <div class="inline-flex items-center">
+                <div class="animate-spin rounded-full h-8 w-8 border-b-2 border-blue-600 ml-3"></div>
+                <span class="text-gray-600">جاري تحميل المنتجات...</span>
+            </div>
+        </div>
+
+        <!-- Empty State -->
+        <div id="emptyState" class="text-center py-12 hidden">
+            <i class="fas fa-box-open text-6xl text-gray-300 mb-4"></i>
+            <h3 class="text-xl font-medium text-gray-600 mb-2">لا توجد منتجات</h3>
+            <p class="text-gray-500">لم يتم العثور على منتجات في هذا المتجر</p>
+        </div>
+
+        <!-- Error State -->
+        <div id="errorState" class="text-center py-12 hidden">
+            <i class="fas fa-exclamation-triangle text-red-500 text-4xl mb-4"></i>
+            <h3 class="text-lg font-semibold text-gray-800 mb-2">حدث خطأ</h3>
+            <p class="text-gray-600 mb-4">لم نتمكن من تحميل المنتجات</p>
+            <button id="retryBtn" class="bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700">
+                <i class="fas fa-redo ml-2"></i>
+                إعادة المحاولة
+            </button>
+        </div>
+    </main>
+
+    <!-- Footer -->
+    <footer class="bg-white border-t mt-12">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
+            <div class="flex justify-between items-center">
+                <div class="text-gray-500 text-sm">
+                    © 2025 MASHROU3Y. جميع الحقوق محفوظة
+                </div>
+                <div class="flex items-center space-x-4 space-x-reverse text-sm text-gray-500">
+                    <span>الإصدار 1.0.0</span>
+                    <span>•</span>
+                    <span>آخر تحديث: 31 يوليو 2025</span>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Scripts -->
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script src="../scripts/supabase-config.js"></script>
+    <script src="../scripts/admin-role-switcher.js"></script>
+    <script src="store-details.js"></script>
+    
+    <script>
+        // إدارة واجهة المستخدم
+        document.addEventListener('DOMContentLoaded', function() {
+            // إدارة قائمة المستخدم
+            const userMenuBtn = document.getElementById('userMenuBtn');
+            const userMenu = document.getElementById('userMenu');
+            
+            if (userMenuBtn && userMenu) {
+                userMenuBtn.addEventListener('click', () => {
+                    userMenu.classList.toggle('hidden');
+                });
+                
+                // إغلاق القائمة عند النقر خارجه
+                document.addEventListener('click', (e) => {
+                    if (!userMenuBtn.contains(e.target) && !userMenu.contains(e.target)) {
+                        userMenu.classList.add('hidden');
+                    }
+                });
+            }
+            
+            // إدارة التبويبات
+            const tabButtons = document.querySelectorAll('.tab-button');
+            const tabContents = document.querySelectorAll('.tab-content');
+            
+            tabButtons.forEach(button => {
+                button.addEventListener('click', () => {
+                    const targetTab = button.dataset.tab;
+                    
+                    // إزالة الفئة النشطة من جميع الأزرار
+                    tabButtons.forEach(btn => {
+                        btn.classList.remove('active');
+                        btn.classList.add('text-gray-500');
+                        btn.classList.remove('text-blue-600');
+                    });
+                    
+                    // إضافة الفئة النشطة للزر المحدد
+                    button.classList.add('active');
+                    button.classList.remove('text-gray-500');
+                    button.classList.add('text-blue-600');
+                    
+                    // إخفاء جميع المحتويات
+                    tabContents.forEach(content => {
+                        content.classList.add('hidden');
+                    });
+                    
+                    // إظهار المحتوى المحدد
+                    const targetContent = document.getElementById(`${targetTab}-tab`);
+                    if (targetContent) {
+                        targetContent.classList.remove('hidden');
+                    }
+                    
+                    // تحميل المنتجات للتبويب المحدد
+                    if (window.storeDetailsManager) {
+                        window.storeDetailsManager.loadProducts(targetTab);
+                    }
+                });
+            });
+            
+            // إدارة البحث
+            const searchInput = document.getElementById('searchInput');
+            if (searchInput) {
+                searchInput.addEventListener('input', (e) => {
+                    if (window.storeDetailsManager) {
+                        window.storeDetailsManager.filterProducts(e.target.value);
+                    }
+                });
+            }
+            
+            // زر تسجيل الخروج
+            const logoutBtn = document.getElementById('logoutBtn');
+            if (logoutBtn) {
+                logoutBtn.addEventListener('click', async () => {
+                    try {
+                        const { error } = await supabase.auth.signOut();
+                        if (error) throw error;
+                        window.location.href = 'login.html';
+                    } catch (error) {
+                        console.error('خطأ في تسجيل الخروج:', error);
+                        alert('حدث خطأ في تسجيل الخروج');
+                    }
+                });
+            }
+            
+            // زر إعادة المحاولة
+            const retryBtn = document.getElementById('retryBtn');
+            if (retryBtn) {
+                retryBtn.addEventListener('click', () => {
+                    if (window.storeDetailsManager) {
+                        window.storeDetailsManager.loadStoreDetails();
+                    }
+                });
+            }
+        });
+    </script>
+</body>
+</html> 

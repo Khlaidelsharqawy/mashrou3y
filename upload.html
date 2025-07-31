@@ -1,0 +1,200 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>رفع محتوى جديد - MASHROU3Y</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@400;500;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <script type="module" src="../scripts/upload.js" defer></script>
+  <script type="module" src="../scripts/auth-guard.js"></script>
+  <style>
+    body { font-family: 'Tajawal', sans-serif; }
+    .drop-zone {
+      border: 2px dashed #cbd5e0;
+      transition: all 0.3s ease;
+    }
+    .drop-zone.dragover {
+      border-color: #3b82f6;
+      background-color: #eff6ff;
+    }
+    .file-item {
+      transition: all 0.3s ease;
+    }
+    .file-item:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    }
+  </style>
+</head>
+<body class="bg-gray-50 min-h-screen">
+  <!-- Header -->
+  <header class="bg-white shadow-sm border-b">
+    <div class="container mx-auto px-4 py-4">
+      <div class="flex items-center justify-between">
+        <div class="flex items-center space-x-3 space-x-reverse">
+          <img src="../images/logo2.jpg" alt="شعار MASHROU3Y" class="w-10 h-10 rounded-lg">
+          <h1 class="text-2xl font-bold text-gray-800">رفع محتوى جديد</h1>
+        </div>
+        <a href="dashboard.html" class="text-blue-600 hover:text-blue-800">
+          <i class="fas fa-arrow-right ml-2"></i>
+          العودة للوحة التحكم
+        </a>
+      </div>
+    </div>
+  </header>
+
+  <div class="container mx-auto px-4 py-8">
+    <div class="max-w-4xl mx-auto">
+      <!-- Upload Form -->
+      <div class="bg-white rounded-lg shadow-lg p-8 mb-8">
+        <h2 class="text-xl font-bold mb-6 text-gray-800">معلومات المحتوى</h2>
+        
+        <form id="uploadForm" class="space-y-6">
+          <!-- Store Selection (for admins and vendors) -->
+          <div id="storeSelection" class="hidden">
+            <label for="storeId" class="block mb-2 text-sm font-medium text-gray-700">
+              المتجر/البائع <span class="text-red-500">*</span>
+            </label>
+            <select id="storeId" required class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500">
+              <option value="">اختر المتجر...</option>
+            </select>
+            <p class="text-sm text-gray-500 mt-1">اختر المتجر الذي سيتم ربط المحتوى به</p>
+          </div>
+
+          <!-- Content Type -->
+          <div>
+            <label for="type" class="block mb-2 text-sm font-medium text-gray-700">
+              نوع المحتوى <span class="text-red-500">*</span>
+            </label>
+            <select id="type" required class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500">
+              <option value="">اختر نوع المحتوى...</option>
+              <option value="materials">المواد الدراسية</option>
+              <option value="projects">المشاريع الجاهزة</option>
+              <option value="presentations">العروض التقديمية</option>
+              <option value="other">أخرى</option>
+            </select>
+          </div>
+
+          <!-- Title -->
+          <div>
+            <label for="title" class="block mb-2 text-sm font-medium text-gray-700">
+              عنوان المحتوى <span class="text-red-500">*</span>
+            </label>
+            <input type="text" id="title" required 
+                   class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                   placeholder="أدخل عنوان المحتوى...">
+          </div>
+
+          <!-- Description -->
+          <div>
+            <label for="description" class="block mb-2 text-sm font-medium text-gray-700">
+              وصف المحتوى
+            </label>
+            <textarea id="description" rows="4" 
+                      class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                      placeholder="أدخل وصفاً مفصلاً للمحتوى..."></textarea>
+          </div>
+
+          <!-- Price -->
+          <div>
+            <label for="price" class="block mb-2 text-sm font-medium text-gray-700">
+              السعر (جنيه مصري) <span class="text-red-500">*</span>
+            </label>
+            <div class="relative">
+              <input type="number" id="price" min="0" step="0.01" required 
+                     class="w-full px-4 py-3 pr-12 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                     placeholder="0.00">
+              <span class="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-500">ج.م</span>
+            </div>
+          </div>
+
+          <!-- Tags -->
+          <div>
+            <label for="tags" class="block mb-2 text-sm font-medium text-gray-700">
+              الكلمات المفتاحية
+            </label>
+            <input type="text" id="tags" 
+                   class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                   placeholder="أدخل الكلمات المفتاحية مفصولة بفواصل...">
+            <p class="text-sm text-gray-500 mt-1">مثال: برمجة، جافا، مشروع، جامعة</p>
+          </div>
+        </form>
+      </div>
+
+      <!-- File Upload Section -->
+      <div class="bg-white rounded-lg shadow-lg p-8 mb-8">
+        <h2 class="text-xl font-bold mb-6 text-gray-800">رفع الملفات</h2>
+        
+        <!-- Drop Zone -->
+        <div id="dropZone" class="drop-zone rounded-lg p-8 text-center mb-6">
+          <div class="text-6xl mb-4 text-gray-400">
+            <i class="fas fa-cloud-upload-alt"></i>
+          </div>
+          <h3 class="text-lg font-medium text-gray-700 mb-2">اسحب وأفلت الملفات هنا</h3>
+          <p class="text-gray-500 mb-4">أو انقر لاختيار الملفات</p>
+          <input type="file" id="fileInput" multiple accept=".pdf,.doc,.docx,.ppt,.pptx,.zip,.rar,.7z,.jpg,.jpeg,.png,.mp4,.avi,.mov" class="hidden">
+          <button type="button" onclick="document.getElementById('fileInput').click()" 
+                  class="bg-blue-600 text-white px-6 py-3 rounded-lg hover:bg-blue-700 transition-colors">
+            <i class="fas fa-folder-open ml-2"></i>
+            اختيار الملفات
+          </button>
+          <div class="mt-4 text-sm text-gray-500">
+            <p>الملفات المدعومة: PDF, Word, PowerPoint, ZIP, RAR, 7Z, صور, فيديو</p>
+            <p>الحد الأقصى: 50 ميجابايت لكل ملف</p>
+          </div>
+        </div>
+
+        <!-- File List -->
+        <div id="fileList" class="space-y-4"></div>
+
+        <!-- Upload Progress -->
+        <div id="uploadProgress" class="hidden mt-6">
+          <div class="flex items-center justify-between mb-2">
+            <span class="text-sm font-medium text-gray-700">جاري رفع الملفات...</span>
+            <span id="progressText" class="text-sm text-gray-500">0%</span>
+          </div>
+          <div class="w-full bg-gray-200 rounded-full h-2">
+            <div id="progressBar" class="bg-blue-600 h-2 rounded-full transition-all duration-300" style="width: 0%"></div>
+          </div>
+          <div id="uploadStatus" class="text-sm text-gray-600 mt-2"></div>
+        </div>
+
+        <!-- Action Buttons -->
+        <div class="flex justify-end space-x-4 space-x-reverse mt-6">
+          <button type="button" id="cancelBtn" 
+                  class="px-6 py-3 border border-gray-300 text-gray-700 rounded-lg hover:bg-gray-50 transition-colors">
+            <i class="fas fa-times ml-2"></i>
+            إلغاء
+          </button>
+          <button type="button" id="uploadBtn" 
+                  class="px-6 py-3 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors disabled:opacity-50 disabled:cursor-not-allowed">
+            <i class="fas fa-upload ml-2"></i>
+            رفع المحتوى
+          </button>
+        </div>
+      </div>
+
+      <!-- Messages -->
+      <div id="uploadMsg" class="hidden mb-4 p-4 bg-green-100 border border-green-400 text-green-700 rounded-lg flex items-center">
+        <i class="fas fa-check-circle ml-3 text-green-600"></i>
+        <span id="uploadMsgText"></span>
+      </div>
+      
+      <div id="uploadErrorMsg" class="hidden mb-4 p-4 bg-red-100 border border-red-400 text-red-700 rounded-lg flex items-center">
+        <i class="fas fa-exclamation-triangle ml-3 text-red-600"></i>
+        <span id="uploadErrorMsgText"></span>
+      </div>
+    </div>
+  </div>
+
+  <!-- Loading Overlay -->
+  <div id="loadingOverlay" class="hidden fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
+    <div class="bg-white rounded-lg p-8 text-center">
+      <div class="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600 mx-auto mb-4"></div>
+      <p class="text-gray-700">جاري رفع المحتوى...</p>
+    </div>
+  </div>
+</body>
+</html> 

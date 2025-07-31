@@ -1,0 +1,346 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>تشخيص MASHROU3Y - Debug</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@400;500;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <style>
+    body { font-family: 'Tajawal', sans-serif; }
+    .debug-section { margin: 20px 0; padding: 20px; border: 1px solid #e5e7eb; border-radius: 8px; }
+    .success { background-color: #f0fdf4; border-color: #22c55e; }
+    .error { background-color: #fef2f2; border-color: #ef4444; }
+    .warning { background-color: #fffbeb; border-color: #f59e0b; }
+    .info { background-color: #eff6ff; border-color: #3b82f6; }
+  </style>
+</head>
+<body class="bg-gray-50">
+  <div class="container mx-auto px-4 py-8">
+    <h1 class="text-3xl font-bold text-center mb-8 text-gray-800">
+      <i class="fas fa-bug text-red-500"></i>
+      تشخيص MASHROU3Y
+    </h1>
+
+    <!-- معلومات النظام -->
+    <div class="debug-section info">
+      <h2 class="text-xl font-semibold mb-4">
+        <i class="fas fa-info-circle"></i>
+        معلومات النظام
+      </h2>
+      <div id="systemInfo"></div>
+    </div>
+
+    <!-- فحص الملفات -->
+    <div class="debug-section info">
+      <h2 class="text-xl font-semibold mb-4">
+        <i class="fas fa-file-alt"></i>
+        فحص الملفات
+      </h2>
+      <div id="fileCheck"></div>
+    </div>
+
+    <!-- فحص Supabase -->
+    <div class="debug-section info">
+      <h2 class="text-xl font-semibold mb-4">
+        <i class="fas fa-database"></i>
+        فحص Supabase
+      </h2>
+      <div id="supabaseCheck"></div>
+    </div>
+
+    <!-- فحص الشبكة -->
+    <div class="debug-section info">
+      <h2 class="text-xl font-semibold mb-4">
+        <i class="fas fa-network-wired"></i>
+        فحص الشبكة
+      </h2>
+      <div id="networkCheck"></div>
+    </div>
+
+    <!-- فحص الأداء -->
+    <div class="debug-section info">
+      <h2 class="text-xl font-semibold mb-4">
+        <i class="fas fa-tachometer-alt"></i>
+        فحص الأداء
+      </h2>
+      <div id="performanceCheck"></div>
+    </div>
+
+    <!-- الأخطاء -->
+    <div class="debug-section error">
+      <h2 class="text-xl font-semibold mb-4">
+        <i class="fas fa-exclamation-triangle"></i>
+        الأخطاء المكتشفة
+      </h2>
+      <div id="errorsList"></div>
+    </div>
+
+    <!-- الحلول المقترحة -->
+    <div class="debug-section success">
+      <h2 class="text-xl font-semibold mb-4">
+        <i class="fas fa-lightbulb"></i>
+        الحلول المقترحة
+      </h2>
+      <div id="solutions"></div>
+    </div>
+  </div>
+
+  <script>
+    // معلومات النظام
+    function checkSystemInfo() {
+      const systemInfo = document.getElementById('systemInfo');
+      const info = {
+        'نظام التشغيل': navigator.platform,
+        'المتصفح': navigator.userAgent,
+        'اللغة': navigator.language,
+        'الكوكيز مفعلة': navigator.cookieEnabled,
+        'JavaScript مفعل': true,
+        'الشاشة': `${screen.width}x${screen.height}`,
+        'الذاكرة المتاحة': navigator.deviceMemory ? `${navigator.deviceMemory} GB` : 'غير متوفر',
+        'اتصال الإنترنت': navigator.onLine ? 'متصل' : 'غير متصل'
+      };
+
+      let html = '<div class="grid grid-cols-1 md:grid-cols-2 gap-4">';
+      for (const [key, value] of Object.entries(info)) {
+        html += `
+          <div class="bg-white p-3 rounded border">
+            <strong>${key}:</strong> ${value}
+          </div>
+        `;
+      }
+      html += '</div>';
+      systemInfo.innerHTML = html;
+    }
+
+    // فحص الملفات
+    async function checkFiles() {
+      const fileCheck = document.getElementById('fileCheck');
+      const files = [
+        { name: 'index.html', path: 'src/pages/index.html' },
+        { name: 'main.js', path: 'src/scripts/main.js' },
+        { name: 'style.css', path: 'src/styles/style.css' },
+        { name: 'logo2.jpg', path: 'src/images/logo2.jpg' },
+        { name: 'supabase-config.js', path: 'src/scripts/supabase-config.js' }
+      ];
+
+      let html = '<div class="space-y-2">';
+      for (const file of files) {
+        try {
+          const response = await fetch(file.path);
+          const status = response.ok ? 'success' : 'error';
+          const icon = response.ok ? 'fas fa-check' : 'fas fa-times';
+          const color = response.ok ? 'text-green-600' : 'text-red-600';
+          
+          html += `
+            <div class="flex items-center space-x-2 space-x-reverse">
+              <i class="${icon} ${color}"></i>
+              <span>${file.name}</span>
+              <span class="text-sm text-gray-500">(${response.status})</span>
+            </div>
+          `;
+        } catch (error) {
+          html += `
+            <div class="flex items-center space-x-2 space-x-reverse">
+              <i class="fas fa-times text-red-600"></i>
+              <span>${file.name}</span>
+              <span class="text-sm text-red-500">غير موجود</span>
+            </div>
+          `;
+        }
+      }
+      html += '</div>';
+      fileCheck.innerHTML = html;
+    }
+
+    // فحص Supabase
+    async function checkSupabase() {
+      const supabaseCheck = document.getElementById('supabaseCheck');
+      
+      try {
+        const supabaseUrl = 'https://ycomaasvlmnuscmkooti.supabase.co';
+        const supabaseAnonKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Inljb21hYXN2bG1udXNjbWtvb3RpIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTM4MDg3NjUsImV4cCI6MjA2OTM4NDc2NX0.8rm-tCGJtwWnMz2Z3TXm8WWAVruRvIgIOotsZKZ3zWA';
+        
+        const supabase = window.supabase.createClient(supabaseUrl, supabaseAnonKey);
+        
+        // اختبار الاتصال
+        const { data, error } = await supabase
+          .from('users')
+          .select('count', { count: 'exact', head: true });
+        
+        if (error) {
+          supabaseCheck.innerHTML = `
+            <div class="bg-red-100 p-4 rounded border border-red-400">
+              <i class="fas fa-times text-red-600"></i>
+              <strong>خطأ في الاتصال:</strong> ${error.message}
+            </div>
+          `;
+        } else {
+          supabaseCheck.innerHTML = `
+            <div class="bg-green-100 p-4 rounded border border-green-400">
+              <i class="fas fa-check text-green-600"></i>
+              <strong>الاتصال يعمل بشكل ممتاز</strong>
+              <br>
+              <span class="text-sm">عدد المستخدمين: ${data}</span>
+            </div>
+          `;
+        }
+      } catch (error) {
+        supabaseCheck.innerHTML = `
+          <div class="bg-red-100 p-4 rounded border border-red-400">
+            <i class="fas fa-times text-red-600"></i>
+            <strong>خطأ في تهيئة Supabase:</strong> ${error.message}
+          </div>
+        `;
+      }
+    }
+
+    // فحص الشبكة
+    function checkNetwork() {
+      const networkCheck = document.getElementById('networkCheck');
+      
+      const networkInfo = {
+        'اتصال الإنترنت': navigator.onLine ? 'متصل' : 'غير متصل',
+        'نوع الاتصال': navigator.connection ? navigator.connection.effectiveType : 'غير متوفر',
+        'سرعة التحميل': navigator.connection ? `${navigator.connection.downlink} Mbps` : 'غير متوفر',
+        'زمن الاستجابة': navigator.connection ? `${navigator.connection.rtt} ms` : 'غير متوفر'
+      };
+
+      let html = '<div class="grid grid-cols-1 md:grid-cols-2 gap-4">';
+      for (const [key, value] of Object.entries(networkInfo)) {
+        const isOnline = key === 'اتصال الإنترنت' ? (value === 'متصل') : true;
+        const icon = isOnline ? 'fas fa-check' : 'fas fa-times';
+        const color = isOnline ? 'text-green-600' : 'text-red-600';
+        
+        html += `
+          <div class="bg-white p-3 rounded border">
+            <div class="flex items-center space-x-2 space-x-reverse">
+              <i class="${icon} ${color}"></i>
+              <span><strong>${key}:</strong> ${value}</span>
+            </div>
+          </div>
+        `;
+      }
+      html += '</div>';
+      networkCheck.innerHTML = html;
+    }
+
+    // فحص الأداء
+    function checkPerformance() {
+      const performanceCheck = document.getElementById('performanceCheck');
+      
+      const perfInfo = {
+        'وقت تحميل الصفحة': `${Math.round(performance.now())} ms`,
+        'ذاكرة JavaScript': navigator.deviceMemory ? `${navigator.deviceMemory} GB` : 'غير متوفر',
+        'عدد المعالجات': navigator.hardwareConcurrency || 'غير متوفر',
+        'دعم WebGL': 'متوفر',
+        'دعم Service Workers': 'serviceWorker' in navigator ? 'متوفر' : 'غير متوفر'
+      };
+
+      let html = '<div class="grid grid-cols-1 md:grid-cols-2 gap-4">';
+      for (const [key, value] of Object.entries(perfInfo)) {
+        html += `
+          <div class="bg-white p-3 rounded border">
+            <strong>${key}:</strong> ${value}
+          </div>
+        `;
+      }
+      html += '</div>';
+      performanceCheck.innerHTML = html;
+    }
+
+    // جمع الأخطاء
+    function collectErrors() {
+      const errorsList = document.getElementById('errorsList');
+      const errors = [];
+      
+      // فحص الأخطاء في Console
+      const originalError = console.error;
+      console.error = function(...args) {
+        errors.push(args.join(' '));
+        originalError.apply(console, args);
+      };
+
+      // فحص الأخطاء في Network
+      if (!navigator.onLine) {
+        errors.push('لا يوجد اتصال بالإنترنت');
+      }
+
+      // فحص دعم الميزات
+      if (!window.supabase) {
+        errors.push('Supabase لم يتم تحميله بشكل صحيح');
+      }
+
+      if (errors.length === 0) {
+        errorsList.innerHTML = `
+          <div class="bg-green-100 p-4 rounded border border-green-400">
+            <i class="fas fa-check text-green-600"></i>
+            <strong>لا توجد أخطاء مكتشفة</strong>
+          </div>
+        `;
+      } else {
+        let html = '<div class="space-y-2">';
+        errors.forEach(error => {
+          html += `
+            <div class="bg-red-100 p-3 rounded border border-red-400">
+              <i class="fas fa-exclamation-triangle text-red-600"></i>
+              ${error}
+            </div>
+          `;
+        });
+        html += '</div>';
+        errorsList.innerHTML = html;
+      }
+    }
+
+    // الحلول المقترحة
+    function suggestSolutions() {
+      const solutions = document.getElementById('solutions');
+      
+      const commonSolutions = [
+        {
+          problem: 'مشكلة في تحميل الملفات',
+          solution: 'تأكد من تشغيل الخادم المحلي باستخدام: npm start'
+        },
+        {
+          problem: 'مشكلة في Supabase',
+          solution: 'تأكد من صحة مفاتيح API وإعدادات قاعدة البيانات'
+        },
+        {
+          problem: 'مشكلة في المسارات',
+          solution: 'تأكد من صحة مسارات الملفات والصور'
+        },
+        {
+          problem: 'مشكلة في الأداء',
+          solution: 'تحقق من اتصال الإنترنت وحاول إعادة تحميل الصفحة'
+        }
+      ];
+
+      let html = '<div class="space-y-4">';
+      commonSolutions.forEach(item => {
+        html += `
+          <div class="bg-blue-100 p-4 rounded border border-blue-400">
+            <h3 class="font-semibold text-blue-800">${item.problem}</h3>
+            <p class="text-blue-700 mt-2">${item.solution}</p>
+          </div>
+        `;
+      });
+      html += '</div>';
+      solutions.innerHTML = html;
+    }
+
+    // تشغيل جميع الفحوصات
+    window.addEventListener('load', async () => {
+      checkSystemInfo();
+      await checkFiles();
+      await checkSupabase();
+      checkNetwork();
+      checkPerformance();
+      collectErrors();
+      suggestSolutions();
+    });
+  </script>
+</body>
+</html> 

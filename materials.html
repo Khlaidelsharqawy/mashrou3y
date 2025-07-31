@@ -1,0 +1,407 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>المواد الدراسية - MASHROU3Y</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@400;500;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <style>
+    body {
+      font-family: 'Tajawal', sans-serif;
+    }
+    .text-gradient {
+      background: linear-gradient(90deg, #60a5fa, #a78bfa);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+    .card {
+      background-color: white;
+      border-radius: 1rem;
+      box-shadow: 0 10px 25px rgba(0,0,0,0.05);
+      transition: transform 0.3s ease, box-shadow 0.3s ease;
+      border: 1px solid #f3f4f6;
+    }
+    .card:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 15px 30px rgba(0,0,0,0.1);
+    }
+    .locked-content {
+      filter: blur(2px);
+      pointer-events: none;
+    }
+    .lock-icon {
+      position: absolute;
+      top: 10px;
+      right: 10px;
+      background: rgba(220, 38, 38, 0.9);
+      color: white;
+      padding: 8px;
+      border-radius: 50%;
+      font-size: 16px;
+    }
+  </style>
+</head>
+<body class="bg-gray-50">
+  <!-- Header -->
+  <header class="bg-white shadow-sm border-b">
+    <div class="container mx-auto px-4 py-4">
+      <div class="flex items-center justify-between">
+        <div class="flex items-center space-x-3 space-x-reverse">
+          <img src="images/Create a modern and sleek flat logo for a university student platform called _Mashrou3y_. The logo should reflect innovation, education, and technology. Use vibrant and engaging colors (like royal blue, teal, a (2).jpg" 
+               alt="شعار MASHROU3Y" class="w-10 h-10 rounded-lg">
+          <a href="index.html" class="text-2xl font-bold text-gradient">MASHROU3Y</a>
+          <span class="text-gray-500">/ المواد الدراسية</span>
+        </div>
+        <div class="flex items-center space-x-4 space-x-reverse">
+          <a href="dashboard.html" class="text-blue-600 hover:text-blue-800">
+            <i class="fas fa-home ml-1"></i>
+            الرئيسية
+          </a>
+          <a href="profile.html" class="text-gray-600 hover:text-gray-800">
+            <i class="fas fa-user ml-1"></i>
+            حسابي
+          </a>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <!-- Main Content -->
+  <main class="container mx-auto px-4 py-8">
+    <!-- Page Header -->
+    <div class="text-center mb-12">
+      <h1 class="text-4xl md:text-5xl font-bold text-gray-800 mb-4">
+        المواد الدراسية 📚
+      </h1>
+      <p class="text-lg md:text-xl text-gray-600 max-w-3xl mx-auto">
+        ملخصات وشروحات شاملة لجميع المواد الدراسية - خد اللي محتاجه في ثواني يا نجم 💡
+      </p>
+    </div>
+
+    <!-- Filters -->
+    <div class="bg-white rounded-lg shadow-sm p-6 mb-8">
+      <div class="flex flex-wrap gap-4 items-center">
+        <div class="flex-1 min-w-64">
+          <input type="text" id="searchInput" placeholder="ابحث في المواد الدراسية..." 
+                 class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500">
+        </div>
+        <select id="facultyFilter" class="px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500">
+          <option value="">جميع الكليات</option>
+          <option value="هندسة">هندسة</option>
+          <option value="حاسبات">حاسبات</option>
+          <option value="طب">طب</option>
+          <option value="صيدلة">صيدلة</option>
+          <option value="تجارة">تجارة</option>
+        </select>
+        <select id="yearFilter" class="px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500">
+          <option value="">جميع السنوات</option>
+          <option value="أولى">أولى</option>
+          <option value="ثانية">ثانية</option>
+          <option value="ثالثة">ثالثة</option>
+          <option value="رابعة">رابعة</option>
+          <option value="خامسه">خامسه</option>
+          <option value="ساته">ساته</option>
+          <option value="اخر سنه">اخر سنه</option>
+        </select>
+      </div>
+    </div>
+
+    <!-- Materials Grid -->
+    <div id="materialsGrid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+      <!-- Material Card 1 -->
+      <div class="card p-6 relative" data-faculty="هندسة" data-year="أولى">
+        <div class="lock-icon">
+          <i class="fas fa-lock"></i>
+        </div>
+        <div class="text-center mb-4">
+          <div class="text-4xl mb-2">📐</div>
+          <h3 class="text-xl font-bold text-gray-800">رياضيات هندسية</h3>
+          <p class="text-sm text-gray-500">هندسة - أولى</p>
+        </div>
+        <p class="text-gray-600 mb-4 text-center">
+          ملخص شامل لجميع فصول الرياضيات الهندسية مع أمثلة محلولة
+        </p>
+        <div class="flex justify-between items-center mb-4 text-sm text-gray-500">
+          <span><i class="fas fa-file-pdf ml-1"></i> 45 صفحة</span>
+          <span><i class="fas fa-download ml-1"></i> 1.2 MB</span>
+        </div>
+        <div class="text-center">
+          <span class="text-2xl font-bold text-green-600">50 ج.م</span>
+        </div>
+        <button onclick="handleMaterialAccess('math-101', 'الرياضيات الهندسية')" 
+                class="w-full mt-4 bg-blue-600 text-white py-2 px-4 rounded-lg hover:bg-blue-700 transition-colors">
+          <i class="fas fa-download ml-2"></i>
+          تحميل المادة
+        </button>
+      </div>
+
+      <!-- Material Card 2 -->
+      <div class="card p-6 relative" data-faculty="حاسبات" data-year="ثانية">
+        <div class="text-center mb-4">
+          <div class="text-4xl mb-2">💻</div>
+          <h3 class="text-xl font-bold text-gray-800">برمجة متقدمة</h3>
+          <p class="text-sm text-gray-500">حاسبات - ثانية</p>
+        </div>
+        <p class="text-gray-600 mb-4 text-center">
+          شروحات مفصلة لـ Java و Python مع مشاريع عملية
+        </p>
+        <div class="flex justify-between items-center mb-4 text-sm text-gray-500">
+          <span><i class="fas fa-file-pdf ml-1"></i> 78 صفحة</span>
+          <span><i class="fas fa-download ml-1"></i> 2.1 MB</span>
+        </div>
+        <div class="text-center">
+          <span class="text-2xl font-bold text-green-600">75 ج.م</span>
+        </div>
+        <button onclick="handleMaterialAccess('prog-201', 'برمجة متقدمة')" 
+                class="w-full mt-4 bg-green-600 text-white py-2 px-4 rounded-lg hover:bg-green-700 transition-colors">
+          <i class="fas fa-download ml-2"></i>
+          تحميل المادة
+        </button>
+      </div>
+
+      <!-- Material Card 3 -->
+      <div class="card p-6 relative" data-faculty="طب" data-year="ثالثة">
+        <div class="lock-icon">
+          <i class="fas fa-lock"></i>
+        </div>
+        <div class="text-center mb-4">
+          <div class="text-4xl mb-2">🏥</div>
+          <h3 class="text-xl font-bold text-gray-800">تشريح جسم الإنسان</h3>
+          <p class="text-sm text-gray-500">طب - ثالثة</p>
+        </div>
+        <p class="text-gray-600 mb-4 text-center">
+          أطلس تشريحي شامل مع شرح تفصيلي لجميع أجهزة الجسم
+        </p>
+        <div class="flex justify-between items-center mb-4 text-sm text-gray-500">
+          <span><i class="fas fa-file-pdf ml-1"></i> 120 صفحة</span>
+          <span><i class="fas fa-download ml-1"></i> 8.5 MB</span>
+        </div>
+        <div class="text-center">
+          <span class="text-2xl font-bold text-green-600">120 ج.م</span>
+        </div>
+        <button onclick="handleMaterialAccess('anatomy-301', 'تشريح جسم الإنسان')" 
+                class="w-full mt-4 bg-blue-600 text-white py-2 px-4 rounded-lg hover:bg-blue-700 transition-colors">
+          <i class="fas fa-download ml-2"></i>
+          تحميل المادة
+        </button>
+      </div>
+
+      <!-- Material Card 4 -->
+      <div class="card p-6 relative" data-faculty="تجارة" data-year="أولى">
+        <div class="text-center mb-4">
+          <div class="text-4xl mb-2">📊</div>
+          <h3 class="text-xl font-bold text-gray-800">مبادئ المحاسبة</h3>
+          <p class="text-sm text-gray-500">تجارة - أولى</p>
+        </div>
+        <p class="text-gray-600 mb-4 text-center">
+          أساسيات المحاسبة مع أمثلة عملية وتمارين محلولة
+        </p>
+        <div class="flex justify-between items-center mb-4 text-sm text-gray-500">
+          <span><i class="fas fa-file-pdf ml-1"></i> 65 صفحة</span>
+          <span><i class="fas fa-download ml-1"></i> 1.8 MB</span>
+        </div>
+        <div class="text-center">
+          <span class="text-2xl font-bold text-green-600">60 ج.م</span>
+        </div>
+        <button onclick="handleMaterialAccess('accounting-101', 'مبادئ المحاسبة')" 
+                class="w-full mt-4 bg-green-600 text-white py-2 px-4 rounded-lg hover:bg-green-700 transition-colors">
+          <i class="fas fa-download ml-2"></i>
+          تحميل المادة
+        </button>
+      </div>
+
+      <!-- Material Card 5 -->
+      <div class="card p-6 relative" data-faculty="صيدلة" data-year="ثانية">
+        <div class="lock-icon">
+          <i class="fas fa-lock"></i>
+        </div>
+        <div class="text-center mb-4">
+          <div class="text-4xl mb-2">💊</div>
+          <h3 class="text-xl font-bold text-gray-800">كيمياء عضوية</h3>
+          <p class="text-sm text-gray-500">صيدلة - ثانية</p>
+        </div>
+        <p class="text-gray-600 mb-4 text-center">
+          تفاعلات كيميائية عضوية مع رسوم توضيحية وتمارين
+        </p>
+        <div class="flex justify-between items-center mb-4 text-sm text-gray-500">
+          <span><i class="fas fa-file-pdf ml-1"></i> 95 صفحة</span>
+          <span><i class="fas fa-download ml-1"></i> 3.2 MB</span>
+        </div>
+        <div class="text-center">
+          <span class="text-2xl font-bold text-green-600">90 ج.م</span>
+        </div>
+        <button onclick="handleMaterialAccess('organic-201', 'كيمياء عضوية')" 
+                class="w-full mt-4 bg-blue-600 text-white py-2 px-4 rounded-lg hover:bg-blue-700 transition-colors">
+          <i class="fas fa-download ml-2"></i>
+          تحميل المادة
+        </button>
+      </div>
+
+      <!-- Material Card 6 -->
+      <div class="card p-6 relative" data-faculty="هندسة" data-year="ثالثة">
+        <div class="text-center mb-4">
+          <div class="text-4xl mb-2">⚡</div>
+          <h3 class="text-xl font-bold text-gray-800">دوائر كهربائية</h3>
+          <p class="text-sm text-gray-500">هندسة - ثالثة</p>
+        </div>
+        <p class="text-gray-600 mb-4 text-center">
+          تحليل الدوائر الكهربائية مع برامج المحاكاة
+        </p>
+        <div class="flex justify-between items-center mb-4 text-sm text-gray-500">
+          <span><i class="fas fa-file-pdf ml-1"></i> 85 صفحة</span>
+          <span><i class="fas fa-download ml-1"></i> 2.8 MB</span>
+        </div>
+        <div class="text-center">
+          <span class="text-2xl font-bold text-green-600">80 ج.م</span>
+        </div>
+        <button onclick="handleMaterialAccess('circuits-301', 'دوائر كهربائية')" 
+                class="w-full mt-4 bg-green-600 text-white py-2 px-4 rounded-lg hover:bg-green-700 transition-colors">
+          <i class="fas fa-download ml-2"></i>
+          تحميل المادة
+        </button>
+      </div>
+    </div>
+
+    <!-- No Results Message -->
+    <div id="noResults" class="hidden text-center py-12">
+      <div class="text-6xl mb-4">🔍</div>
+      <h3 class="text-2xl font-bold text-gray-800 mb-2">مش لاقي حاجة</h3>
+      <p class="text-gray-600">جرب تغيير الفلاتر أو البحث بكلمات مختلفة</p>
+    </div>
+  </main>
+
+  <!-- Footer -->
+  <footer class="bg-gray-800 text-white py-12 mt-20">
+    <div class="container mx-auto px-4">
+      <div class="grid grid-cols-1 md:grid-cols-4 gap-8">
+        <!-- Company Info -->
+        <div class="col-span-1 md:col-span-2">
+          <div class="flex items-center space-x-3 space-x-reverse mb-4">
+            <img src="images/Create a modern and sleek flat logo for a university student platform called _Mashrou3y_. The logo should reflect innovation, education, and technology. Use vibrant and engaging colors (like royal blue, teal, a (2).jpg" 
+                 alt="شعار MASHROU3Y" class="w-12 h-12 rounded-lg">
+            <span class="text-2xl font-bold text-gradient">MASHROU3Y</span>
+          </div>
+          <p class="text-gray-300 mb-4">
+            منصة تعليمية متكاملة لخدمة الطلاب والباحثين في مصر والعالم العربي
+          </p>
+          <div class="flex space-x-4 space-x-reverse">
+            <a href="#" class="text-gray-400 hover:text-white transition-colors">
+              <i class="fab fa-facebook text-xl"></i>
+            </a>
+            <a href="#" class="text-gray-400 hover:text-white transition-colors">
+              <i class="fab fa-twitter text-xl"></i>
+            </a>
+            <a href="#" class="text-gray-400 hover:text-white transition-colors">
+              <i class="fab fa-instagram text-xl"></i>
+            </a>
+            <a href="#" class="text-gray-400 hover:text-white transition-colors">
+              <i class="fab fa-linkedin text-xl"></i>
+            </a>
+          </div>
+        </div>
+
+        <!-- Services -->
+        <div>
+          <h3 class="text-xl font-bold mb-4">خدماتنا</h3>
+          <ul class="space-y-2 text-gray-300">
+            <li><i class="fas fa-book ml-2"></i>المواد الدراسية</li>
+            <li><i class="fas fa-code ml-2"></i>المشاريع الجاهزة</li>
+            <li><i class="fas fa-presentation ml-2"></i>العروض التقديمية</li>
+            <li><i class="fas fa-store ml-2"></i>المتجر الرقمي</li>
+          </ul>
+        </div>
+
+        <!-- Contact -->
+        <!-- <div>
+          <h3 class="text-xl font-bold mb-4">تواصل معنا</h3>
+          <div class="space-y-2 text-gray-300">
+            <p><i class="fas fa-envelope ml-2"></i>info@mashrou3y.com</p>
+            <p><i class="fas fa-phone ml-2"></i>+20 123 456 7890</p>
+            <p class="text-sm">تم إخفاء بيانات التواصل حفاظاً على الخصوصية</p>
+          </div>
+        </div>
+      </div> -->
+      
+      <div class="border-t border-gray-700 mt-8 pt-8 text-center">
+        <p class="text-gray-400 text-sm">
+          &copy; 2024 MASHROU3Y. جميع الحقوق محفوظة. | 
+          <a href="#" class="hover:text-white transition-colors">سياسة الخصوصية</a> | 
+          <a href="#" class="hover:text-white transition-colors">شروط الاستخدام</a>
+        </p>
+      </div>
+    </div>
+  </footer>
+
+  <!-- Scripts -->
+  <script type="module" src="../scripts/auth-guard.js"></script>
+  <script>
+    // دالة معالجة الوصول للمواد
+    window.handleMaterialAccess = async function(materialId, materialName) {
+      try {
+        // فحص الوصول للمحتوى
+        const hasAccess = await window.checkContentAccess(materialId, 'materials');
+        
+        if (hasAccess) {
+          // محاكاة التحميل
+          const button = event.target;
+          const originalText = button.innerHTML;
+          
+          button.innerHTML = '<i class="fas fa-spinner fa-spin ml-2"></i>جاري التحميل...';
+          button.disabled = true;
+          
+          // محاكاة تأخير التحميل
+          setTimeout(() => {
+            alert(`تم تحميل ${materialName} بنجاح! 🎉`);
+            button.innerHTML = originalText;
+            button.disabled = false;
+          }, 2000);
+        }
+      } catch (error) {
+        console.error('Error accessing material:', error);
+      }
+    };
+
+    // دالة البحث والفلترة
+    function filterMaterials() {
+      const searchTerm = document.getElementById('searchInput').value.toLowerCase();
+      const facultyFilter = document.getElementById('facultyFilter').value;
+      const yearFilter = document.getElementById('yearFilter').value;
+      
+      const materials = document.querySelectorAll('#materialsGrid .card');
+      let visibleCount = 0;
+      
+      materials.forEach(material => {
+        const title = material.querySelector('h3').textContent.toLowerCase();
+        const faculty = material.dataset.faculty;
+        const year = material.dataset.year;
+        
+        const matchesSearch = title.includes(searchTerm);
+        const matchesFaculty = !facultyFilter || faculty === facultyFilter;
+        const matchesYear = !yearFilter || year === yearFilter;
+        
+        if (matchesSearch && matchesFaculty && matchesYear) {
+          material.style.display = 'block';
+          visibleCount++;
+        } else {
+          material.style.display = 'none';
+        }
+      });
+      
+      // إظهار/إخفاء رسالة عدم وجود نتائج
+      const noResults = document.getElementById('noResults');
+      if (visibleCount === 0) {
+        noResults.classList.remove('hidden');
+      } else {
+        noResults.classList.add('hidden');
+      }
+    }
+
+    // إضافة event listeners
+    document.getElementById('searchInput').addEventListener('input', filterMaterials);
+    document.getElementById('facultyFilter').addEventListener('change', filterMaterials);
+    document.getElementById('yearFilter').addEventListener('change', filterMaterials);
+  </script>
+</body>
+</html>

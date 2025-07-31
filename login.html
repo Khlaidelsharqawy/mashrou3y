@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>تسجيل الدخول - MASHROU3Y</title>
+
+  <!-- Tailwind CSS & Fonts -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@400;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+  <!-- Custom Styles -->
+  <link rel="stylesheet" href="../styles/style.css">
+
+  <!-- Supabase SDK -->
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
+  <!-- Scripts -->
+  <script type="module" src="../scripts/translations.js" defer></script>
+  <script type="module" src="../scripts/theme.js" defer></script>
+  <script type="module" src="../scripts/utils.js" defer></script>
+
+  <style>
+    body { font-family: 'Tajawal', sans-serif; }
+    .gradient-bg { background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); }
+    .glass { background: rgba(255, 255, 255, 0.1); backdrop-filter: blur(10px); border: 1px solid rgba(255, 255, 255, 0.2); }
+  </style>
+</head>
+<body class="gradient-bg min-h-screen flex items-center justify-center p-4">
+  <div class="w-full max-w-md">
+    <div class="text-center mb-8">
+      <img src="../images/logo2.jpg" alt="logo" class="w-20 h-20 mx-auto rounded-xl">
+      <h1 class="text-3xl font-bold text-white">MASHROU3Y</h1>
+      
+      <!-- Language and Theme Toggles -->
+      <div class="flex justify-center space-x-4 space-x-reverse mt-4">
+        <!-- Language Toggle -->
+        <button data-language-toggle class="bg-white/10 hover:bg-white/20 text-white px-3 py-2 rounded-lg transition-all duration-200 flex items-center space-x-2 space-x-reverse">
+          <i class="fas fa-globe"></i>
+          <span class="text-sm font-medium" data-translate="arabic">العربية</span>
+        </button>
+        
+        <!-- Theme Toggle -->
+        <button data-theme-toggle class="bg-white/10 hover:bg-white/20 text-white px-3 py-2 rounded-lg transition-all duration-200 flex items-center space-x-2 space-x-reverse">
+          <i class="fas fa-sun" data-theme-icon></i>
+          <span class="text-sm font-medium" data-translate="light">فاتح</span>
+        </button>
+      </div>
+    </div>
+
+    <div class="glass p-8 rounded-xl shadow-lg">
+      <h2 class="text-xl text-white font-bold text-center mb-6" data-translate="login">سجل دخولك</h2>
+      <form id="loginForm" class="space-y-4">
+        <input type="email" id="email" data-translate="email" placeholder="الإيميل" class="w-full p-3 rounded bg-white/10 border border-white/20 text-white" required>
+        <input type="password" id="password" data-translate="password" placeholder="الباسورد" class="w-full p-3 rounded bg-white/10 border border-white/20 text-white" required>
+        <button type="submit" class="w-full bg-indigo-600 hover:bg-indigo-700 text-white p-3 rounded" data-translate="login">دخول</button>
+      </form>
+
+      <div class="my-6 text-center text-white/80">أو</div>
+
+      <button id="googleLogin" class="w-full bg-white text-gray-800 font-bold p-3 rounded hover:bg-gray-200">
+        <i class="fab fa-google ml-2"></i> <span data-translate="google_login">دخول بجوجل</span>
+      </button>
+
+      <p id="message" class="text-center mt-4 text-sm text-red-300"></p>
+    </div>
+  </div>
+
+  <script>
+    const supabaseUrl = 'https://ycomaasvlmnuscmkooti.supabase.co';
+    const supabaseAnonKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Inljb21hYXN2bG1udXNjbWtvb3RpIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTM4MDg3NjUsImV4cCI6MjA2OTM4NDc2NX0.8rm-tCGJtwWnMz2Z3TXm8WWAVruRvIgIOotsZKZ3zWA'; // Replace with full key
+    const supabase = window.supabase.createClient(supabaseUrl, supabaseAnonKey);
+
+    const loginForm = document.getElementById('loginForm');
+    const message = document.getElementById('message');
+    const googleLogin = document.getElementById('googleLogin');
+
+    loginForm.addEventListener('submit', async (e) => {
+      e.preventDefault();
+      const email = document.getElementById('email').value;
+      const password = document.getElementById('password').value;
+
+      try {
+        const { data, error } = await supabase.auth.signInWithPassword({ email, password });
+
+        if (error) {
+          message.textContent = 'خطأ في البيانات. جرب تاني.';
+          message.style.color = '#fca5a5';
+          return;
+        }
+
+        if (data.user) {
+          message.textContent = 'تم تسجيل الدخول بنجاح! جاري التوجيه...';
+          message.style.color = '#86efac';
+          
+          // انتظار قليل ثم التوجيه
+          setTimeout(() => {
+            window.location.href = 'dashboard.html';
+          }, 1000);
+        }
+      } catch (error) {
+        message.textContent = 'حدث خطأ غير متوقع. جرب تاني.';
+        message.style.color = '#fca5a5';
+        console.error('Login error:', error);
+      }
+    });
+
+    googleLogin.addEventListener('click', async () => {
+      const { data, error } = await supabase.auth.signInWithOAuth({
+        provider: 'google',
+        options: {
+          redirectTo: window.location.origin + '/dashboard.html'
+        }
+      });
+      if (error) {
+        message.textContent = 'تعذر تسجيل الدخول بجوجل';
+        console.error(error);
+      }
+    });
+  </script>
+</body>
+</html>

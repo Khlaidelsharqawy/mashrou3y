@@ -1,0 +1,324 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>تصفح المتاجر - MASHROU3Y</title>
+    
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <!-- Custom Styles -->
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        
+        .store-card {
+            transition: all 0.3s ease;
+        }
+        
+        .store-card:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+        }
+        
+        .category-filter {
+            transition: all 0.2s ease;
+        }
+        
+        .category-filter:hover {
+            transform: scale(1.05);
+        }
+        
+        .category-filter.active {
+            background-color: #3b82f6;
+            color: white;
+        }
+        
+        /* تحسينات للعربية */
+        .rtl {
+            direction: rtl;
+        }
+        
+        .space-x-reverse > :not([hidden]) ~ :not([hidden]) {
+            --tw-space-x-reverse: 1;
+        }
+    </style>
+</head>
+<body class="bg-gray-50 rtl">
+    <!-- Header -->
+    <header class="bg-white shadow-sm border-b sticky top-0 z-40">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between items-center py-4">
+                <div class="flex items-center space-x-4 space-x-reverse">
+                    <a href="index.html" class="text-gray-500 hover:text-gray-700">
+                        <i class="fas fa-arrow-right"></i>
+                    </a>
+                    <h1 class="text-2xl font-bold text-gray-900">
+                        <i class="fas fa-store text-blue-600 ml-2"></i>
+                        تصفح المتاجر
+                    </h1>
+                </div>
+                
+                <div class="flex items-center space-x-4 space-x-reverse">
+                    <!-- Visitor Mode Indicator -->
+                    <div id="visitorModeIndicator" class="hidden bg-yellow-100 text-yellow-800 px-3 py-1 rounded-full text-sm">
+                        <i class="fas fa-user ml-1"></i>
+                        <span id="visitorRoleText">وضع تجريبي</span>
+                    </div>
+                    
+                    <!-- Search -->
+                    <div class="relative">
+                        <input type="text" id="searchInput" placeholder="ابحث في المتاجر..." 
+                               class="w-64 px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500">
+                        <i class="fas fa-search absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400"></i>
+                    </div>
+                    
+                    <!-- User Menu -->
+                    <div class="relative">
+                        <button id="userMenuBtn" class="flex items-center space-x-2 space-x-reverse text-gray-700 hover:text-gray-900">
+                            <img id="userAvatar" src="../images/default-avatar.png" alt="صورة المستخدم" class="w-8 h-8 rounded-full">
+                            <span id="userName">زائر</span>
+                            <i class="fas fa-chevron-down"></i>
+                        </button>
+                        
+                        <div id="userMenu" class="absolute left-0 mt-2 w-48 bg-white rounded-lg shadow-lg border hidden z-50">
+                            <div class="py-2">
+                                <a href="dashboard.html" class="block px-4 py-2 text-gray-700 hover:bg-gray-100">
+                                    <i class="fas fa-tachometer-alt ml-2"></i>
+                                    لوحة التحكم
+                                </a>
+                                <a href="profile.html" class="block px-4 py-2 text-gray-700 hover:bg-gray-100">
+                                    <i class="fas fa-user ml-2"></i>
+                                    الملف الشخصي
+                                </a>
+                                <hr class="my-2">
+                                <button id="logoutBtn" class="block w-full text-right px-4 py-2 text-red-600 hover:bg-gray-100">
+                                    <i class="fas fa-sign-out-alt ml-2"></i>
+                                    تسجيل الخروج
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Content -->
+    <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+        <!-- Breadcrumb -->
+        <nav class="flex mb-8" aria-label="Breadcrumb">
+            <ol class="inline-flex items-center space-x-1 md:space-x-3 space-x-reverse">
+                <li class="inline-flex items-center">
+                    <a href="index.html" class="inline-flex items-center text-sm font-medium text-gray-700 hover:text-blue-600">
+                        <i class="fas fa-home ml-2"></i>
+                        الرئيسية
+                    </a>
+                </li>
+                <li>
+                    <div class="flex items-center">
+                        <i class="fas fa-chevron-left text-gray-400"></i>
+                        <span class="mr-1 ml-1 text-sm font-medium text-gray-500 md:mr-2 md:ml-2">تصفح المتاجر</span>
+                    </div>
+                </li>
+            </ol>
+        </nav>
+
+        <!-- Filters -->
+        <div class="bg-white rounded-lg shadow-sm p-6 mb-8">
+            <h2 class="text-lg font-semibold mb-4">تصفية المتاجر</h2>
+            
+            <!-- Categories -->
+            <div class="mb-6">
+                <h3 class="text-sm font-medium text-gray-700 mb-3">التخصصات</h3>
+                <div class="flex flex-wrap gap-3">
+                    <button class="category-filter active px-4 py-2 rounded-lg border border-gray-300 hover:border-blue-500" data-category="all">
+                        جميع التخصصات
+                    </button>
+                    <button class="category-filter px-4 py-2 rounded-lg border border-gray-300 hover:border-blue-500" data-category="هندسة">
+                        هندسة
+                    </button>
+                    <button class="category-filter px-4 py-2 rounded-lg border border-gray-300 hover:border-blue-500" data-category="طب">
+                        طب
+                    </button>
+                    <button class="category-filter px-4 py-2 rounded-lg border border-gray-300 hover:border-blue-500" data-category="تجارة">
+                        تجارة
+                    </button>
+                    <button class="category-filter px-4 py-2 rounded-lg border border-gray-300 hover:border-blue-500" data-category="آداب">
+                        آداب
+                    </button>
+                    <button class="category-filter px-4 py-2 rounded-lg border border-gray-300 hover:border-blue-500" data-category="علوم">
+                        علوم
+                    </button>
+                </div>
+            </div>
+            
+            <!-- Types -->
+            <div>
+                <h3 class="text-sm font-medium text-gray-700 mb-3">نوع المحتوى</h3>
+                <div class="flex flex-wrap gap-3">
+                    <button class="type-filter active px-4 py-2 rounded-lg border border-gray-300 hover:border-blue-500" data-type="all">
+                        جميع الأنواع
+                    </button>
+                    <button class="type-filter px-4 py-2 rounded-lg border border-gray-300 hover:border-blue-500" data-type="materials">
+                        مواد دراسية
+                    </button>
+                    <button class="type-filter px-4 py-2 rounded-lg border border-gray-300 hover:border-blue-500" data-type="projects">
+                        مشاريع
+                    </button>
+                    <button class="type-filter px-4 py-2 rounded-lg border border-gray-300 hover:border-blue-500" data-type="presentations">
+                        عروض تقديمية
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Stores Grid -->
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6" id="storesGrid">
+            <!-- Stores will be loaded here -->
+        </div>
+
+        <!-- Loading State -->
+        <div id="loadingState" class="text-center py-12 hidden">
+            <div class="inline-flex items-center">
+                <div class="animate-spin rounded-full h-8 w-8 border-b-2 border-blue-600 ml-3"></div>
+                <span class="text-gray-600">جاري تحميل المتاجر...</span>
+            </div>
+        </div>
+
+        <!-- Empty State -->
+        <div id="emptyState" class="text-center py-12 hidden">
+            <i class="fas fa-store text-6xl text-gray-300 mb-4"></i>
+            <h3 class="text-xl font-medium text-gray-600 mb-2">لا توجد متاجر</h3>
+            <p class="text-gray-500">لم يتم العثور على متاجر تطابق معايير البحث</p>
+        </div>
+
+        <!-- Error State -->
+        <div id="errorState" class="text-center py-12 hidden">
+            <i class="fas fa-exclamation-triangle text-red-500 text-4xl mb-4"></i>
+            <h3 class="text-lg font-semibold text-gray-800 mb-2">حدث خطأ</h3>
+            <p class="text-gray-600 mb-4">لم نتمكن من تحميل المتاجر</p>
+            <button id="retryBtn" class="bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700">
+                <i class="fas fa-redo ml-2"></i>
+                إعادة المحاولة
+            </button>
+        </div>
+    </main>
+
+    <!-- Footer -->
+    <footer class="bg-white border-t mt-12">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
+            <div class="flex justify-between items-center">
+                <div class="text-gray-500 text-sm">
+                    © 2025 MASHROU3Y. جميع الحقوق محفوظة
+                </div>
+                <div class="flex items-center space-x-4 space-x-reverse text-sm text-gray-500">
+                    <span>الإصدار 1.0.0</span>
+                    <span>•</span>
+                    <span>آخر تحديث: 31 يوليو 2025</span>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Scripts -->
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script src="../scripts/supabase-config.js"></script>
+    <script src="../scripts/admin-role-switcher.js"></script>
+    <script src="stores.js"></script>
+    
+    <script>
+        // إدارة واجهة المستخدم
+        document.addEventListener('DOMContentLoaded', function() {
+            // إدارة قائمة المستخدم
+            const userMenuBtn = document.getElementById('userMenuBtn');
+            const userMenu = document.getElementById('userMenu');
+            
+            if (userMenuBtn && userMenu) {
+                userMenuBtn.addEventListener('click', () => {
+                    userMenu.classList.toggle('hidden');
+                });
+                
+                // إغلاق القائمة عند النقر خارجه
+                document.addEventListener('click', (e) => {
+                    if (!userMenuBtn.contains(e.target) && !userMenu.contains(e.target)) {
+                        userMenu.classList.add('hidden');
+                    }
+                });
+            }
+            
+            // إدارة البحث
+            const searchInput = document.getElementById('searchInput');
+            if (searchInput) {
+                searchInput.addEventListener('input', (e) => {
+                    if (window.storesManager) {
+                        window.storesManager.filterStores(e.target.value);
+                    }
+                });
+            }
+            
+            // إدارة فلاتر التخصصات
+            const categoryFilters = document.querySelectorAll('.category-filter');
+            categoryFilters.forEach(filter => {
+                filter.addEventListener('click', () => {
+                    // إزالة الفئة النشطة من جميع الأزرار
+                    categoryFilters.forEach(f => f.classList.remove('active'));
+                    // إضافة الفئة النشطة للزر المحدد
+                    filter.classList.add('active');
+                    
+                    const category = filter.dataset.category;
+                    if (window.storesManager) {
+                        window.storesManager.filterByCategory(category);
+                    }
+                });
+            });
+            
+            // إدارة فلاتر الأنواع
+            const typeFilters = document.querySelectorAll('.type-filter');
+            typeFilters.forEach(filter => {
+                filter.addEventListener('click', () => {
+                    // إزالة الفئة النشطة من جميع الأزرار
+                    typeFilters.forEach(f => f.classList.remove('active'));
+                    // إضافة الفئة النشطة للزر المحدد
+                    filter.classList.add('active');
+                    
+                    const type = filter.dataset.type;
+                    if (window.storesManager) {
+                        window.storesManager.filterByType(type);
+                    }
+                });
+            });
+            
+            // زر تسجيل الخروج
+            const logoutBtn = document.getElementById('logoutBtn');
+            if (logoutBtn) {
+                logoutBtn.addEventListener('click', async () => {
+                    try {
+                        const { error } = await supabase.auth.signOut();
+                        if (error) throw error;
+                        window.location.href = 'login.html';
+                    } catch (error) {
+                        console.error('خطأ في تسجيل الخروج:', error);
+                        alert('حدث خطأ في تسجيل الخروج');
+                    }
+                });
+            }
+            
+            // زر إعادة المحاولة
+            const retryBtn = document.getElementById('retryBtn');
+            if (retryBtn) {
+                retryBtn.addEventListener('click', () => {
+                    if (window.storesManager) {
+                        window.storesManager.loadStores();
+                    }
+                });
+            }
+        });
+    </script>
+</body>
+</html> 

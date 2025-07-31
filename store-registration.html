@@ -1,0 +1,296 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>تسجيل متجر جديد - MASHROU3Y</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@400;500;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <script type="module" src="../scripts/store-registration.js" defer></script>
+  <script type="module" src="../scripts/auth-guard.js"></script>
+  <style>
+    body { font-family: 'Tajawal', sans-serif; }
+    .form-input {
+      transition: all 0.3s ease;
+    }
+    .form-input:focus {
+      transform: translateY(-1px);
+      box-shadow: 0 4px 12px rgba(59, 130, 246, 0.15);
+    }
+  </style>
+</head>
+<body class="bg-gray-50 min-h-screen">
+  <!-- Header -->
+  <header class="bg-white shadow-sm border-b">
+    <div class="container mx-auto px-4 py-4">
+      <div class="flex items-center justify-between">
+        <div class="flex items-center space-x-3 space-x-reverse">
+          <img src="../images/logo2.jpg" alt="شعار MASHROU3Y" class="w-10 h-10 rounded-lg">
+          <h1 class="text-2xl font-bold text-gray-800">تسجيل متجر جديد</h1>
+        </div>
+        <a href="dashboard.html" class="text-blue-600 hover:text-blue-800">
+          <i class="fas fa-arrow-right ml-2"></i>
+          العودة للوحة التحكم
+        </a>
+      </div>
+    </div>
+  </header>
+
+  <div class="container mx-auto px-4 py-8">
+    <div class="max-w-3xl mx-auto">
+      <!-- Store Registration Form -->
+      <div class="bg-white rounded-lg shadow-lg p-8">
+        <div class="text-center mb-8">
+          <div class="text-6xl mb-4 text-blue-600">
+            <i class="fas fa-store"></i>
+          </div>
+          <h2 class="text-2xl font-bold text-gray-800 mb-2">تسجيل متجر جديد</h2>
+          <p class="text-gray-600">أضف متجرك وابدأ في بيع المحتوى التعليمي</p>
+        </div>
+
+        <form id="storeForm" class="space-y-6">
+          <!-- Store Name -->
+          <div>
+            <label for="storeName" class="block mb-2 text-sm font-medium text-gray-700">
+              اسم المتجر <span class="text-red-500">*</span>
+            </label>
+            <input type="text" id="storeName" required 
+                   class="form-input w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                   placeholder="مثال: مكتبة الزهري التعليمية">
+            <p class="text-sm text-gray-500 mt-1">اختر اسماً مميزاً لمتجرك</p>
+          </div>
+
+          <!-- Store Description -->
+          <div>
+            <label for="storeDescription" class="block mb-2 text-sm font-medium text-gray-700">
+              وصف المتجر <span class="text-red-500">*</span>
+            </label>
+            <textarea id="storeDescription" rows="4" required 
+                      class="form-input w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                      placeholder="اكتب وصفاً مفصلاً عن متجرك والخدمات التي تقدمها..."></textarea>
+          </div>
+
+          <!-- Location -->
+          <div>
+            <label for="storeLocation" class="block mb-2 text-sm font-medium text-gray-700">
+              الموقع <span class="text-red-500">*</span>
+            </label>
+            <select id="storeLocation" required 
+                    class="form-input w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500">
+              <option value="">اختر المدينة/المنطقة...</option>
+              <option value="القاهرة">القاهرة</option>
+              <option value="الإسكندرية">الإسكندرية</option>
+              <option value="الجيزة">الجيزة</option>
+              <option value="المنصورة">المنصورة</option>
+              <option value="طنطا">طنطا</option>
+              <option value="أسيوط">أسيوط</option>
+              <option value="سوهاج">سوهاج</option>
+              <option value="قنا">قنا</option>
+              <option value="الأقصر">الأقصر</option>
+              <option value="أسوان">أسوان</option>
+              <option value="بورسعيد">بورسعيد</option>
+              <option value="السويس">السويس</option>
+              <option value="دمياط">دمياط</option>
+              <option value="الشرقية">الشرقية</option>
+              <option value="الغربية">الغربية</option>
+              <option value="كفر الشيخ">كفر الشيخ</option>
+              <option value="البحيرة">البحيرة</option>
+              <option value="المنوفية">المنوفية</option>
+              <option value="المنيا">المنيا</option>
+              <option value="بني سويف">بني سويف</option>
+              <option value="الفيوم">الفيوم</option>
+              <option value="أخرى">أخرى</option>
+            </select>
+          </div>
+
+          <!-- Contact Information -->
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+            <div>
+              <label for="contactEmail" class="block mb-2 text-sm font-medium text-gray-700">
+                البريد الإلكتروني للتواصل
+              </label>
+              <input type="email" id="contactEmail" 
+                     class="form-input w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                     placeholder="contact@store.com">
+            </div>
+            <div>
+              <label for="contactPhone" class="block mb-2 text-sm font-medium text-gray-700">
+                رقم الهاتف للتواصل
+              </label>
+              <input type="tel" id="contactPhone" 
+                     class="form-input w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                     placeholder="0 123 456 7890">
+            </div>
+          </div>
+
+          <!-- Website -->
+          <div>
+            <label for="websiteUrl" class="block mb-2 text-sm font-medium text-gray-700">
+              رابط الموقع الإلكتروني (اختياري)
+            </label>
+            <input type="url" id="websiteUrl" 
+                   class="form-input w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                   placeholder="https://www.yourstore.com">
+          </div>
+
+          <!-- Store Logo -->
+          <div>
+            <label for="storeLogo" class="block mb-2 text-sm font-medium text-gray-700">
+              شعار المتجر
+            </label>
+            <div class="flex items-center space-x-4 space-x-reverse">
+              <div id="logoPreview" class="w-20 h-20 bg-gray-100 rounded-lg flex items-center justify-center border-2 border-dashed border-gray-300">
+                <i class="fas fa-image text-gray-400 text-2xl"></i>
+              </div>
+              <div class="flex-1">
+                <input type="file" id="storeLogo" accept="image/*" 
+                       class="hidden" onchange="handleLogoChange(event)">
+                <button type="button" onclick="document.getElementById('storeLogo').click()" 
+                        class="bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 transition-colors">
+                  <i class="fas fa-upload ml-2"></i>
+                  اختيار الشعار
+                </button>
+                <p class="text-sm text-gray-500 mt-1">يفضل صورة مربعة بحجم 200×200 بكسل</p>
+              </div>
+            </div>
+          </div>
+
+          <!-- Store Banner -->
+          <div>
+            <label for="storeBanner" class="block mb-2 text-sm font-medium text-gray-700">
+              صورة الغلاف (اختياري)
+            </label>
+            <div class="flex items-center space-x-4 space-x-reverse">
+              <div id="bannerPreview" class="w-32 h-20 bg-gray-100 rounded-lg flex items-center justify-center border-2 border-dashed border-gray-300">
+                <i class="fas fa-image text-gray-400 text-xl"></i>
+              </div>
+              <div class="flex-1">
+                <input type="file" id="storeBanner" accept="image/*" 
+                       class="hidden" onchange="handleBannerChange(event)">
+                <button type="button" onclick="document.getElementById('storeBanner').click()" 
+                        class="bg-gray-600 text-white px-4 py-2 rounded-lg hover:bg-gray-700 transition-colors">
+                  <i class="fas fa-upload ml-2"></i>
+                  اختيار الصورة
+                </button>
+                <p class="text-sm text-gray-500 mt-1">يفضل صورة أفقية بحجم 800×200 بكسل</p>
+              </div>
+            </div>
+          </div>
+
+          <!-- Social Media Links -->
+          <div>
+            <label class="block mb-2 text-sm font-medium text-gray-700">
+              روابط وسائل التواصل الاجتماعي
+            </label>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+              <div>
+                <label for="facebookUrl" class="block mb-1 text-sm text-gray-600">فيسبوك</label>
+                <input type="url" id="facebookUrl" 
+                       class="form-input w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                       placeholder="https://facebook.com/yourstore">
+              </div>
+              <div>
+                <label for="twitterUrl" class="block mb-1 text-sm text-gray-600">تويتر</label>
+                <input type="url" id="twitterUrl" 
+                       class="form-input w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                       placeholder="https://twitter.com/yourstore">
+              </div>
+              <div>
+                <label for="instagramUrl" class="block mb-1 text-sm text-gray-600">إنستغرام</label>
+                <input type="url" id="instagramUrl" 
+                       class="form-input w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                       placeholder="https://instagram.com/yourstore">
+              </div>
+              <div>
+                <label for="linkedinUrl" class="block mb-1 text-sm text-gray-600">لينكد إن</label>
+                <input type="url" id="linkedinUrl" 
+                       class="form-input w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                       placeholder="https://linkedin.com/company/yourstore">
+              </div>
+            </div>
+          </div>
+
+          <!-- Terms and Conditions -->
+          <div class="bg-gray-50 p-4 rounded-lg">
+            <div class="flex items-start space-x-3 space-x-reverse">
+              <input type="checkbox" id="agreeTerms" required 
+                     class="mt-1 w-4 h-4 text-blue-600 border-gray-300 rounded focus:ring-blue-500">
+              <div>
+                <label for="agreeTerms" class="text-sm text-gray-700">
+                  أوافق على <a href="#" class="text-blue-600 hover:underline">شروط وأحكام</a> الموقع و
+                  <a href="#" class="text-blue-600 hover:underline">سياسة الخصوصية</a>
+                </label>
+                <p class="text-xs text-gray-500 mt-1">
+                  سيتم مراجعة طلبك من قبل الإدارة قبل الموافقة عليه
+                </p>
+              </div>
+            </div>
+          </div>
+
+          <!-- Submit Button -->
+          <div class="flex justify-end space-x-4 space-x-reverse">
+            <button type="button" onclick="window.location.href='dashboard.html'" 
+                    class="px-6 py-3 border border-gray-300 text-gray-700 rounded-lg hover:bg-gray-50 transition-colors">
+              <i class="fas fa-times ml-2"></i>
+              إلغاء
+            </button>
+            <button type="submit" id="submitBtn" 
+                    class="px-6 py-3 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors disabled:opacity-50 disabled:cursor-not-allowed">
+              <i class="fas fa-store ml-2"></i>
+              تسجيل المتجر
+            </button>
+          </div>
+        </form>
+      </div>
+
+      <!-- Messages -->
+      <div id="successMsg" class="hidden mt-4 p-4 bg-green-100 border border-green-400 text-green-700 rounded-lg flex items-center">
+        <i class="fas fa-check-circle ml-3 text-green-600"></i>
+        <span id="successMsgText"></span>
+      </div>
+      
+      <div id="errorMsg" class="hidden mt-4 p-4 bg-red-100 border border-red-400 text-red-700 rounded-lg flex items-center">
+        <i class="fas fa-exclamation-triangle ml-3 text-red-600"></i>
+        <span id="errorMsgText"></span>
+      </div>
+    </div>
+  </div>
+
+  <!-- Loading Overlay -->
+  <div id="loadingOverlay" class="hidden fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
+    <div class="bg-white rounded-lg p-8 text-center">
+      <div class="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600 mx-auto mb-4"></div>
+      <p class="text-gray-700">جاري تسجيل المتجر...</p>
+    </div>
+  </div>
+
+  <script>
+    // معالجة تغيير الشعار
+    function handleLogoChange(event) {
+      const file = event.target.files[0];
+      if (file) {
+        const reader = new FileReader();
+        reader.onload = function(e) {
+          const preview = document.getElementById('logoPreview');
+          preview.innerHTML = `<img src="${e.target.result}" class="w-full h-full object-cover rounded-lg">`;
+        };
+        reader.readAsDataURL(file);
+      }
+    }
+
+    // معالجة تغيير صورة الغلاف
+    function handleBannerChange(event) {
+      const file = event.target.files[0];
+      if (file) {
+        const reader = new FileReader();
+        reader.onload = function(e) {
+          const preview = document.getElementById('bannerPreview');
+          preview.innerHTML = `<img src="${e.target.result}" class="w-full h-full object-cover rounded-lg">`;
+        };
+        reader.readAsDataURL(file);
+      }
+    }
+  </script>
+</body>
+</html> 

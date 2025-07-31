@@ -1,0 +1,48 @@
+{
+  "name": "mashrou3y",
+  "version": "1.0.0",
+  "description": "منصة تعليمية متكاملة لبيع وشراء المواد الدراسية والمشاريع الجاهزة والعروض التقديمية",
+  "main": "index.js",
+  "scripts": {
+    "start": "python -m http.server 8000",
+    "dev": "python -m http.server 8000",
+    "build": "echo 'No build step required for static site'",
+    "test": "echo 'No tests specified'",
+    "lint": "echo 'No linting configured'",
+    "windows-start": "python -m http.server 8000",
+    "linux-start": "python3 -m http.server 8000",
+    "mac-start": "python3 -m http.server 8000"
+  },
+  "keywords": [
+    "education",
+    "marketplace",
+    "university",
+    "students",
+    "materials",
+    "projects",
+    "presentations",
+    "arabic",
+    "egypt"
+  ],
+  "author": "MASHROU3Y Team",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/mashrou3y/platform.git"
+  },
+  "bugs": {
+    "url": "https://github.com/mashrou3y/platform/issues"
+  },
+  "homepage": "https://mashrou3y.com",
+  "dependencies": {},
+  "devDependencies": {},
+  "engines": {
+    "node": ">=14.0.0",
+    "npm": ">=6.0.0"
+  },
+  "browserslist": [
+    "> 1%",
+    "last 2 versions",
+    "not dead"
+  ]
+} 

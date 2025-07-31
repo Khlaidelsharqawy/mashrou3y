@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>إنشاء حساب - MASHROU3Y</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@400;500;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <script src="https://accounts.google.com/gsi/client" async defer></script>
+  <style>
+    body { font-family: 'Tajawal', sans-serif; }
+    .text-gradient {
+      background: linear-gradient(90deg, #60a5fa, #a78bfa);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+    .signup-bg {
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    }
+    .card {
+      background-color: white;
+      border-radius: 1rem;
+      box-shadow: 0 20px 40px rgba(0,0,0,0.1);
+      border: 1px solid #f3f4f6;
+    }
+    .floating {
+      animation: floating 3s ease-in-out infinite;
+    }
+    @keyframes floating {
+      0%, 100% { transform: translateY(0px); }
+      50% { transform: translateY(-10px); }
+    }
+  </style>
+</head>
+<body class="signup-bg min-h-screen py-12 px-4 sm:px-6 lg:px-8">
+  <div class="max-w-4xl mx-auto">
+    <!-- Header -->
+    <div class="text-center mb-8">
+      <div class="floating mb-6">
+        <img src="../images/logo2.jpg" alt="شعار MASHROU3Y" class="mx-auto w-20 h-20 rounded-2xl shadow-2xl">
+      </div>
+      <h1 class="text-4xl font-bold text-white mb-2">كمّل بياناتك بسرعة وابدأ ✌️</h1>
+      <p class="text-white text-lg opacity-90">أول مرة هنا؟ خش خلينا نعرفك علينا 🎓</p>
+    </div>
+
+    <!-- Signup Form -->
+    <div class="card p-8">
+      <div class="text-center mb-4">
+        <h2 class="text-2xl font-bold text-gray-800 mb-2">الخطوة الأولى: تسجيل الدخول بجوجل</h2>
+        <p class="text-gray-600 mb-4">سجل دخولك بجوجل عشان نعرفك علينا</p>
+        <div id="google-signin-btn" class="mb-4"></div>
+        <p class="text-sm text-gray-500">
+          <i class="fas fa-shield-alt ml-1"></i> تسجيل دخول آمن عبر جوجل
+        </p>
+      </div>
+
+      <div id="profile-form-wrapper" class="hidden">
+        <h2 class="text-xl font-bold text-gray-700 mb-4">كمّل بيانات حسابك</h2>
+        <form id="profile-form" class="grid grid-cols-1 gap-4">
+          <input type="text" id="fullName" placeholder="الاسم الكامل" required class="border p-3 rounded">
+          <input type="tel" id="phone" placeholder="رقم الهاتف" required class="border p-3 rounded">
+          <input type="password" id="password" placeholder="كلمة المرور" required class="border p-3 rounded">
+
+          <select id="role" required class="border p-3 rounded">
+            <option value="">اختر نوع الحساب</option>
+            <option value="طالب">طالب</option>
+            <option value="فريلانسر">فريلانسر</option>
+            <option value="دكتور">دكتور</option>
+          </select>
+
+          <input type="text" id="location" placeholder="المحافظة / المدينة" required class="border p-3 rounded">
+          <input type="text" id="university" placeholder="اسم الجامعة" required class="border p-3 rounded">
+          <input type="text" id="college" placeholder="الكلية" required class="border p-3 rounded">
+          <input type="text" id="specialization" placeholder="التخصص" required class="border p-3 rounded">
+
+          <select id="isGraduate" required class="border p-3 rounded">
+            <option value="">هل أنت خريج؟</option>
+            <option value="false">لا</option>
+            <option value="true">نعم</option>
+          </select>
+
+          <select id="currentYear" class="border p-3 rounded hidden">
+            <option value="">السنة الدراسية</option>
+            <option value="1">أولى</option>
+            <option value="2">ثانية</option>
+            <option value="3">ثالثة</option>
+            <option value="4">رابعة</option>
+            <option value="5">خامسة</option>
+            <option value="6">سادسة</option>
+            <option value="7">سابعة</option>
+          </select>
+
+          <!-- Freelancer Specific -->
+          <textarea id="bio" class="border p-3 rounded hidden" placeholder="نبذة عنك"></textarea>
+          <input type="url" id="cvUrl" class="border p-3 rounded hidden" placeholder="رابط السيرة الذاتية">
+          <textarea id="projectSamples" class="border p-3 rounded hidden" placeholder="روابط أو وصف مشاريعك"></textarea>
+
+          <button type="submit" class="bg-blue-600 text-white py-2 rounded hover:bg-blue-700">إنشاء الحساب</button>
+        </form>
+      </div>
+
+      <div id="signup-error" class="hidden mt-4 text-center font-bold"></div>
+    </div>
+  </div>
+
+  <script src="../scripts/signup.js"></script>
+</body>
+</html>

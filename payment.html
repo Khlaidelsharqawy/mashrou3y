@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>الدفع - MASHROU3Y</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@400;500;700&display=swap" rel="stylesheet">
+  <script type="module" src="../scripts/payment.js" defer></script>
+  <script type="module" src="../scripts/auth-guard.js"></script>
+  <style>
+    body { font-family: 'Tajawal', sans-serif; }
+  </style>
+</head>
+<body class="bg-gray-100 min-h-screen flex items-center justify-center">
+  <div class="bg-white p-8 rounded-lg shadow-md w-full max-w-md">
+    <h1 class="text-2xl font-bold text-center mb-6">الدفع</h1>
+    <form id="paymentForm" class="space-y-4">
+      <div>
+        <label for="method" class="block mb-1 text-sm font-medium">اختر طريقة الدفع</label>
+        <select id="method" required class="w-full px-4 py-2 border rounded-lg">
+          <option value="instapay">InstaPay</option>
+          <option value="visa">Visa/MasterCard</option>
+          <option value="vodafone">Vodafone Cash</option>
+        </select>
+      </div>
+      <div id="instapayFields" class="hidden">
+        <label class="block mb-1 text-sm font-medium">رقم InstaPay للتحويل</label>
+        <div class="bg-gray-100 rounded px-4 py-2 font-bold text-lg text-blue-800 select-all mb-2">01040208528</div>
+        <label for="instapayReceipt" class="block mb-1 text-sm font-medium">إيصال التحويل أو كود العملية</label>
+        <input type="file" id="instapayReceipt" accept="image/*" class="w-full px-4 py-2 border rounded-lg mb-2">
+        <input type="text" id="instapayCode" placeholder="كود العملية (اختياري)" class="w-full px-4 py-2 border rounded-lg">
+      </div>
+      <div id="visaFields" class="hidden">
+        <label for="cardNumber" class="block mb-1 text-sm font-medium">رقم البطاقة</label>
+        <input type="text" id="cardNumber" maxlength="16" class="w-full px-4 py-2 border rounded-lg">
+        <div class="flex gap-2 mt-2">
+          <div class="w-1/2">
+            <label for="expDate" class="block mb-1 text-sm font-medium">تاريخ الانتهاء</label>
+            <input type="text" id="expDate" placeholder="MM/YY" maxlength="5" class="w-full px-4 py-2 border rounded-lg">
+          </div>
+          <div class="w-1/2">
+            <label for="cvv" class="block mb-1 text-sm font-medium">CVV</label>
+            <input type="text" id="cvv" maxlength="4" class="w-full px-4 py-2 border rounded-lg">
+          </div>
+        </div>
+      </div>
+      <div id="vodafoneFields" class="hidden">
+        <label class="block mb-1 text-sm font-medium">رقم فودافون كاش للتحويل</label>
+        <div class="bg-gray-100 rounded px-4 py-2 font-bold text-lg text-green-800 select-all mb-2">01040208528</div>
+        <label for="vodafoneReceipt" class="block mb-1 text-sm font-medium">إيصال التحويل أو كود العملية</label>
+        <input type="file" id="vodafoneReceipt" accept="image/*" class="w-full px-4 py-2 border rounded-lg mb-2">
+        <input type="text" id="vodafoneCode" placeholder="كود العملية (اختياري)" class="w-full px-4 py-2 border rounded-lg">
+      </div>
+      <button type="submit" id="payBtn" class="w-full bg-blue-600 text-white py-2 px-4 rounded-lg hover:bg-blue-700 transition flex items-center justify-center" title="إتمام الدفع">
+        <svg id="paySpinnerIcon" class="hidden animate-spin h-5 w-5 mr-2 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"><circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle><path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8v8z"></path></svg>
+        <span id="payBtnText">إتمام الدفع</span>
+      </button>
+    </form>
+    <div id="paymentMsg" class="mt-4 p-3 bg-green-100 border border-green-400 text-green-700 rounded hidden flex items-center">
+      <svg class="w-5 h-5 mr-2 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg>
+      <span id="paymentMsgText"></span>
+    </div>
+    <div id="paymentErrorMsg" class="mt-4 p-3 bg-red-100 border border-red-400 text-red-700 rounded hidden flex items-center">
+      <svg class="w-5 h-5 mr-2 text-red-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/></svg>
+      <span id="paymentErrorMsgText"></span>
+    </div>
+  </div>
+</body>
+</html> 

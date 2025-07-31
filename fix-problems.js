@@ -27,8 +27,8 @@ class ProblemFixer {
       // إصلاح مسارات CSS
       const cssLinks = document.querySelectorAll('link[rel="stylesheet"]');
       cssLinks.forEach(link => {
-        if (link.href.includes('/styles/') && !link.href.includes('')) {
-          link.href = link.href.replace('/styles/', 'styles/');
+        if (link.href.includes('/') && !link.href.includes('')) {
+          link.href = link.href.replace('/', '');
           this.fixes.push('تم إصلاح مسار CSS');
         }
       });
@@ -36,8 +36,8 @@ class ProblemFixer {
       // إصلاح مسارات الصور
       const images = document.querySelectorAll('img');
       images.forEach(img => {
-        if (img.src.includes('/images/') && !img.src.includes('')) {
-          img.src = img.src.replace('/images/', 'images/');
+        if (img.src.includes('/') && !img.src.includes('')) {
+          img.src = img.src.replace('/', '');
           this.fixes.push('تم إصلاح مسار الصورة');
         }
       });
@@ -45,8 +45,8 @@ class ProblemFixer {
       // إصلاح مسارات JavaScript
       const scripts = document.querySelectorAll('script[src]');
       scripts.forEach(script => {
-        if (script.src.includes('/scripts/') && !script.src.includes('')) {
-          script.src = script.src.replace('/scripts/', 'scripts/');
+        if (script.src.includes('/') && !script.src.includes('')) {
+          script.src = script.src.replace('/', '');
           this.fixes.push('تم إصلاح مسار JavaScript');
         }
       });
@@ -124,7 +124,7 @@ class ProblemFixer {
       images.forEach(img => {
         // إضافة معالج للأخطاء
         img.onerror = () => {
-          img.src = 'images/default-image.jpg';
+          img.src = 'default-image.jpg';
           this.fixes.push('تم إصلاح صورة مكسورة');
         };
 
@@ -163,9 +163,9 @@ class ProblemFixer {
     try {
       // إضافة preload للملفات المهمة
       const preloads = [
-        'images/logo2.jpg',
-        'images/logo3.jpg',
-        'styles/style.css'
+        'logo2.jpg',
+        'logo3.jpg',
+        'style.css'
       ];
 
       preloads.forEach(resource => {

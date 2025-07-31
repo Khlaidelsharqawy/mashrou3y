@@ -333,7 +333,7 @@ async function runNetworkDiagnostics(container) {
   }
 
   // Download Speed
-  const imageUrl = 'images/logo1.jpg'; // Use one of the existing images
+  const imageUrl = 'logo1.jpg'; // Use one of the existing images
   const imageSize = 130 * 1024; // Approx size of logo1.jpg in bytes (130 KB)
   const downloadStartTime = performance.now();
   try {
@@ -502,13 +502,13 @@ async function runFileCheckDiagnostics(container) {
 
   const files_to_check = [
     'index.html',
-    'scripts/main.js',
-    'styles/style.css',
-    'scripts/supabase-config.js',
-    'images/logo1.jpg',
-    'images/logo2.jpg',
-    'images/logo3.jpg',
-    'images/logo4.jpg',
+    'main.js',
+    'style.css',
+    'supabase-config.js',
+    'logo1.jpg',
+    'logo2.jpg',
+    'logo3.jpg',
+    'logo4.jpg',
   ];
 
   for (const file of files_to_check) {

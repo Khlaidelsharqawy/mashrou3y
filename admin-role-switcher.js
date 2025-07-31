@@ -143,7 +143,7 @@ class AdminRoleSwitcher {
     }
 
     if (userAvatar) {
-      userAvatar.src = this.currentUser?.user_metadata?.avatar_url || 'images/default-avatar.png';
+      userAvatar.src = this.currentUser?.user_metadata?.avatar_url || 'default-avatar.png';
     }
   }
 

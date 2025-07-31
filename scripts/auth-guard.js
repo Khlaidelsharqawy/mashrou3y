@@ -17,10 +17,10 @@ class AuthGuard {
       'chat.html'
     ];
     this.adminRoutes = [
-      '../admin-pages/admin-dashboard.html',
-      '../admin-pages/admin.html', 
-      '../admin-pages/admin-creators.html',
-      '../admin-pages/admin-stores.html'
+      'admin-pages/admin-dashboard.html',
+      'admin-pages/admin.html',
+      'admin-pages/admin-creators.html',
+      'admin-pages/admin-stores.html'
     ];
     this.init();
   }
@@ -141,7 +141,7 @@ class AuthGuard {
       if (!isAdmin) {
         this.showMessage('ليس لديك صلاحيات الأدمن', 'error');
         setTimeout(() => {
-          window.location.href = '../pages/index.html';
+          window.location.href = 'pages/index.html';
         }, 2000);
         return;
       }

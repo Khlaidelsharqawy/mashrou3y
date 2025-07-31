@@ -9,16 +9,16 @@
   <meta name="author" content="MASHROU3Y">
 
   <!-- Favicon -->
-  <link rel="icon" type="image/png" href="../images/logo2.jpg">
+  <link rel="icon" type="image/png" href="images/logo2.jpg">
 
   <!-- TailwindCSS & Fonts -->
   <script src="https://cdn.tailwindcss.com"></script>
   <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@400;500;700&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="../styles/style.css">
+  <link rel="stylesheet" href="styles/style.css">
   
   <!-- Preload Critical Assets -->
-  <link rel="preload" href="../images/logo2.jpg" as="image">
-  <link rel="preload" href="../images/logo3.jpg" as="image">
+  <link rel="preload" href="images/logo2.jpg" as="image">
+  <link rel="preload" href="images/logo3.jpg" as="image">
 
   <!-- Font Awesome for Icons -->
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
@@ -27,14 +27,14 @@
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 
   <!-- Main App Scripts -->
-  <script type="module" src="../scripts/main.js" defer></script>
-  <script type="module" src="../scripts/auth-guard.js" defer></script>
-  <script type="module" src="../scripts/translations.js" defer></script>
-  <script type="module" src="../scripts/theme.js" defer></script>
-  <script type="module" src="../scripts/utils.js" defer></script>
+  <script type="module" src="scripts/main.js" defer></script>
+  <script type="module" src="scripts/auth-guard.js" defer></script>
+  <script type="module" src="scripts/translations.js" defer></script>
+  <script type="module" src="scripts/theme.js" defer></script>
+  <script type="module" src="scripts/utils.js" defer></script>
   
   <!-- Problem Fixer -->
-  <script src="../fix-problems.js" defer></script>
+  <script src="fix-problems.js" defer></script>
 
   <style>
     body {
@@ -88,7 +88,7 @@
       background-color: rgba(255, 255, 255, 0.95);
     }
     .hero-background {
-      background-image: url('../images/logo3.jpg');
+      background-image: url('images/logo3.jpg');
       background-size: cover;
       background-position: center;
       background-attachment: fixed;
@@ -118,7 +118,7 @@
       <div class="flex items-center justify-between h-16">
         <!-- Logo -->
         <div class="flex items-center space-x-3 space-x-reverse">
-          <img src="../images/logo2.jpg" alt="شعار MASHROU3Y" class="w-12 h-12 rounded-lg">
+          <img src="images/logo2.jpg" alt="شعار MASHROU3Y" class="w-12 h-12 rounded-lg">
           <span class="text-2xl font-bold text-gradient">MASHROU3Y</span>
         </div>
         
@@ -155,7 +155,7 @@
     <div class="container mx-auto px-4 relative z-10">
       <div class="text-center max-w-4xl mx-auto">
         <div class="floating mb-8">
-          <img src="../images/logo2.jpg" alt="شعار MASHROU3Y" class="mx-auto w-32 h-32 rounded-2xl shadow-2xl">
+          <img src="images/logo2.jpg" alt="شعار MASHROU3Y" class="mx-auto w-32 h-32 rounded-2xl shadow-2xl">
         </div>
         <h1 class="text-5xl md:text-7xl font-bold mb-6">
           MASHROU3Y
@@ -304,7 +304,7 @@
         <!-- Company Info -->
         <div class="col-span-1 md:col-span-2">
           <div class="flex items-center space-x-3 space-x-reverse mb-4">
-            <img src="../images/logo2.jpg" alt="شعار MASHROU3Y" class="w-12 h-12 rounded-lg">
+            <img src="images/logo2.jpg" alt="شعار MASHROU3Y" class="w-12 h-12 rounded-lg">
             <span class="text-2xl font-bold text-gradient">MASHROU3Y</span>
           </div>
           <p class="text-gray-300 mb-4">
@@ -359,188 +359,8 @@
     </div>
   </footer>
 
-  <!-- Access Control Script -->
-  <script>
-    // تكوين Supabase باستخدام CDN
-    const supabaseUrl = 'https://ycomaasvlmnuscmkooti.supabase.co';
-    const supabaseAnonKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Inljb21hYXN2bG1udXNjbWtvb3RpIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTM4MDg3NjUsImV4cCI6MjA2OTM4NDc2NX0.8rm-tCGJtwWnMz2Z3TXm8WWAVruRvIgIOotsZKZ3zWA'; // ← استبدلها بالمفتاح الصحيح
-    const supabase = window.supabase.createClient(supabaseUrl, supabaseAnonKey);
-    
-    // دالة لفحص حالة تسجيل الدخول
-    async function checkAccess() {
-      try {
-        const { data: { session } } = await supabase.auth.getSession();
-        if (!session) {
-          // تغبيش أو تعطيل تفاصيل البطاقات
-          document.querySelectorAll('.card').forEach(card => {
-            card.style.filter = 'blur(2px)';
-            card.style.pointerEvents = 'none';
-            // إضافة رسالة ودية باللهجة المصرية
-            if (!card.querySelector('.locked-msg')) {
-              const msg = document.createElement('div');
-              msg.className = 'locked-msg text-center text-red-600 font-bold mt-4';
-              msg.innerHTML = 'استنى لما الأدمن يفتحلك الباب يا نجم 😅<br>سجل دخولك الأول عشان تشوف التفاصيل';
-              card.appendChild(msg);
-            }
-          });
-        } else {
-          // إزالة التغبيش إذا كان المستخدم مسجل دخول
-          document.querySelectorAll('.card').forEach(card => {
-            card.style.filter = '';
-            card.style.pointerEvents = '';
-            const msg = card.querySelector('.locked-msg');
-            if (msg) msg.remove();
-          });
-        }
-      } catch (error) {
-        console.error('خطأ في فحص حالة تسجيل الدخول:', error);
-      }
-    }
-    
-    // دالة معالجة النقر على البطاقات
-    window.handleCardClick = async function(category) {
-      console.log(`تم النقر على فئة: ${category}`);
-      
-      try {
-        // التحقق من تسجيل الدخول
-        const { data: { session } } = await supabase.auth.getSession();
-        
-        if (!session) {
-          // إظهار رسالة تسجيل الدخول
-          showMessage('محتاج تسجل دخول الأول يا نجم 😅', 'warning');
-          setTimeout(() => {
-            window.location.href = 'login.html';
-          }, 2000);
-          return;
-        }
-        
-        // التحقق من اكتمال الملف الشخصي
-        const { data: userProfile, error: profileError } = await supabase
-          .from('users')
-          .select('*')
-          .eq('email', session.user.email)
-          .single();
-        
-        if (profileError || !userProfile) {
-          showMessage('محتاج تكمل ملفك الشخصي الأول 😅', 'warning');
-          setTimeout(() => {
-            window.location.href = 'signup.html';
-          }, 2000);
-          return;
-        }
-        
-        if (!userProfile.is_approved) {
-          showMessage('حسابك قيد المراجعة، استنى الأدمن يوافق عليه 😅', 'info');
-          setTimeout(() => {
-            window.location.href = 'waiting-approval.html';
-          }, 2000);
-          return;
-        }
-        
-        // إعادة التوجيه للصفحة المطلوبة
-        switch(category) {
-          case 'materials':
-            window.location.href = 'materials.html';
-            break;
-          case 'projects':
-            window.location.href = 'projects.html';
-            break;
-          case 'presentations':
-            window.location.href = 'presentations.html';
-            break;
-          case 'store':
-            window.location.href = 'stores.html';
-            break;
-          default:
-            console.log('فئة غير معروفة:', category);
-        }
-      } catch (error) {
-        console.error('خطأ في معالجة النقر:', error);
-        showMessage('في مشكلة، جرب تاني 😅', 'error');
-      }
-    };
-    
-    // دالة إظهار الرسائل
-    function showMessage(message, type = 'info') {
-      const messageDiv = document.createElement('div');
-      messageDiv.className = `fixed top-4 right-4 z-50 p-4 rounded-lg shadow-lg ${
-        type === 'error' ? 'bg-red-500 text-white' :
-        type === 'warning' ? 'bg-yellow-500 text-white' :
-        type === 'success' ? 'bg-green-500 text-white' :
-        'bg-blue-500 text-white'
-      }`;
-      messageDiv.textContent = message;
-      document.body.appendChild(messageDiv);
-      
-      setTimeout(() => {
-        messageDiv.remove();
-      }, 3000);
-    }
-    
-    // تهيئة عند تحميل الصفحة
-    document.addEventListener('DOMContentLoaded', function() {
-      checkAccess();
-      // تحديث عند تغيير حالة الجلسة
-      supabase.auth.onAuthStateChange(checkAccess);
-      
-      // تهيئة نظام الترجمة
-      if (window.Translations) {
-        window.Translations.init();
-      }
-      
-      // تهيئة نظام الثيمات
-      if (window.themeManager) {
-        // التأكد من تطبيق الثيم الصحيح
-        window.themeManager.applyTheme(window.themeManager.getCurrentTheme());
-      }
-      
-      // إضافة مستمعي الأحداث لأزرار التبديل
-      const languageToggle = document.getElementById('language-toggle');
-      const themeToggle = document.getElementById('theme-toggle');
-      
-      if (languageToggle) {
-        languageToggle.addEventListener('click', () => {
-          if (window.Translations) {
-            const currentLang = window.Translations.getCurrentLanguage();
-            const newLang = currentLang === 'ar' ? 'en' : 'ar';
-            window.Translations.change(newLang);
-            
-            // تحديث نص زر اللغة
-            const langText = languageToggle.querySelector('span');
-            if (langText) {
-              langText.textContent = newLang === 'ar' ? 'العربية' : 'English';
-            }
-            
-            // تحديث اتجاه الصفحة
-            document.documentElement.dir = newLang === 'ar' ? 'rtl' : 'ltr';
-            
-            // تحديث اتجاه العناصر
-            document.documentElement.lang = newLang;
-          }
-        });
-      }
-      
-      if (themeToggle) {
-        themeToggle.addEventListener('click', () => {
-          if (window.themeManager) {
-            window.themeManager.toggleTheme();
-            
-            // تحديث نص زر الثيم
-            const themeText = themeToggle.querySelector('span');
-            if (themeText) {
-              const currentTheme = window.themeManager.getCurrentTheme();
-              const currentLang = window.Translations ? window.Translations.getCurrentLanguage() : 'ar';
-              if (currentLang === 'ar') {
-                themeText.textContent = currentTheme === 'light' ? 'فاتح' : 'داكن';
-              } else {
-                themeText.textContent = currentTheme === 'light' ? 'Light' : 'Dark';
-              }
-            }
-          }
-        });
-      }
-    });
-  </script>
+  <!-- Page-specific Logic -->
+  <script type="module" src="scripts/index-logic.js" defer></script>
 </body>
 </html>
 

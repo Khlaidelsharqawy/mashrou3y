@@ -67,57 +67,7 @@
     </div>
   </div>
 
-  <script>
-    const supabaseUrl = 'https://ycomaasvlmnuscmkooti.supabase.co';
-    const supabaseAnonKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Inljb21hYXN2bG1udXNjbWtvb3RpIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTM4MDg3NjUsImV4cCI6MjA2OTM4NDc2NX0.8rm-tCGJtwWnMz2Z3TXm8WWAVruRvIgIOotsZKZ3zWA'; // Replace with full key
-    const supabase = window.supabase.createClient(supabaseUrl, supabaseAnonKey);
-
-    const loginForm = document.getElementById('loginForm');
-    const message = document.getElementById('message');
-    const googleLogin = document.getElementById('googleLogin');
-
-    loginForm.addEventListener('submit', async (e) => {
-      e.preventDefault();
-      const email = document.getElementById('email').value;
-      const password = document.getElementById('password').value;
-
-      try {
-        const { data, error } = await supabase.auth.signInWithPassword({ email, password });
-
-        if (error) {
-          message.textContent = 'خطأ في البيانات. جرب تاني.';
-          message.style.color = '#fca5a5';
-          return;
-        }
-
-        if (data.user) {
-          message.textContent = 'تم تسجيل الدخول بنجاح! جاري التوجيه...';
-          message.style.color = '#86efac';
-          
-          // انتظار قليل ثم التوجيه
-          setTimeout(() => {
-            window.location.href = 'dashboard.html';
-          }, 1000);
-        }
-      } catch (error) {
-        message.textContent = 'حدث خطأ غير متوقع. جرب تاني.';
-        message.style.color = '#fca5a5';
-        console.error('Login error:', error);
-      }
-    });
-
-    googleLogin.addEventListener('click', async () => {
-      const { data, error } = await supabase.auth.signInWithOAuth({
-        provider: 'google',
-        options: {
-          redirectTo: window.location.origin + '/dashboard.html'
-        }
-      });
-      if (error) {
-        message.textContent = 'تعذر تسجيل الدخول بجوجل';
-        console.error(error);
-      }
-    });
-  </script>
+  <script type="module" src="scripts/auth.js" defer></script>
+  <script type="module" src="scripts/login-page.js" defer></script>
 </body>
 </html>

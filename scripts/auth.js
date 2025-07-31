@@ -20,6 +20,18 @@ class AuthManager {
     this.session = null;
     this.loginAttempts = 0;
     this.lockoutUntil = null;
+    this.protectedRoutes = [
+      'dashboard.html',
+      'upload.html',
+      'profile.html',
+      'materials.html',
+      'projects.html',
+      'presentations.html',
+      'store.html',
+      'payment.html',
+      'chat.html',
+      'owner-diagnostics.html'
+    ];
     this.init();
   }
 
@@ -39,7 +51,7 @@ class AuthManager {
         console.log('Auth state changed:', event, session);
         
         if (event === 'SIGNED_IN') {
-          this.handleSignIn(session);
+          await this.handleSignIn(session);
         } else if (event === 'SIGNED_OUT') {
           this.handleSignOut();
         } else if (event === 'TOKEN_REFRESHED') {
@@ -47,25 +59,68 @@ class AuthManager {
         }
       });
 
+      // Protect the current page on load
+      this.protectCurrentPage();
+
     } catch (error) {
       console.error('Auth manager init error:', error);
     }
   }
 
   // معالجة تسجيل الدخول
-  handleSignIn(session) {
+  async handleSignIn(session) {
     this.session = session;
     this.currentUser = session.user;
     this.loginAttempts = 0;
     this.lockoutUntil = null;
     this.startSessionMonitoring();
     
-    // حفظ بيانات المستخدم في localStorage
     localStorage.setItem('user', JSON.stringify(session.user));
     localStorage.setItem('session', JSON.stringify(session));
     
-    // إرسال حدث تسجيل الدخول
+    await this.handleRedirect();
+
     window.dispatchEvent(new CustomEvent('userSignedIn', { detail: session.user }));
+  }
+
+  getCurrentPage() {
+    return window.location.pathname.split('/').pop() || 'index.html';
+  }
+
+  async protectCurrentPage() {
+    const currentPage = this.getCurrentPage();
+    if (this.protectedRoutes.includes(currentPage)) {
+      if (!this.isAuthenticated()) {
+        window.location.href = 'login.html';
+        return;
+      }
+      const userProfile = await this.getUserProfile();
+      if (userProfile && !userProfile.is_approved) {
+        this.redirectToWaitingApproval();
+        return;
+      }
+    }
+  }
+
+  async handleRedirect() {
+    const userProfile = await this.getUserProfile();
+    if (userProfile && !userProfile.is_approved) {
+        this.redirectToWaitingApproval();
+    } else {
+        // Redirect to dashboard only if not already there or on a non-protected page
+        const currentPage = window.location.pathname.split('/').pop();
+        if (currentPage !== 'dashboard.html' && !this.protectedRoutes.includes(currentPage)) {
+             this.redirectToDashboard();
+        }
+    }
+  }
+
+  redirectToDashboard() {
+    window.location.href = 'dashboard.html';
+  }
+
+  redirectToWaitingApproval() {
+    window.location.href = 'waiting-approval.html';
   }
 
   // معالجة تسجيل الخروج

@@ -1,0 +1,344 @@
+/* أنماط الهيدر الموحد - Unified Header Styles */
+
+/* Header Base Styles */
+.header-btn {
+  @apply flex items-center space-x-2 space-x-reverse px-3 py-2 rounded-lg 
+         text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-800 
+         transition-all duration-200 text-sm font-medium;
+}
+
+.header-btn:hover {
+  @apply transform scale-105;
+}
+
+/* Navigation Links */
+.nav-link {
+  @apply relative px-4 py-2 text-gray-700 dark:text-gray-300 hover:text-blue-600 
+         dark:hover:text-blue-400 transition-colors duration-200 font-medium;
+}
+
+.nav-link::after {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  left: 50%;
+  width: 0;
+  height: 2px;
+  background: linear-gradient(90deg, #3b82f6, #8b5cf6);
+  transition: all 0.3s ease;
+  transform: translateX(-50%);
+}
+
+.nav-link:hover::after {
+  width: 100%;
+}
+
+.nav-link.active::after {
+  width: 100%;
+}
+
+/* Mobile Navigation */
+.mobile-nav-link {
+  @apply block px-4 py-3 text-gray-700 dark:text-gray-300 hover:text-blue-600 
+         dark:hover:text-blue-400 hover:bg-gray-50 dark:hover:bg-gray-800 
+         transition-colors duration-200 rounded-lg mx-2;
+}
+
+/* Buttons */
+.btn-primary {
+  @apply inline-flex items-center space-x-2 space-x-reverse px-4 py-2 
+         bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700
+         text-white font-medium rounded-lg transition-all duration-200 
+         transform hover:scale-105 hover:shadow-lg;
+}
+
+.btn-outline {
+  @apply inline-flex items-center space-x-2 space-x-reverse px-4 py-2 
+         border-2 border-blue-600 text-blue-600 dark:text-blue-400 dark:border-blue-400
+         hover:bg-blue-600 hover:text-white dark:hover:bg-blue-400 dark:hover:text-gray-900
+         font-medium rounded-lg transition-all duration-200 
+         transform hover:scale-105;
+}
+
+/* Dropdown Menu */
+.dropdown-item {
+  @apply flex items-center space-x-3 space-x-reverse px-4 py-3 
+         text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-700
+         transition-colors duration-200;
+}
+
+.dropdown-item i {
+  @apply w-4 h-4 text-gray-500 dark:text-gray-400;
+}
+
+/* Form Inputs */
+.form-input {
+  @apply px-4 py-3 border border-gray-300 dark:border-gray-600 
+         rounded-lg bg-white dark:bg-gray-700 
+         text-gray-900 dark:text-white
+         placeholder-gray-500 dark:placeholder-gray-400
+         focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent
+         transition-all duration-200;
+}
+
+.form-input:focus {
+  @apply transform scale-105;
+}
+
+/* Modal Animations */
+@keyframes modalSlideIn {
+  from {
+    opacity: 0;
+    transform: scale(0.95) translateY(-10px);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1) translateY(0);
+  }
+}
+
+@keyframes modalSlideOut {
+  from {
+    opacity: 1;
+    transform: scale(1) translateY(0);
+  }
+  to {
+    opacity: 0;
+    transform: scale(0.95) translateY(-10px);
+  }
+}
+
+#contact-modal:not(.hidden) > div {
+  animation: modalSlideIn 0.3s ease-out;
+}
+
+/* Toast Notifications */
+#notification-toast {
+  min-width: 300px;
+}
+
+#notification-toast.translate-x-0 {
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+}
+
+/* Dark Mode Adjustments */
+.dark .navbar {
+  backdrop-filter: blur(16px);
+}
+
+/* Mobile Responsive */
+@media (max-width: 768px) {
+  .header-btn span {
+    @apply hidden;
+  }
+  
+  .btn-primary,
+  .btn-outline {
+    @apply px-3 py-2 text-sm;
+  }
+  
+  .nav-link {
+    @apply px-3 py-2;
+  }
+  
+  #notification-toast {
+    @apply right-2 left-2 top-16;
+    min-width: auto;
+  }
+}
+
+/* Loading States */
+.loading {
+  @apply opacity-50 pointer-events-none;
+}
+
+.loading::after {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 20px;
+  height: 20px;
+  margin: -10px 0 0 -10px;
+  border: 2px solid #3b82f6;
+  border-top: 2px solid transparent;
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+/* Focus States for Accessibility */
+.header-btn:focus,
+.nav-link:focus,
+.btn-primary:focus,
+.btn-outline:focus,
+.dropdown-item:focus {
+  @apply outline-none ring-2 ring-blue-500 ring-offset-2 dark:ring-offset-gray-900;
+}
+
+/* High Contrast Mode Support */
+@media (prefers-contrast: high) {
+  .nav-link::after {
+    background: currentColor;
+  }
+  
+  .btn-primary {
+    @apply bg-blue-700 border-2 border-blue-800;
+  }
+  
+  .btn-outline {
+    @apply border-2;
+  }
+}
+
+/* Reduced Motion Support */
+@media (prefers-reduced-motion: reduce) {
+  * {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+  
+  .floating {
+    animation: none;
+  }
+}
+
+/* Print Styles */
+@media print {
+  nav,
+  #contact-modal,
+  #notification-toast {
+    display: none !important;
+  }
+  
+  body {
+    padding-top: 0 !important;
+  }
+}
+
+/* Container Max Width */
+.container {
+  max-width: 1200px;
+}
+
+/* Custom Scrollbar for Dropdown */
+.dropdown-item::-webkit-scrollbar {
+  width: 4px;
+}
+
+.dropdown-item::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.dropdown-item::-webkit-scrollbar-thumb {
+  background: #d1d5db;
+  border-radius: 4px;
+}
+
+.dark .dropdown-item::-webkit-scrollbar-thumb {
+  background: #4b5563;
+}
+
+/* Avatar Image Styles */
+#user-avatar {
+  @apply object-cover border-2 border-gray-200 dark:border-gray-600;
+}
+
+/* Language Direction Specific Styles */
+[dir="rtl"] .space-x-reverse {
+  flex-direction: row-reverse;
+}
+
+[dir="rtl"] .space-x-reverse > * + * {
+  margin-right: 0.75rem;
+  margin-left: 0;
+}
+
+[dir="ltr"] .space-x-reverse {
+  flex-direction: row;
+}
+
+[dir="ltr"] .space-x-reverse > * + * {
+  margin-left: 0.75rem;
+  margin-right: 0;
+}
+
+/* Backdrop Blur Support */
+@supports (backdrop-filter: blur(10px)) {
+  nav {
+    backdrop-filter: blur(16px);
+  }
+}
+
+@supports not (backdrop-filter: blur(10px)) {
+  nav {
+    background-color: rgba(255, 255, 255, 0.98);
+  }
+  
+  .dark nav {
+    background-color: rgba(17, 24, 39, 0.98);
+  }
+}
+
+/* Logo Animation on Hover */
+nav img:hover {
+  @apply transform rotate-12 scale-110;
+  transition: transform 0.3s ease;
+}
+
+/* Gradient Text Animation */
+.text-gradient {
+  background-size: 200% 200%;
+  animation: gradientShift 3s ease infinite;
+}
+
+@keyframes gradientShift {
+  0% {
+    background-position: 0% 50%;
+  }
+  50% {
+    background-position: 100% 50%;
+  }
+  100% {
+    background-position: 0% 50%;
+  }
+}
+
+/* Contact Form Enhancements */
+#contact-form input:focus,
+#contact-form textarea:focus {
+  @apply ring-2 ring-blue-500 border-blue-500;
+}
+
+#contact-form input:valid,
+#contact-form textarea:valid {
+  @apply border-green-500;
+}
+
+#contact-form input:invalid:not(:focus),
+#contact-form textarea:invalid:not(:focus) {
+  @apply border-red-500;
+}
+
+/* Success States */
+.success {
+  @apply border-green-500 bg-green-50 dark:bg-green-900/20;
+}
+
+.error {
+  @apply border-red-500 bg-red-50 dark:bg-red-900/20;
+}
+
+/* Hover Effects */
+.hover-lift {
+  @apply transition-transform duration-200;
+}
+
+.hover-lift:hover {
+  @apply transform -translate-y-1;
+}

@@ -9,16 +9,17 @@
   <meta name="author" content="MASHROU3Y">
 
   <!-- Favicon -->
-  <link rel="icon" type="image/png" href="../images/logo2.jpg">
+  <link rel="icon" type="image/png" href="logo2.jpg">
 
   <!-- TailwindCSS & Fonts -->
   <script src="https://cdn.tailwindcss.com"></script>
   <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@400;500;700&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="../styles/style.css">
+  <link rel="stylesheet" href="style.css">
+  <link rel="stylesheet" href="components/header.css">
   
   <!-- Preload Critical Assets -->
-  <link rel="preload" href="../images/logo2.jpg" as="image">
-  <link rel="preload" href="../images/logo3.jpg" as="image">
+  <link rel="preload" href="logo2.jpg" as="image">
+  <link rel="preload" href="logo3.jpg" as="image">
 
   <!-- Font Awesome for Icons -->
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
@@ -27,519 +28,613 @@
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 
   <!-- Main App Scripts -->
-  <script type="module" src="../scripts/main.js" defer></script>
-  <script type="module" src="../scripts/auth-guard.js" defer></script>
-  <script type="module" src="../scripts/translations.js" defer></script>
-  <script type="module" src="../scripts/theme.js" defer></script>
-  <script type="module" src="../scripts/utils.js" defer></script>
+  <script type="module" src="main.js" defer></script>
+  <script type="module" src="auth-guard.js" defer></script>
+  <script type="module" src="translations.js" defer></script>
+  <script type="module" src="theme.js" defer></script>
+  <script type="module" src="utils.js" defer></script>
+  <script type="module" src="supabase-config.js" defer></script>
+  <script type="module" src="components/header.js" defer></script>
   
   <!-- Problem Fixer -->
-  <script src="../fix-problems.js" defer></script>
+  <script src="fix-problems.js" defer></script>
 
   <style>
     body {
       font-family: 'Tajawal', sans-serif;
       scroll-behavior: smooth;
     }
-    .gradient-bg {
-      background: linear-gradient(135deg, #4f46e5, #7c3aed);
-    }
-    .text-gradient {
-      background: linear-gradient(90deg, #60a5fa, #a78bfa);
-      -webkit-background-clip: text;
-      -webkit-text-fill-color: transparent;
-    }
-    .btn-primary {
-      background-color: #6366f1;
-      color: white;
-      border-radius: 0.5rem;
-      padding: 0.75rem 2rem;
-      transition: all 0.3s;
-    }
-    .btn-primary:hover {
-      background-color: #4338ca;
-      transform: translateY(-2px);
-    }
-    .btn-outline {
-      border: 2px solid #6366f1;
-      color: #6366f1;
-      border-radius: 0.5rem;
-      padding: 0.75rem 2rem;
-      transition: all 0.3s;
-    }
-    .btn-outline:hover {
-      background-color: #6366f1;
-      color: white;
-      transform: translateY(-2px);
-    }
-    .card {
-      background-color: white;
-      border-radius: 1rem;
-      box-shadow: 0 10px 25px rgba(0,0,0,0.05);
-      transition: transform 0.3s ease, box-shadow 0.3s ease;
-      border: 1px solid #f3f4f6;
-    }
-    .card:hover {
-      transform: translateY(-8px);
-      box-shadow: 0 20px 40px rgba(0,0,0,0.1);
-    }
-    .navbar {
-      backdrop-filter: blur(10px);
-      background-color: rgba(255, 255, 255, 0.95);
-    }
-    .hero-background {
-      background-image: url('../images/logo3.jpg');
-      background-size: cover;
-      background-position: center;
-      background-attachment: fixed;
+    
+    .hero-section {
+      background: linear-gradient(135deg, rgba(102, 126, 234, 0.9), rgba(118, 75, 162, 0.9)), 
+                  url('logo3.jpg') center/cover;
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
       position: relative;
     }
-    .hero-overlay {
-      background: rgba(0, 0, 0, 0.7);
+    
+    .hero-section::before {
+      content: '';
       position: absolute;
       top: 0;
       left: 0;
       right: 0;
       bottom: 0;
+      background: linear-gradient(135deg, rgba(102, 126, 234, 0.8), rgba(118, 75, 162, 0.8));
+      z-index: 1;
     }
+    
+    .hero-content {
+      position: relative;
+      z-index: 2;
+    }
+    
+    .gradient-text {
+      background: linear-gradient(90deg, #60a5fa, #a78bfa);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+    
+    .card {
+      background-color: white;
+      border-radius: 1rem;
+      box-shadow: 0 10px 25px rgba(0,0,0,0.05);
+      transition: all 0.3s ease;
+      border: 1px solid #f3f4f6;
+    }
+    
+    .card:hover {
+      transform: translateY(-8px);
+      box-shadow: 0 20px 40px rgba(0,0,0,0.1);
+    }
+    
     .floating {
       animation: floating 3s ease-in-out infinite;
     }
+    
     @keyframes floating {
       0%, 100% { transform: translateY(0px); }
       50% { transform: translateY(-10px); }
     }
+    
+    .category-icon {
+      background: linear-gradient(135deg, #667eea, #764ba2);
+      color: white;
+      width: 4rem;
+      height: 4rem;
+      border-radius: 1rem;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.5rem;
+      margin-bottom: 1rem;
+      transition: all 0.3s ease;
+    }
+    
+    .category-card:hover .category-icon {
+      transform: scale(1.1) rotate(5deg);
+    }
+    
+    .stats-card {
+      background: rgba(255, 255, 255, 0.1);
+      backdrop-filter: blur(10px);
+      border: 1px solid rgba(255, 255, 255, 0.2);
+      border-radius: 1rem;
+      padding: 2rem;
+      text-align: center;
+      color: white;
+    }
+    
+    .feature-card {
+      background: white;
+      border-radius: 1rem;
+      padding: 2rem;
+      text-align: center;
+      box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+      transition: all 0.3s ease;
+    }
+    
+    .feature-card:hover {
+      transform: translateY(-4px);
+      box-shadow: 0 8px 15px rgba(0, 0, 0, 0.1);
+    }
+    
+    .wave-section {
+      position: relative;
+      background: #f8fafc;
+    }
+    
+    .wave-section::before {
+      content: '';
+      position: absolute;
+      top: -2px;
+      left: 0;
+      width: 100%;
+      height: 100px;
+      background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 1200 120'%3E%3Cpath d='M321.39,56.44c58-10.79,114.16-30.13,172-41.86,82.39-16.72,168.19-17.73,250.45-.39C823.78,31,906.67,72,985.66,92.83c70.05,18.48,146.53,26.09,214.34,3V0H0V27.35A600.21,600.21,0,0,0,321.39,56.44Z' fill='%23667eea'%3E%3C/path%3E%3C/svg%3E") no-repeat center top;
+      background-size: cover;
+    }
+    
+    .testimonial-card {
+      background: white;
+      border-radius: 1rem;
+      padding: 2rem;
+      text-align: center;
+      box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+      position: relative;
+    }
+    
+    .testimonial-card::before {
+      content: '"';
+      position: absolute;
+      top: -10px;
+      left: 20px;
+      font-size: 4rem;
+      color: #667eea;
+      font-weight: bold;
+    }
+    
+    .cta-section {
+      background: linear-gradient(135deg, #667eea, #764ba2);
+      color: white;
+    }
+    
+    .btn-primary {
+      background: linear-gradient(135deg, #667eea, #764ba2);
+      color: white;
+      padding: 1rem 2rem;
+      border-radius: 0.5rem;
+      text-decoration: none;
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      transition: all 0.3s ease;
+      border: none;
+      font-weight: 600;
+    }
+    
+    .btn-primary:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 8px 25px rgba(102, 126, 234, 0.4);
+    }
+    
+    .btn-outline {
+      border: 2px solid #667eea;
+      color: #667eea;
+      padding: 1rem 2rem;
+      border-radius: 0.5rem;
+      text-decoration: none;
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      transition: all 0.3s ease;
+      background: transparent;
+      font-weight: 600;
+    }
+    
+    .btn-outline:hover {
+      background: #667eea;
+      color: white;
+      transform: translateY(-2px);
+    }
+    
+    .footer {
+      background: #1f2937;
+      color: white;
+    }
+    
+    /* Responsive */
+    @media (max-width: 768px) {
+      .hero-section {
+        min-height: 80vh;
+        text-align: center;
+      }
+      
+      .card {
+        margin-bottom: 1rem;
+      }
+    }
   </style>
 </head>
 <body class="bg-gray-50">
-  <!-- Sticky Navbar -->
-  <nav class="navbar fixed top-0 left-0 right-0 z-50 border-b border-gray-200">
-    <div class="container mx-auto px-4">
-      <div class="flex items-center justify-between h-16">
-        <!-- Logo -->
-        <div class="flex items-center space-x-3 space-x-reverse">
-          <img src="../images/logo2.jpg" alt="شعار MASHROU3Y" class="w-12 h-12 rounded-lg">
-          <span class="text-2xl font-bold text-gradient">MASHROU3Y</span>
+  <!-- Hero Section -->
+  <section class="hero-section">
+    <div class="hero-content container mx-auto px-4">
+      <div class="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
+        <!-- Hero Text -->
+        <div class="text-white">
+          <h1 class="text-5xl lg:text-6xl font-bold mb-6">
+            <span class="gradient-text">MASHROU3Y</span>
+            <span class="block text-3xl lg:text-4xl mt-2" data-translate="hero_subtitle">منصتك التعليمية للمواد والمشاريع والعروض</span>
+          </h1>
+          
+          <p class="text-xl lg:text-2xl text-white/90 mb-8 leading-relaxed" data-translate="hero_description">
+            منصة تعليمية متكاملة تجمع كل ما تحتاجه في مكان واحد
+          </p>
+          
+          <div class="flex flex-col sm:flex-row gap-4">
+            <a href="signup.html" class="btn-primary text-lg">
+              <i class="fas fa-rocket"></i>
+              <span data-translate="start_now">ابدأ الآن</span>
+            </a>
+            <a href="materials.html" class="btn-outline text-lg">
+              <i class="fas fa-eye"></i>
+              <span data-translate="view_content">شوف المحتوى</span>
+            </a>
+          </div>
+          
+          <!-- Stats -->
+          <div class="grid grid-cols-3 gap-4 mt-12">
+            <div class="stats-card">
+              <div class="text-3xl font-bold">1000+</div>
+              <div class="text-sm" data-translate="students">طالب</div>
+            </div>
+            <div class="stats-card">
+              <div class="text-3xl font-bold">500+</div>
+              <div class="text-sm" data-translate="materials">مادة</div>
+            </div>
+            <div class="stats-card">
+              <div class="text-3xl font-bold">300+</div>
+              <div class="text-sm" data-translate="projects">مشروع</div>
+            </div>
+          </div>
         </div>
         
-        <!-- Navigation Buttons -->
-        <div class="flex items-center space-x-4 space-x-reverse">
-          <!-- Language Toggle -->
-          <button id="language-toggle" data-language-toggle class="bg-white/10 hover:bg-white/20 text-white px-3 py-2 rounded-lg transition-all duration-200 flex items-center space-x-2 space-x-reverse">
-            <i class="fas fa-globe"></i>
-            <span class="text-sm font-medium" data-translate="arabic">العربية</span>
-          </button>
-          
-          <!-- Theme Toggle -->
-          <button id="theme-toggle" data-theme-toggle class="bg-white/10 hover:bg-white/20 text-white px-3 py-2 rounded-lg transition-all duration-200 flex items-center space-x-2 space-x-reverse">
-            <i class="fas fa-sun" data-theme-icon></i>
-            <span class="text-sm font-medium" data-translate="light">فاتح</span>
-          </button>
-          
-          <a href="login.html" class="btn-outline text-sm">
-            <i class="fas fa-sign-in-alt ml-2"></i>
-            <span data-translate="login">تسجيل الدخول</span>
-          </a>
-          <a href="signup.html" class="btn-primary text-sm">
-            <i class="fas fa-user-plus ml-2"></i>
-            <span data-translate="signup">حسابي</span>
-          </a>
+        <!-- Hero Image -->
+        <div class="floating">
+          <img src="logo3.jpg" alt="MASHROU3Y Platform" class="w-full max-w-lg mx-auto rounded-2xl shadow-2xl">
         </div>
       </div>
     </div>
-  </nav>
-
-  <!-- Hero Section -->
-  <section class="hero-background text-white pt-24 pb-20 relative overflow-hidden">
-    <div class="hero-overlay"></div>
-    <div class="container mx-auto px-4 relative z-10">
-      <div class="text-center max-w-4xl mx-auto">
-        <div class="floating mb-8">
-          <img src="../images/logo2.jpg" alt="شعار MASHROU3Y" class="mx-auto w-32 h-32 rounded-2xl shadow-2xl">
-        </div>
-        <h1 class="text-5xl md:text-7xl font-bold mb-6">
-          MASHROU3Y
-          <span class="text-yellow-300" data-translate="hero_subtitle">- منصتك التعليمية للمواد والمشاريع والعروض</span>
-          <span class="text-4xl md:text-6xl">🎓</span>
-        </h1>
-        <p class="text-xl md:text-2xl mb-8 opacity-90" data-translate="hero_description">
-          منصة تعليمية متكاملة تجمع كل ما تحتاجه في مكان واحد
-        </p>
-        <div class="flex flex-col sm:flex-row justify-center gap-4">
-          <a href="#categories" class="btn-primary text-lg bg-white text-purple-600 hover:bg-gray-100">
-            <i class="fas fa-rocket ml-2"></i>
-            <span data-translate="start_now">ابدأ الآن</span>
-          </a>
-          <a href="login.html" class="btn-outline text-lg border-white text-white hover:bg-white hover:text-purple-600">
-            <i class="fas fa-play ml-2"></i>
-            <span data-translate="view_content">شوف المحتوى</span>
-          </a>
-        </div>
-      </div>
-    </div>
-    
-    <!-- Decorative Elements -->
-    <div class="absolute top-20 left-10 text-4xl opacity-20">📚</div>
-    <div class="absolute top-32 right-20 text-3xl opacity-20">💻</div>
-    <div class="absolute bottom-20 left-20 text-3xl opacity-20">🎯</div>
-    <div class="absolute bottom-32 right-10 text-4xl opacity-20">🚀</div>
   </section>
 
   <!-- Categories Section -->
-  <section id="categories" class="py-20 bg-white">
+  <section class="wave-section py-20">
     <div class="container mx-auto px-4">
       <div class="text-center mb-16">
-        <h2 class="text-4xl md:text-5xl font-bold text-gray-800 mb-4" data-translate="categories_title">
+        <h2 class="text-4xl font-bold text-gray-800 mb-4" data-translate="categories_title">
           خد اللي محتاجه في ثواني يا نجم 💡
         </h2>
-        <p class="text-lg md:text-xl text-gray-600 max-w-3xl mx-auto" data-translate="categories_description">
+        <p class="text-xl text-gray-600 max-w-3xl mx-auto" data-translate="categories_description">
           اكتشف مجموعة متنوعة من المحتويات التعليمية عالية الجودة المصممة خصيصاً لطلاب الجامعات
         </p>
       </div>
-
-      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
+      
+      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
         <!-- Materials Card -->
-        <div class="card text-center p-8 group cursor-pointer" onclick="handleCardClick('materials')">
-          <div class="text-6xl mb-6 group-hover:scale-110 transition-transform">📘</div>
-          <h3 class="text-2xl font-bold mb-3 text-gray-800" data-translate="materials">المواد الدراسية</h3>
-          <p class="text-gray-600 mb-6" data-translate="materials_description">ملخصات وشروحات شاملة لجميع المواد الدراسية</p>
-          <div class="card-features mb-6 text-sm text-gray-500">
-            <div class="mb-2">✓ ملخصات شاملة</div>
-            <div class="mb-2">✓ شروحات مفصلة</div>
-            <div>✓ أسئلة وتمارين</div>
+        <div class="category-card card p-8 text-center">
+          <div class="category-icon mx-auto">
+            <i class="fas fa-book"></i>
           </div>
-          <span class="inline-block bg-blue-600 text-white px-6 py-3 rounded-lg hover:bg-blue-700 transition-all transform hover:scale-105">
-            <i class="fas fa-eye ml-2"></i>
-            تصفح المواد
-          </span>
+          <h3 class="text-2xl font-bold text-gray-800 mb-3" data-translate="materials">المواد الدراسية</h3>
+          <p class="text-gray-600 mb-6" data-translate="materials_description">
+            ملخصات وشروحات شاملة لجميع المواد الدراسية
+          </p>
+          <a href="materials.html" class="btn-primary">
+            <span data-translate="browse">تصفح</span>
+            <i class="fas fa-arrow-left"></i>
+          </a>
         </div>
-
+        
         <!-- Projects Card -->
-        <div class="card text-center p-8 group cursor-pointer" onclick="handleCardClick('projects')">
-          <div class="text-6xl mb-6 group-hover:scale-110 transition-transform">💻</div>
-          <h3 class="text-2xl font-bold mb-3 text-gray-800" data-translate="projects">المشاريع الجاهزة</h3>
-          <p class="text-gray-600 mb-6" data-translate="projects_description">مشروعك الجاهز... في جيبك! 💻</p>
-          <div class="card-features mb-6 text-sm text-gray-500">
-            <div class="mb-2">✓ مشاريع تخرج</div>
-            <div class="mb-2">✓ كود جاهز</div>
-            <div>✓ توثيق شامل</div>
+        <div class="category-card card p-8 text-center">
+          <div class="category-icon mx-auto">
+            <i class="fas fa-code"></i>
           </div>
-          <span class="inline-block bg-green-600 text-white px-6 py-3 rounded-lg hover:bg-green-700 transition-all transform hover:scale-105">
-            <i class="fas fa-code ml-2"></i>
-            تصفح المشاريع
-          </span>
+          <h3 class="text-2xl font-bold text-gray-800 mb-3" data-translate="projects">المشاريع الجاهزة</h3>
+          <p class="text-gray-600 mb-6" data-translate="projects_description">
+            مشروعك الجاهز... في جيبك! 💻
+          </p>
+          <a href="projects.html" class="btn-primary">
+            <span data-translate="browse">تصفح</span>
+            <i class="fas fa-arrow-left"></i>
+          </a>
         </div>
-
+        
         <!-- Presentations Card -->
-        <div class="card text-center p-8 group cursor-pointer" onclick="handleCardClick('presentations')">
-          <div class="text-6xl mb-6 group-hover:scale-110 transition-transform">🖼️</div>
-          <h3 class="text-2xl font-bold mb-3 text-gray-800" data-translate="presentations">العروض التقديمية</h3>
-          <p class="text-gray-600 mb-6" data-translate="presentations_description">باوربوينت احترافي جاهز للاستخدام</p>
-          <div class="card-features mb-6 text-sm text-gray-500">
-            <div class="mb-2">✓ تصميم احترافي</div>
-            <div class="mb-2">✓ قوالب جاهزة</div>
-            <div>✓ قابل للتعديل</div>
+        <div class="category-card card p-8 text-center">
+          <div class="category-icon mx-auto">
+            <i class="fas fa-presentation"></i>
           </div>
-          <span class="inline-block bg-purple-600 text-white px-6 py-3 rounded-lg hover:bg-purple-700 transition-all transform hover:scale-105">
-            <i class="fas fa-presentation ml-2"></i>
-            تصفح العروض
-          </span>
-        </div>
-
-        <!-- Store Card -->
-        <div class="card text-center p-8 group cursor-pointer" onclick="handleCardClick('store')">
-          <div class="text-6xl mb-6 group-hover:scale-110 transition-transform">🛒</div>
-          <h3 class="text-2xl font-bold mb-3 text-gray-800">المتجر الرقمي</h3>
-          <p class="text-gray-600 mb-6">شراء محتوى تعليمي ومشاريع بسهولة</p>
-          <div class="card-features mb-6 text-sm text-gray-500">
-            <div class="mb-2">✓ دفع آمن</div>
-            <div class="mb-2">✓ تحميل فوري</div>
-            <div>✓ ضمان الجودة</div>
-          </div>
-          <span class="inline-block bg-orange-600 text-white px-6 py-3 rounded-lg hover:bg-orange-700 transition-all transform hover:scale-105">
-            <i class="fas fa-shopping-cart ml-2"></i>
-            تصفح المتجر
-          </span>
+          <h3 class="text-2xl font-bold text-gray-800 mb-3" data-translate="presentations">العروض التقديمية</h3>
+          <p class="text-gray-600 mb-6" data-translate="presentations_description">
+            باوربوينت احترافي جاهز للاستخدام
+          </p>
+          <a href="presentations.html" class="btn-primary">
+            <span data-translate="browse">تصفح</span>
+            <i class="fas fa-arrow-left"></i>
+          </a>
         </div>
       </div>
     </div>
   </section>
 
   <!-- Features Section -->
-  <section class="py-20 bg-gray-50">
+  <section class="py-20 bg-white">
     <div class="container mx-auto px-4">
       <div class="text-center mb-16">
-        <h2 class="text-4xl md:text-5xl font-bold text-gray-800 mb-4">
-          ليه تختار MASHROU3Y؟ 🤔
-        </h2>
-        <p class="text-lg md:text-xl text-gray-600">
-          منصة موثوقة ومجربة من آلاف الطلاب
-        </p>
+        <h2 class="text-4xl font-bold text-gray-800 mb-4">ليه تختار MASHROU3Y؟</h2>
+        <p class="text-xl text-gray-600">المميزات اللي تخليك تحبنا أكتر</p>
       </div>
-
-      <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
-        <div class="text-center">
-          <div class="text-5xl mb-4">🚀</div>
-          <h3 class="text-xl font-bold mb-2">سرعة في التوصيل</h3>
-          <p class="text-gray-600">احصل على محتواك في ثواني معدودة</p>
+      
+      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
+        <div class="feature-card">
+          <div class="text-4xl text-blue-500 mb-4">
+            <i class="fas fa-clock"></i>
+          </div>
+          <h3 class="text-xl font-bold text-gray-800 mb-2">توفير الوقت</h3>
+          <p class="text-gray-600">احصل على كل ما تحتاجه في ثوان معدودة</p>
         </div>
-        <div class="text-center">
-          <div class="text-5xl mb-4">🛡️</div>
-          <h3 class="text-xl font-bold mb-2">جودة مضمونة</h3>
-          <p class="text-gray-600">جميع المحتويات مراجعة ومؤكدة الجودة</p>
+        
+        <div class="feature-card">
+          <div class="text-4xl text-green-500 mb-4">
+            <i class="fas fa-dollar-sign"></i>
+          </div>
+          <h3 class="text-xl font-bold text-gray-800 mb-2">أسعار مناسبة</h3>
+          <p class="text-gray-600">أسعار في متناول الجميع مع جودة عالية</p>
         </div>
-        <div class="text-center">
-          <div class="text-5xl mb-4">💰</div>
-          <h3 class="text-xl font-bold mb-2">أسعار مناسبة</h3>
-          <p class="text-gray-600">أسعار تناسب جميع الطلاب</p>
+        
+        <div class="feature-card">
+          <div class="text-4xl text-purple-500 mb-4">
+            <i class="fas fa-shield-alt"></i>
+          </div>
+          <h3 class="text-xl font-bold text-gray-800 mb-2">أمان وثقة</h3>
+          <p class="text-gray-600">نظام آمن يحمي بياناتك ومعاملاتك</p>
+        </div>
+        
+        <div class="feature-card">
+          <div class="text-4xl text-red-500 mb-4">
+            <i class="fas fa-headset"></i>
+          </div>
+          <h3 class="text-xl font-bold text-gray-800 mb-2">دعم فني 24/7</h3>
+          <p class="text-gray-600">فريق دعم متاح دائماً لمساعدتك</p>
         </div>
       </div>
     </div>
   </section>
 
+  <!-- Testimonials Section -->
+  <section class="py-20 bg-gray-50">
+    <div class="container mx-auto px-4">
+      <div class="text-center mb-16">
+        <h2 class="text-4xl font-bold text-gray-800 mb-4">آراء طلابنا</h2>
+        <p class="text-xl text-gray-600">شوف إيه اللي بيقولوه عننا</p>
+      </div>
+      
+      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+        <div class="testimonial-card">
+          <div class="flex items-center mb-4">
+            <img src="logo2.jpg" alt="Student" class="w-12 h-12 rounded-full mr-4">
+            <div>
+              <h4 class="font-bold">أحمد محمد</h4>
+              <p class="text-gray-600 text-sm">طالب هندسة</p>
+            </div>
+          </div>
+          <p class="text-gray-700">
+            المنصة دي وفرت عليا وقت كتير جداً، والمواد كلها عالية الجودة ومنظمة بشكل ممتاز
+          </p>
+        </div>
+        
+        <div class="testimonial-card">
+          <div class="flex items-center mb-4">
+            <img src="logo2.jpg" alt="Student" class="w-12 h-12 rounded-full mr-4">
+            <div>
+              <h4 class="font-bold">فاطمة علي</h4>
+              <p class="text-gray-600 text-sm">طالبة طب</p>
+            </div>
+          </div>
+          <p class="text-gray-700">
+            أفضل منصة للطلاب، الأسعار معقولة والمحتوى احترافي جداً
+          </p>
+        </div>
+        
+        <div class="testimonial-card">
+          <div class="flex items-center mb-4">
+            <img src="logo2.jpg" alt="Student" class="w-12 h-12 rounded-full mr-4">
+            <div>
+              <h4 class="font-bold">محمود حسن</h4>
+              <p class="text-gray-600 text-sm">طالب تجارة</p>
+            </div>
+          </div>
+          <p class="text-gray-700">
+            الدعم الفني ممتاز وسريع، وكل حاجة واضحة ومفهومة
+          </p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- CTA Section -->
+  <section class="cta-section py-20">
+    <div class="container mx-auto px-4 text-center">
+      <h2 class="text-4xl font-bold mb-6">جاهز تبدأ رحلتك التعليمية؟</h2>
+      <p class="text-xl mb-8 text-white/90">انضم لآلاف الطلاب واحصل على أفضل المواد التعليمية</p>
+      
+      <div class="flex flex-col sm:flex-row gap-4 justify-center">
+        <a href="signup.html" class="btn-primary bg-white text-blue-600 hover:bg-gray-100 text-lg">
+          <i class="fas fa-user-plus"></i>
+          <span>سجل مجاناً</span>
+        </a>
+        <a href="materials.html" class="btn-outline border-white text-white hover:bg-white hover:text-blue-600 text-lg">
+          <i class="fas fa-search"></i>
+          <span>استكشف المحتوى</span>
+        </a>
+      </div>
+    </div>
+  </section>
+
   <!-- Footer -->
-  <footer class="bg-gray-800 text-white py-12">
+  <footer class="footer py-12">
     <div class="container mx-auto px-4">
       <div class="grid grid-cols-1 md:grid-cols-4 gap-8">
         <!-- Company Info -->
-        <div class="col-span-1 md:col-span-2">
-          <div class="flex items-center space-x-3 space-x-reverse mb-4">
-            <img src="../images/logo2.jpg" alt="شعار MASHROU3Y" class="w-12 h-12 rounded-lg">
-            <span class="text-2xl font-bold text-gradient">MASHROU3Y</span>
+        <div>
+          <div class="flex items-center mb-4">
+            <img src="logo2.jpg" alt="MASHROU3Y" class="w-10 h-10 rounded mr-3">
+            <span class="text-xl font-bold">MASHROU3Y</span>
           </div>
-          <p class="text-gray-300 mb-4">
-            منصة تعليمية متكاملة لخدمة الطلاب والباحثين في مصر والعالم العربي
+          <p class="text-gray-400 mb-4">
+            منصتك التعليمية المتكاملة للمواد والمشاريع والعروض التقديمية
           </p>
           <div class="flex space-x-4 space-x-reverse">
-            <a href="#" class="text-gray-400 hover:text-white transition-colors">
+            <a href="#" class="text-gray-400 hover:text-white">
               <i class="fab fa-facebook text-xl"></i>
             </a>
-            <a href="#" class="text-gray-400 hover:text-white transition-colors">
+            <a href="#" class="text-gray-400 hover:text-white">
               <i class="fab fa-twitter text-xl"></i>
             </a>
-            <a href="#" class="text-gray-400 hover:text-white transition-colors">
+            <a href="#" class="text-gray-400 hover:text-white">
               <i class="fab fa-instagram text-xl"></i>
             </a>
-            <a href="#" class="text-gray-400 hover:text-white transition-colors">
-              <i class="fab fa-linkedin text-xl"></i>
+            <a href="#" class="text-gray-400 hover:text-white">
+              <i class="fab fa-youtube text-xl"></i>
             </a>
           </div>
         </div>
-
-        <!-- Services -->
+        
+        <!-- Quick Links -->
         <div>
-          <h3 class="text-xl font-bold mb-4">خدماتنا</h3>
-          <ul class="space-y-2 text-gray-300">
-            <li><i class="fas fa-book ml-2"></i>المواد الدراسية</li>
-            <li><i class="fas fa-code ml-2"></i>المشاريع الجاهزة</li>
-            <li><i class="fas fa-presentation ml-2"></i>العروض التقديمية</li>
-            <li><i class="fas fa-store ml-2"></i>المتجر الرقمي</li>
+          <h3 class="text-lg font-bold mb-4">روابط سريعة</h3>
+          <ul class="space-y-2">
+            <li><a href="materials.html" class="text-gray-400 hover:text-white">المواد الدراسية</a></li>
+            <li><a href="projects.html" class="text-gray-400 hover:text-white">المشاريع</a></li>
+            <li><a href="presentations.html" class="text-gray-400 hover:text-white">العروض التقديمية</a></li>
+            <li><a href="stores.html" class="text-gray-400 hover:text-white">المتجر</a></li>
           </ul>
         </div>
-
-        <!-- Contact -->
-        <!-- <div>
-          <h3 class="text-xl font-bold mb-4"></h3>
-          <div class="space-y-2 text-gray-300">
-            <p><i class="fas fa-envelope ml-2"></i></p>
-            <p><i class="fas fa-phone ml-2"></i></p>
-            <p class="text-sm"></p>
-
-          </div>
+        
+        <!-- Support -->
+        <div>
+          <h3 class="text-lg font-bold mb-4">الدعم</h3>
+          <ul class="space-y-2">
+            <li><a href="#" class="text-gray-400 hover:text-white">مركز المساعدة</a></li>
+            <li><a href="#" class="text-gray-400 hover:text-white">تواصل معنا</a></li>
+            <li><a href="#" class="text-gray-400 hover:text-white">الأسئلة الشائعة</a></li>
+            <li><a href="#" class="text-gray-400 hover:text-white">سياسة الخصوصية</a></li>
+          </ul>
         </div>
-      </div> -->
+        
+        <!-- Contact -->
+        <div>
+          <h3 class="text-lg font-bold mb-4">تواصل معنا</h3>
+          <ul class="space-y-2 text-gray-400">
+            <li>
+              <i class="fas fa-envelope mr-2"></i>
+              info@mashrou3y.com
+            </li>
+            <li>
+              <i class="fas fa-phone mr-2"></i>
+              +20 100 728 9679
+            </li>
+            <li>
+              <i class="fas fa-map-marker-alt mr-2"></i>
+              القاهرة، مصر
+            </li>
+          </ul>
+        </div>
+      </div>
       
-      <div class="border-t border-gray-700 mt-8 pt-8 text-center">
-        <p class="text-gray-400 text-sm">
-          &copy; 2024 MASHROU3Y. جميع الحقوق محفوظة. | 
-          <a href="#" class="hover:text-white transition-colors">سياسة الخصوصية</a> | 
-          <a href="#" class="hover:text-white transition-colors">شروط الاستخدام</a>
-        </p>
+      <div class="border-t border-gray-700 mt-8 pt-8 text-center text-gray-400">
+        <p>&copy; 2024 MASHROU3Y. جميع الحقوق محفوظة.</p>
       </div>
     </div>
   </footer>
 
-  <!-- Access Control Script -->
+  <!-- Loading Screen -->
+  <div id="loading-screen" class="fixed inset-0 bg-white z-50 flex items-center justify-center">
+    <div class="text-center">
+      <img src="logo2.jpg" alt="MASHROU3Y" class="w-20 h-20 mx-auto rounded-xl mb-4 floating">
+      <div class="text-2xl font-bold text-gray-800 mb-4">MASHROU3Y</div>
+      <div class="animate-spin rounded-full h-8 w-8 border-b-2 border-blue-600 mx-auto"></div>
+    </div>
+  </div>
+
   <script>
-    // تكوين Supabase باستخدام CDN
-    const supabaseUrl = 'https://ycomaasvlmnuscmkooti.supabase.co';
-    const supabaseAnonKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Inljb21hYXN2bG1udXNjbWtvb3RpIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTM4MDg3NjUsImV4cCI6MjA2OTM4NDc2NX0.8rm-tCGJtwWnMz2Z3TXm8WWAVruRvIgIOotsZKZ3zWA'; // ← استبدلها بالمفتاح الصحيح
-    const supabase = window.supabase.createClient(supabaseUrl, supabaseAnonKey);
-    
-    // دالة لفحص حالة تسجيل الدخول
-    async function checkAccess() {
-      try {
-        const { data: { session } } = await supabase.auth.getSession();
-        if (!session) {
-          // تغبيش أو تعطيل تفاصيل البطاقات
-          document.querySelectorAll('.card').forEach(card => {
-            card.style.filter = 'blur(2px)';
-            card.style.pointerEvents = 'none';
-            // إضافة رسالة ودية باللهجة المصرية
-            if (!card.querySelector('.locked-msg')) {
-              const msg = document.createElement('div');
-              msg.className = 'locked-msg text-center text-red-600 font-bold mt-4';
-              msg.innerHTML = 'استنى لما الأدمن يفتحلك الباب يا نجم 😅<br>سجل دخولك الأول عشان تشوف التفاصيل';
-              card.appendChild(msg);
-            }
-          });
-        } else {
-          // إزالة التغبيش إذا كان المستخدم مسجل دخول
-          document.querySelectorAll('.card').forEach(card => {
-            card.style.filter = '';
-            card.style.pointerEvents = '';
-            const msg = card.querySelector('.locked-msg');
-            if (msg) msg.remove();
-          });
-        }
-      } catch (error) {
-        console.error('خطأ في فحص حالة تسجيل الدخول:', error);
-      }
-    }
-    
-    // دالة معالجة النقر على البطاقات
-    window.handleCardClick = async function(category) {
-      console.log(`تم النقر على فئة: ${category}`);
-      
-      try {
-        // التحقق من تسجيل الدخول
-        const { data: { session } } = await supabase.auth.getSession();
-        
-        if (!session) {
-          // إظهار رسالة تسجيل الدخول
-          showMessage('محتاج تسجل دخول الأول يا نجم 😅', 'warning');
+    // Hide loading screen when page is loaded
+    window.addEventListener('load', () => {
+      const loadingScreen = document.getElementById('loading-screen');
+      if (loadingScreen) {
+        setTimeout(() => {
+          loadingScreen.style.opacity = '0';
           setTimeout(() => {
-            window.location.href = 'login.html';
-          }, 2000);
-          return;
-        }
-        
-        // التحقق من اكتمال الملف الشخصي
-        const { data: userProfile, error: profileError } = await supabase
-          .from('users')
-          .select('*')
-          .eq('email', session.user.email)
-          .single();
-        
-        if (profileError || !userProfile) {
-          showMessage('محتاج تكمل ملفك الشخصي الأول 😅', 'warning');
-          setTimeout(() => {
-            window.location.href = 'signup.html';
-          }, 2000);
-          return;
-        }
-        
-        if (!userProfile.is_approved) {
-          showMessage('حسابك قيد المراجعة، استنى الأدمن يوافق عليه 😅', 'info');
-          setTimeout(() => {
-            window.location.href = 'waiting-approval.html';
-          }, 2000);
-          return;
-        }
-        
-        // إعادة التوجيه للصفحة المطلوبة
-        switch(category) {
-          case 'materials':
-            window.location.href = 'materials.html';
-            break;
-          case 'projects':
-            window.location.href = 'projects.html';
-            break;
-          case 'presentations':
-            window.location.href = 'presentations.html';
-            break;
-          case 'store':
-            window.location.href = 'stores.html';
-            break;
-          default:
-            console.log('فئة غير معروفة:', category);
-        }
-      } catch (error) {
-        console.error('خطأ في معالجة النقر:', error);
-        showMessage('في مشكلة، جرب تاني 😅', 'error');
-      }
-    };
-    
-    // دالة إظهار الرسائل
-    function showMessage(message, type = 'info') {
-      const messageDiv = document.createElement('div');
-      messageDiv.className = `fixed top-4 right-4 z-50 p-4 rounded-lg shadow-lg ${
-        type === 'error' ? 'bg-red-500 text-white' :
-        type === 'warning' ? 'bg-yellow-500 text-white' :
-        type === 'success' ? 'bg-green-500 text-white' :
-        'bg-blue-500 text-white'
-      }`;
-      messageDiv.textContent = message;
-      document.body.appendChild(messageDiv);
-      
-      setTimeout(() => {
-        messageDiv.remove();
-      }, 3000);
-    }
-    
-    // تهيئة عند تحميل الصفحة
-    document.addEventListener('DOMContentLoaded', function() {
-      checkAccess();
-      // تحديث عند تغيير حالة الجلسة
-      supabase.auth.onAuthStateChange(checkAccess);
-      
-      // تهيئة نظام الترجمة
-      if (window.Translations) {
-        window.Translations.init();
-      }
-      
-      // تهيئة نظام الثيمات
-      if (window.themeManager) {
-        // التأكد من تطبيق الثيم الصحيح
-        window.themeManager.applyTheme(window.themeManager.getCurrentTheme());
-      }
-      
-      // إضافة مستمعي الأحداث لأزرار التبديل
-      const languageToggle = document.getElementById('language-toggle');
-      const themeToggle = document.getElementById('theme-toggle');
-      
-      if (languageToggle) {
-        languageToggle.addEventListener('click', () => {
-          if (window.Translations) {
-            const currentLang = window.Translations.getCurrentLanguage();
-            const newLang = currentLang === 'ar' ? 'en' : 'ar';
-            window.Translations.change(newLang);
-            
-            // تحديث نص زر اللغة
-            const langText = languageToggle.querySelector('span');
-            if (langText) {
-              langText.textContent = newLang === 'ar' ? 'العربية' : 'English';
-            }
-            
-            // تحديث اتجاه الصفحة
-            document.documentElement.dir = newLang === 'ar' ? 'rtl' : 'ltr';
-            
-            // تحديث اتجاه العناصر
-            document.documentElement.lang = newLang;
-          }
-        });
-      }
-      
-      if (themeToggle) {
-        themeToggle.addEventListener('click', () => {
-          if (window.themeManager) {
-            window.themeManager.toggleTheme();
-            
-            // تحديث نص زر الثيم
-            const themeText = themeToggle.querySelector('span');
-            if (themeText) {
-              const currentTheme = window.themeManager.getCurrentTheme();
-              const currentLang = window.Translations ? window.Translations.getCurrentLanguage() : 'ar';
-              if (currentLang === 'ar') {
-                themeText.textContent = currentTheme === 'light' ? 'فاتح' : 'داكن';
-              } else {
-                themeText.textContent = currentTheme === 'light' ? 'Light' : 'Dark';
-              }
-            }
-          }
-        });
+            loadingScreen.style.display = 'none';
+          }, 300);
+        }, 1000);
       }
     });
+
+    // Smooth scrolling for anchor links
+    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+      anchor.addEventListener('click', function (e) {
+        e.preventDefault();
+        const target = document.querySelector(this.getAttribute('href'));
+        if (target) {
+          target.scrollIntoView({
+            behavior: 'smooth',
+            block: 'start'
+          });
+        }
+      });
+    });
+
+    // Add scroll-based animations
+    const observerOptions = {
+      threshold: 0.1,
+      rootMargin: '0px 0px -50px 0px'
+    };
+
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          entry.target.style.opacity = '1';
+          entry.target.style.transform = 'translateY(0)';
+        }
+      });
+    }, observerOptions);
+
+    // Observe all cards and sections
+    document.querySelectorAll('.card, .feature-card, .testimonial-card, .stats-card').forEach(el => {
+      el.style.opacity = '0';
+      el.style.transform = 'translateY(30px)';
+      el.style.transition = 'opacity 0.6s ease, transform 0.6s ease';
+      observer.observe(el);
+    });
+
+    // Initialize counter animations
+    function animateCounter(element, target) {
+      let current = 0;
+      const increment = target / 100;
+      const timer = setInterval(() => {
+        current += increment;
+        if (current >= target) {
+          element.textContent = target + '+';
+          clearInterval(timer);
+        } else {
+          element.textContent = Math.floor(current) + '+';
+        }
+      }, 20);
+    }
+
+    // Animate counters when they come into view
+    const statsObserver = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          const numbers = entry.target.querySelectorAll('.stats-card .text-3xl');
+          numbers.forEach((num, index) => {
+            const targets = [1000, 500, 300];
+            animateCounter(num, targets[index]);
+          });
+          statsObserver.unobserve(entry.target);
+        }
+      });
+    });
+
+    const statsSection = document.querySelector('.stats-card').closest('.grid');
+    if (statsSection) {
+      statsObserver.observe(statsSection);
+    }
   </script>
 </body>
 </html>

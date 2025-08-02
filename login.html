@@ -11,15 +11,15 @@
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 
   <!-- Custom Styles -->
-  <link rel="stylesheet" href="../styles/style.css">
+  <link rel="stylesheet" href="styles/style.css">
 
   <!-- Supabase SDK -->
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 
   <!-- Scripts -->
-  <script type="module" src="../scripts/translations.js" defer></script>
-  <script type="module" src="../scripts/theme.js" defer></script>
-  <script type="module" src="../scripts/utils.js" defer></script>
+  <script type="module" src="scripts/translations.js" defer></script>
+  <script type="module" src="scripts/theme.js" defer></script>
+  <script type="module" src="scripts/utils.js" defer></script>
 
   <style>
     body { font-family: 'Tajawal', sans-serif; }
@@ -30,7 +30,7 @@
 <body class="gradient-bg min-h-screen flex items-center justify-center p-4">
   <div class="w-full max-w-md">
     <div class="text-center mb-8">
-      <img src="../images/logo2.jpg" alt="logo" class="w-20 h-20 mx-auto rounded-xl">
+      <img src="images/logo2.jpg" alt="logo" class="w-20 h-20 mx-auto rounded-xl">
       <h1 class="text-3xl font-bold text-white">MASHROU3Y</h1>
       
       <!-- Language and Theme Toggles -->
@@ -67,57 +67,7 @@
     </div>
   </div>
 
-  <script>
-    const supabaseUrl = 'https://ycomaasvlmnuscmkooti.supabase.co';
-    const supabaseAnonKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Inljb21hYXN2bG1udXNjbWtvb3RpIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTM4MDg3NjUsImV4cCI6MjA2OTM4NDc2NX0.8rm-tCGJtwWnMz2Z3TXm8WWAVruRvIgIOotsZKZ3zWA'; // Replace with full key
-    const supabase = window.supabase.createClient(supabaseUrl, supabaseAnonKey);
-
-    const loginForm = document.getElementById('loginForm');
-    const message = document.getElementById('message');
-    const googleLogin = document.getElementById('googleLogin');
-
-    loginForm.addEventListener('submit', async (e) => {
-      e.preventDefault();
-      const email = document.getElementById('email').value;
-      const password = document.getElementById('password').value;
-
-      try {
-        const { data, error } = await supabase.auth.signInWithPassword({ email, password });
-
-        if (error) {
-          message.textContent = 'خطأ في البيانات. جرب تاني.';
-          message.style.color = '#fca5a5';
-          return;
-        }
-
-        if (data.user) {
-          message.textContent = 'تم تسجيل الدخول بنجاح! جاري التوجيه...';
-          message.style.color = '#86efac';
-          
-          // انتظار قليل ثم التوجيه
-          setTimeout(() => {
-            window.location.href = 'dashboard.html';
-          }, 1000);
-        }
-      } catch (error) {
-        message.textContent = 'حدث خطأ غير متوقع. جرب تاني.';
-        message.style.color = '#fca5a5';
-        console.error('Login error:', error);
-      }
-    });
-
-    googleLogin.addEventListener('click', async () => {
-      const { data, error } = await supabase.auth.signInWithOAuth({
-        provider: 'google',
-        options: {
-          redirectTo: window.location.origin + '/dashboard.html'
-        }
-      });
-      if (error) {
-        message.textContent = 'تعذر تسجيل الدخول بجوجل';
-        console.error(error);
-      }
-    });
-  </script>
+  <script type="module" src="scripts/auth.js" defer></script>
+  <script type="module" src="scripts/login-page.js" defer></script>
 </body>
 </html>

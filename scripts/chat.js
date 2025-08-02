@@ -630,7 +630,7 @@ class ChatManager {
     if (Notification.permission === 'granted') {
       const notification = new Notification('رسالة جديدة من MASHROU3Y', {
         body: `${message.users?.full_name || 'مستخدم'}: ${message.content}`,
-        icon: '/images/logo2.jpg'
+        icon: '/logo2.jpg'
       });
       
       notification.onclick = () => {

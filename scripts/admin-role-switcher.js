@@ -41,7 +41,7 @@ class AdminRoleSwitcher {
     try {
       const { data: { session } } = await this.supabase.auth.getSession();
       if (!session) {
-        window.location.href = '../pages/login.html';
+        window.location.href = 'pages/login.html';
         return;
       }
 
@@ -65,7 +65,7 @@ class AdminRoleSwitcher {
     } catch (error) {
       console.error('خطأ في التحقق من المصادقة:', error);
       this.showErrorMessage('مش عارف أتحقق من صلاحياتك 😅');
-      window.location.href = '../pages/login.html';
+      window.location.href = 'pages/login.html';
     }
   }
 
@@ -143,7 +143,7 @@ class AdminRoleSwitcher {
     }
 
     if (userAvatar) {
-      userAvatar.src = this.currentUser?.user_metadata?.avatar_url || '../images/default-avatar.png';
+      userAvatar.src = this.currentUser?.user_metadata?.avatar_url || 'default-avatar.png';
     }
   }
 

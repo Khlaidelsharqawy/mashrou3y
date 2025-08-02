@@ -1,0 +1,16 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Authentication Callback</title>
+  <script>
+    // This page handles the OAuth callback.
+    // It receives the token from the URL hash, and Supabase handles it.
+    // The onAuthStateChange event in the main application window will then fire.
+    // We can simply close this window.
+    window.close();
+  </script>
+</head>
+<body>
+  <p>Authenticating... Please wait.</p>
+</body>
+</html>

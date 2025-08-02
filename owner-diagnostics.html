@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>لوحة تشخيص المالك - MASHROU3Y</title>
+
+  <!-- Tailwind CSS -->
+  <script src="https://cdn.tailwindcss.com"></script>
+
+  <!-- Google Fonts -->
+  <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@400;500;700&display=swap" rel="stylesheet" />
+
+  <!-- Font Awesome -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
+
+  <!-- Custom Styles -->
+  <link rel="stylesheet" href="styles/style.css" />
+
+  <!-- Supabase -->
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
+  <!-- Scripts -->
+  <script type="module" src="scripts/supabase-config.js" defer></script>
+  <script type="module" src="scripts/owner-diagnostics.js" defer></script>
+
+  <style>
+    body {
+      font-family: 'Tajawal', sans-serif;
+    }
+  </style>
+</head>
+<body class="bg-gray-100 dark:bg-gray-900 text-gray-800 dark:text-gray-200">
+  <!-- Header -->
+  <header class="bg-white dark:bg-gray-800 shadow-md">
+    <div class="container mx-auto px-4 py-4 flex justify-between items-center">
+      <div class="flex items-center space-x-3 space-x-reverse">
+        <img src="images/logo2.jpg" alt="شعار MASHROU3Y" class="w-10 h-10 rounded-lg" />
+        <div>
+          <h1 class="text-xl font-bold">لوحة تشخيص المالك</h1>
+          <p class="text-sm text-gray-500 dark:text-gray-400">أدوات ومعلومات للمطورين</p>
+        </div>
+      </div>
+      <div class="flex items-center space-x-4 space-x-reverse">
+        <button id="language-toggle-btn" class="text-gray-600 dark:text-gray-300 hover:text-indigo-600 dark:hover:text-indigo-400">
+            <i class="fas fa-globe text-lg"></i>
+        </button>
+        <button id="theme-toggle-btn" class="text-gray-600 dark:text-gray-300 hover:text-indigo-600 dark:hover:text-indigo-400">
+            <i class="fas fa-sun text-lg"></i>
+        </button>
+        <a href="index.html" class="text-gray-600 dark:text-gray-300 hover:text-indigo-600 dark:hover:text-indigo-400">
+          <i class="fas fa-home text-lg"></i>
+        </a>
+        <button id="logoutBtn" class="bg-red-500 text-white px-4 py-2 rounded-lg font-medium hover:bg-red-600 transition">
+          <i class="fas fa-sign-out-alt ml-1"></i> <span>تسجيل الخروج</span>
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <!-- Main Content -->
+  <main class="container mx-auto px-4 py-8">
+    <div id="diagnostics-container" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+      <!-- Diagnostics cards will be inserted here by JavaScript -->
+      <div class="bg-white dark:bg-gray-800 p-6 rounded-xl shadow-lg col-span-full text-center">
+          <i class="fas fa-spinner fa-spin text-4xl text-indigo-500"></i>
+          <p class="mt-4 text-lg">جاري تحميل بيانات التشخيص...</p>
+      </div>
+    </div>
+  </main>
+
+  <!-- Footer -->
+  <footer class="bg-white dark:bg-gray-800 mt-12 py-4 border-t dark:border-gray-700">
+    <div class="container mx-auto px-4 text-center text-sm text-gray-500 dark:text-gray-400">
+      &copy; 2024 MASHROU3Y. لوحة تشخيص خاصة.
+    </div>
+  </footer>
+</body>
+</html>

@@ -7,116 +7,450 @@
 
   <!-- Tailwind CSS & Fonts -->
   <script src="https://cdn.tailwindcss.com"></script>
-  <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@400;700&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@400;500;700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 
   <!-- Custom Styles -->
-  <link rel="stylesheet" href="../styles/style.css">
+  <link rel="stylesheet" href="style.css">
+  <link rel="stylesheet" href="components/header.css">
 
   <!-- Supabase SDK -->
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 
   <!-- Scripts -->
-  <script type="module" src="../scripts/translations.js" defer></script>
-  <script type="module" src="../scripts/theme.js" defer></script>
-  <script type="module" src="../scripts/utils.js" defer></script>
+  <script type="module" src="supabase-config.js" defer></script>
+  <script type="module" src="translations.js" defer></script>
+  <script type="module" src="theme.js" defer></script>
+  <script type="module" src="utils.js" defer></script>
+  <script type="module" src="components/header.js" defer></script>
 
   <style>
-    body { font-family: 'Tajawal', sans-serif; }
-    .gradient-bg { background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); }
-    .glass { background: rgba(255, 255, 255, 0.1); backdrop-filter: blur(10px); border: 1px solid rgba(255, 255, 255, 0.2); }
+    body { 
+      font-family: 'Tajawal', sans-serif;
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      min-height: 100vh;
+    }
+    
+    .glass { 
+      background: rgba(255, 255, 255, 0.1); 
+      backdrop-filter: blur(15px); 
+      border: 1px solid rgba(255, 255, 255, 0.2);
+      box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+    }
+    
+    .login-container {
+      background: rgba(255, 255, 255, 0.05);
+      backdrop-filter: blur(20px);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+    }
+    
+    .form-input {
+      background: rgba(255, 255, 255, 0.1);
+      border: 1px solid rgba(255, 255, 255, 0.2);
+      color: white;
+      backdrop-filter: blur(10px);
+    }
+    
+    .form-input::placeholder {
+      color: rgba(255, 255, 255, 0.7);
+    }
+    
+    .form-input:focus {
+      background: rgba(255, 255, 255, 0.15);
+      border-color: rgba(255, 255, 255, 0.4);
+      outline: none;
+      box-shadow: 0 0 0 3px rgba(255, 255, 255, 0.1);
+    }
+    
+    .btn-login {
+      background: linear-gradient(135deg, #667eea, #764ba2);
+      border: none;
+      color: white;
+      font-weight: 600;
+      transition: all 0.3s ease;
+    }
+    
+    .btn-login:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 8px 25px rgba(102, 126, 234, 0.4);
+    }
+    
+    .btn-google {
+      background: rgba(255, 255, 255, 0.95);
+      color: #333;
+      border: 1px solid rgba(255, 255, 255, 0.3);
+      font-weight: 600;
+      transition: all 0.3s ease;
+    }
+    
+    .btn-google:hover {
+      background: rgba(255, 255, 255, 1);
+      transform: translateY(-2px);
+      box-shadow: 0 8px 25px rgba(0, 0, 0, 0.1);
+    }
+    
+    .floating-animation {
+      animation: floating 3s ease-in-out infinite;
+    }
+    
+    @keyframes floating {
+      0%, 100% { transform: translateY(0px); }
+      50% { transform: translateY(-10px); }
+    }
+    
+    .fade-in {
+      animation: fadeIn 0.8s ease-out;
+    }
+    
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(30px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
   </style>
 </head>
-<body class="gradient-bg min-h-screen flex items-center justify-center p-4">
-  <div class="w-full max-w-md">
-    <div class="text-center mb-8">
-      <img src="../images/logo2.jpg" alt="logo" class="w-20 h-20 mx-auto rounded-xl">
-      <h1 class="text-3xl font-bold text-white">MASHROU3Y</h1>
-      
-      <!-- Language and Theme Toggles -->
-      <div class="flex justify-center space-x-4 space-x-reverse mt-4">
-        <!-- Language Toggle -->
-        <button data-language-toggle class="bg-white/10 hover:bg-white/20 text-white px-3 py-2 rounded-lg transition-all duration-200 flex items-center space-x-2 space-x-reverse">
-          <i class="fas fa-globe"></i>
-          <span class="text-sm font-medium" data-translate="arabic">العربية</span>
-        </button>
-        
-        <!-- Theme Toggle -->
-        <button data-theme-toggle class="bg-white/10 hover:bg-white/20 text-white px-3 py-2 rounded-lg transition-all duration-200 flex items-center space-x-2 space-x-reverse">
-          <i class="fas fa-sun" data-theme-icon></i>
-          <span class="text-sm font-medium" data-translate="light">فاتح</span>
-        </button>
-      </div>
-    </div>
-
-    <div class="glass p-8 rounded-xl shadow-lg">
-      <h2 class="text-xl text-white font-bold text-center mb-6" data-translate="login">سجل دخولك</h2>
-      <form id="loginForm" class="space-y-4">
-        <input type="email" id="email" data-translate="email" placeholder="الإيميل" class="w-full p-3 rounded bg-white/10 border border-white/20 text-white" required>
-        <input type="password" id="password" data-translate="password" placeholder="الباسورد" class="w-full p-3 rounded bg-white/10 border border-white/20 text-white" required>
-        <button type="submit" class="w-full bg-indigo-600 hover:bg-indigo-700 text-white p-3 rounded" data-translate="login">دخول</button>
-      </form>
-
-      <div class="my-6 text-center text-white/80">أو</div>
-
-      <button id="googleLogin" class="w-full bg-white text-gray-800 font-bold p-3 rounded hover:bg-gray-200">
-        <i class="fab fa-google ml-2"></i> <span data-translate="google_login">دخول بجوجل</span>
-      </button>
-
-      <p id="message" class="text-center mt-4 text-sm text-red-300"></p>
+<body class="flex items-center justify-center p-4">
+  <!-- Loading Overlay -->
+  <div id="loading-overlay" class="fixed inset-0 bg-black/50 backdrop-blur-sm z-50 hidden flex items-center justify-center">
+    <div class="bg-white/10 backdrop-blur-md rounded-2xl p-8 text-center">
+      <div class="animate-spin rounded-full h-12 w-12 border-b-2 border-white mx-auto mb-4"></div>
+      <p class="text-white font-medium" data-translate="loading">جاري التحميل...</p>
     </div>
   </div>
 
-  <script>
-    const supabaseUrl = 'https://ycomaasvlmnuscmkooti.supabase.co';
-    const supabaseAnonKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Inljb21hYXN2bG1udXNjbWtvb3RpIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTM4MDg3NjUsImV4cCI6MjA2OTM4NDc2NX0.8rm-tCGJtwWnMz2Z3TXm8WWAVruRvIgIOotsZKZ3zWA'; // Replace with full key
-    const supabase = window.supabase.createClient(supabaseUrl, supabaseAnonKey);
+  <div class="w-full max-w-md fade-in">
+    <!-- Logo Section -->
+    <div class="text-center mb-8">
+      <div class="floating-animation">
+        <img src="logo2.jpg" alt="شعار MASHROU3Y" class="w-20 h-20 mx-auto rounded-xl shadow-2xl">
+      </div>
+      <h1 class="text-4xl font-bold text-white mt-4 text-gradient">MASHROU3Y</h1>
+      <p class="text-white/80 mt-2" data-translate="platform_subtitle">منصتك التعليمية المتكاملة</p>
+    </div>
 
-    const loginForm = document.getElementById('loginForm');
-    const message = document.getElementById('message');
-    const googleLogin = document.getElementById('googleLogin');
+    <!-- Login Form -->
+    <div class="login-container p-8 rounded-2xl shadow-2xl">
+      <h2 class="text-2xl text-white font-bold text-center mb-6" data-translate="login">تسجيل الدخول</h2>
+      
+      <!-- Regular Login Form -->
+      <form id="loginForm" class="space-y-6">
+        <div>
+          <label for="email" class="block text-white/90 text-sm font-medium mb-2" data-translate="email">البريد الإلكتروني</label>
+          <input 
+            type="email" 
+            id="email" 
+            data-translate="email" 
+            placeholder="ادخل إيميلك هنا" 
+            class="form-input w-full p-4 rounded-lg transition-all duration-300" 
+            required
+          >
+        </div>
+        
+        <div>
+          <label for="password" class="block text-white/90 text-sm font-medium mb-2" data-translate="password">كلمة المرور</label>
+          <div class="relative">
+            <input 
+              type="password" 
+              id="password" 
+              data-translate="password" 
+              placeholder="ادخل كلمة المرور" 
+              class="form-input w-full p-4 rounded-lg pr-12 transition-all duration-300" 
+              required
+            >
+            <button 
+              type="button" 
+              id="togglePassword" 
+              class="absolute left-4 top-1/2 transform -translate-y-1/2 text-white/70 hover:text-white transition-colors"
+            >
+              <i class="fas fa-eye" id="passwordIcon"></i>
+            </button>
+          </div>
+        </div>
+        
+        <div class="flex items-center justify-between">
+          <label class="flex items-center">
+            <input type="checkbox" id="rememberMe" class="rounded border-white/30 bg-white/10 text-blue-500 focus:ring-blue-500">
+            <span class="mr-2 text-white/90 text-sm" data-translate="remember_me">تذكرني</span>
+          </label>
+          <a href="reset-password.html" class="text-white/80 hover:text-white text-sm transition-colors" data-translate="forgot_password">نسيت كلمة المرور؟</a>
+        </div>
+        
+        <button type="submit" class="btn-login w-full p-4 rounded-lg" data-translate="login">
+          <i class="fas fa-sign-in-alt ml-2"></i>
+          تسجيل الدخول
+        </button>
+      </form>
 
-    loginForm.addEventListener('submit', async (e) => {
-      e.preventDefault();
-      const email = document.getElementById('email').value;
-      const password = document.getElementById('password').value;
+      <!-- Divider -->
+      <div class="my-6 text-center">
+        <div class="relative">
+          <div class="absolute inset-0 flex items-center">
+            <div class="w-full border-t border-white/20"></div>
+          </div>
+          <div class="relative flex justify-center text-sm">
+            <span class="px-4 bg-transparent text-white/80" data-translate="or">أو</span>
+          </div>
+        </div>
+      </div>
 
-      try {
-        const { data, error } = await supabase.auth.signInWithPassword({ email, password });
+      <!-- Google Login -->
+      <button id="googleLogin" class="btn-google w-full p-4 rounded-lg flex items-center justify-center">
+        <i class="fab fa-google text-red-500 text-lg ml-3"></i> 
+        <span data-translate="google_login">تسجيل الدخول بجوجل</span>
+      </button>
 
-        if (error) {
-          message.textContent = 'خطأ في البيانات. جرب تاني.';
-          message.style.color = '#fca5a5';
+      <!-- Message Display -->
+      <div id="message" class="text-center mt-6 p-3 rounded-lg hidden"></div>
+      
+      <!-- Sign Up Link -->
+      <div class="text-center mt-6">
+        <p class="text-white/80 text-sm">
+          <span data-translate="no_account">ما عندكش حساب؟</span>
+          <a href="signup.html" class="text-white font-semibold hover:text-blue-200 transition-colors mr-2" data-translate="create_account">أنشئ حساب جديد</a>
+        </p>
+      </div>
+    </div>
+  </div>
+
+  <script type="module">
+    import { getSupabaseClient } from './supabase-config.js';
+
+    class LoginManager {
+      constructor() {
+        this.supabase = null;
+        this.isLoading = false;
+        this.init();
+      }
+
+      async init() {
+        try {
+          // انتظار تحميل Supabase
+          while (!window.supabaseClient) {
+            await new Promise(resolve => setTimeout(resolve, 100));
+          }
+          
+          this.supabase = window.supabaseClient;
+          this.bindEvents();
+          this.checkExistingSession();
+          console.log('✅ تم تهيئة مدير تسجيل الدخول');
+        } catch (error) {
+          console.error('❌ خطأ في تهيئة مدير تسجيل الدخول:', error);
+          this.showMessage('خطأ في تحميل النظام، جرب إعادة تحميل الصفحة', 'error');
+        }
+      }
+
+      bindEvents() {
+        // تسجيل الدخول العادي
+        document.getElementById('loginForm').addEventListener('submit', (e) => {
+          this.handleLogin(e);
+        });
+
+        // تسجيل الدخول بجوجل
+        document.getElementById('googleLogin').addEventListener('click', () => {
+          this.handleGoogleLogin();
+        });
+
+        // إظهار/إخفاء كلمة المرور
+        document.getElementById('togglePassword').addEventListener('click', () => {
+          this.togglePasswordVisibility();
+        });
+
+        // مراقبة تغييرات المصادقة
+        this.supabase.auth.onAuthStateChange((event, session) => {
+          console.log('Auth state changed:', event, session);
+          if (event === 'SIGNED_IN' && session) {
+            this.handleSuccessfulLogin(session.user);
+          }
+        });
+      }
+
+      async checkExistingSession() {
+        try {
+          const { data: { session } } = await this.supabase.auth.getSession();
+          if (session) {
+            this.showMessage('أنت مسجل دخول بالفعل، جاري التوجيه...', 'success');
+            setTimeout(() => {
+              this.redirectToDashboard();
+            }, 1500);
+          }
+        } catch (error) {
+          console.error('خطأ في فحص الجلسة:', error);
+        }
+      }
+
+      async handleLogin(e) {
+        e.preventDefault();
+        
+        if (this.isLoading) return;
+        
+        const email = document.getElementById('email').value.trim();
+        const password = document.getElementById('password').value;
+        const rememberMe = document.getElementById('rememberMe').checked;
+
+        if (!email || !password) {
+          this.showMessage('يرجى ملء جميع الحقول', 'error');
           return;
         }
 
-        if (data.user) {
-          message.textContent = 'تم تسجيل الدخول بنجاح! جاري التوجيه...';
-          message.style.color = '#86efac';
-          
-          // انتظار قليل ثم التوجيه
-          setTimeout(() => {
-            window.location.href = 'dashboard.html';
-          }, 1000);
-        }
-      } catch (error) {
-        message.textContent = 'حدث خطأ غير متوقع. جرب تاني.';
-        message.style.color = '#fca5a5';
-        console.error('Login error:', error);
-      }
-    });
+        try {
+          this.setLoading(true);
+          this.showMessage('جاري تسجيل الدخول...', 'info');
 
-    googleLogin.addEventListener('click', async () => {
-      const { data, error } = await supabase.auth.signInWithOAuth({
-        provider: 'google',
-        options: {
-          redirectTo: window.location.origin + '/dashboard.html'
+          const { data, error } = await this.supabase.auth.signInWithPassword({
+            email,
+            password
+          });
+
+          if (error) {
+            throw error;
+          }
+
+          if (data.user) {
+            // حفظ تفضيل "تذكرني"
+            if (rememberMe) {
+              localStorage.setItem('rememberUser', 'true');
+            }
+
+            this.showMessage('تم تسجيل الدخول بنجاح! 🎉', 'success');
+            this.handleSuccessfulLogin(data.user);
+          }
+        } catch (error) {
+          console.error('Login error:', error);
+          
+          let errorMessage = 'حدث خطأ غير متوقع';
+          if (error.message.includes('Invalid login credentials')) {
+            errorMessage = 'البريد الإلكتروني أو كلمة المرور غير صحيحة';
+          } else if (error.message.includes('Email not confirmed')) {
+            errorMessage = 'يرجى تأكيد بريدك الإلكتروني أولاً';
+          } else if (error.message.includes('Too many requests')) {
+            errorMessage = 'كثرة المحاولات، جرب بعد دقائق قليلة';
+          }
+          
+          this.showMessage(errorMessage, 'error');
+        } finally {
+          this.setLoading(false);
         }
-      });
-      if (error) {
-        message.textContent = 'تعذر تسجيل الدخول بجوجل';
-        console.error(error);
       }
+
+      async handleGoogleLogin() {
+        if (this.isLoading) return;
+
+        try {
+          this.setLoading(true);
+          this.showMessage('جاري تسجيل الدخول بجوجل...', 'info');
+
+          const { data, error } = await this.supabase.auth.signInWithOAuth({
+            provider: 'google',
+            options: {
+              redirectTo: `${window.location.origin}/dashboard.html`,
+              queryParams: {
+                access_type: 'offline',
+                prompt: 'consent',
+              }
+            }
+          });
+
+          if (error) {
+            throw error;
+          }
+
+          // سيتم التوجيه تلقائياً بواسطة OAuth
+        } catch (error) {
+          console.error('Google login error:', error);
+          this.showMessage('تعذر تسجيل الدخول بجوجل، جرب الطريقة العادية', 'error');
+          this.setLoading(false);
+        }
+      }
+
+      handleSuccessfulLogin(user) {
+        console.log('تم تسجيل الدخول بنجاح:', user);
+        
+        // حفظ بيانات المستخدم
+        localStorage.setItem('user', JSON.stringify(user));
+        
+        // التوجيه بعد ثانيتين
+        setTimeout(() => {
+          this.redirectToDashboard();
+        }, 2000);
+      }
+
+      redirectToDashboard() {
+        // فحص إذا كان المستخدم بحاجة لإكمال ملفه الشخصي
+        const user = JSON.parse(localStorage.getItem('user') || '{}');
+        
+        if (user.user_metadata && !user.user_metadata.profile_completed) {
+          window.location.href = 'profile-completion.html';
+        } else {
+          window.location.href = 'dashboard.html';
+        }
+      }
+
+      togglePasswordVisibility() {
+        const passwordInput = document.getElementById('password');
+        const passwordIcon = document.getElementById('passwordIcon');
+        
+        if (passwordInput.type === 'password') {
+          passwordInput.type = 'text';
+          passwordIcon.classList.remove('fa-eye');
+          passwordIcon.classList.add('fa-eye-slash');
+        } else {
+          passwordInput.type = 'password';
+          passwordIcon.classList.remove('fa-eye-slash');
+          passwordIcon.classList.add('fa-eye');
+        }
+      }
+
+      setLoading(loading) {
+        this.isLoading = loading;
+        const overlay = document.getElementById('loading-overlay');
+        const submitBtn = document.querySelector('button[type="submit"]');
+        const googleBtn = document.getElementById('googleLogin');
+        
+        if (loading) {
+          overlay.classList.remove('hidden');
+          submitBtn.disabled = true;
+          googleBtn.disabled = true;
+          submitBtn.classList.add('opacity-50');
+          googleBtn.classList.add('opacity-50');
+        } else {
+          overlay.classList.add('hidden');
+          submitBtn.disabled = false;
+          googleBtn.disabled = false;
+          submitBtn.classList.remove('opacity-50');
+          googleBtn.classList.remove('opacity-50');
+        }
+      }
+
+      showMessage(text, type = 'info') {
+        const messageEl = document.getElementById('message');
+        messageEl.textContent = text;
+        messageEl.className = `text-center mt-6 p-3 rounded-lg ${this.getMessageClasses(type)}`;
+        messageEl.classList.remove('hidden');
+        
+        // إخفاء الرسالة بعد 5 ثوان للرسائل غير الناجحة
+        if (type !== 'success') {
+          setTimeout(() => {
+            messageEl.classList.add('hidden');
+          }, 5000);
+        }
+      }
+
+      getMessageClasses(type) {
+        switch (type) {
+          case 'success':
+            return 'bg-green-500/20 border border-green-500/50 text-green-100';
+          case 'error':
+            return 'bg-red-500/20 border border-red-500/50 text-red-100';
+          case 'warning':
+            return 'bg-yellow-500/20 border border-yellow-500/50 text-yellow-100';
+          default:
+            return 'bg-blue-500/20 border border-blue-500/50 text-blue-100';
+        }
+      }
+    }
+
+    // تهيئة مدير تسجيل الدخول
+    document.addEventListener('DOMContentLoaded', () => {
+      window.loginManager = new LoginManager();
     });
   </script>
 </body>

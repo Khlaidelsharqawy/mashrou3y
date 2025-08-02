@@ -1,0 +1,677 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>إكمال الملف الشخصي - MASHROU3Y</title>
+
+  <!-- Tailwind CSS & Fonts -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@400;500;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+  <!-- Custom Styles -->
+  <link rel="stylesheet" href="style.css">
+  <link rel="stylesheet" href="components/header.css">
+
+  <!-- Supabase SDK -->
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
+  <!-- Scripts -->
+  <script type="module" src="supabase-config.js" defer></script>
+  <script type="module" src="translations.js" defer></script>
+  <script type="module" src="theme.js" defer></script>
+  <script type="module" src="utils.js" defer></script>
+  <script type="module" src="components/header.js" defer></script>
+
+  <style>
+    body { 
+      font-family: 'Tajawal', sans-serif;
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      min-height: 100vh;
+    }
+    
+    .glass-container {
+      background: rgba(255, 255, 255, 0.05);
+      backdrop-filter: blur(20px);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+    }
+    
+    .form-input {
+      background: rgba(255, 255, 255, 0.1);
+      border: 1px solid rgba(255, 255, 255, 0.2);
+      color: white;
+      backdrop-filter: blur(10px);
+      transition: all 0.3s ease;
+    }
+    
+    .form-input::placeholder {
+      color: rgba(255, 255, 255, 0.7);
+    }
+    
+    .form-input:focus {
+      background: rgba(255, 255, 255, 0.15);
+      border-color: rgba(255, 255, 255, 0.4);
+      outline: none;
+      box-shadow: 0 0 0 3px rgba(255, 255, 255, 0.1);
+      transform: scale(1.02);
+    }
+    
+    .form-select {
+      background: rgba(255, 255, 255, 0.1);
+      border: 1px solid rgba(255, 255, 255, 0.2);
+      color: white;
+      backdrop-filter: blur(10px);
+    }
+    
+    .form-select option {
+      background: #1f2937;
+      color: white;
+    }
+    
+    .step-indicator {
+      transition: all 0.3s ease;
+    }
+    
+    .step-indicator.active {
+      background: linear-gradient(135deg, #667eea, #764ba2);
+      color: white;
+    }
+    
+    .step-indicator.completed {
+      background: linear-gradient(135deg, #10b981, #059669);
+      color: white;
+    }
+    
+    .fade-in {
+      animation: fadeIn 0.8s ease-out;
+    }
+    
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(30px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+    
+    .slide-in {
+      animation: slideIn 0.5s ease-out;
+    }
+    
+    @keyframes slideIn {
+      from { opacity: 0; transform: translateX(50px); }
+      to { opacity: 1; transform: translateX(0); }
+    }
+  </style>
+</head>
+<body class="flex items-center justify-center p-4">
+  <!-- Loading Overlay -->
+  <div id="loading-overlay" class="fixed inset-0 bg-black/50 backdrop-blur-sm z-50 hidden flex items-center justify-center">
+    <div class="bg-white/10 backdrop-blur-md rounded-2xl p-8 text-center">
+      <div class="animate-spin rounded-full h-12 w-12 border-b-2 border-white mx-auto mb-4"></div>
+      <p class="text-white font-medium">جاري الحفظ...</p>
+    </div>
+  </div>
+
+  <div class="w-full max-w-2xl fade-in">
+    <!-- Header -->
+    <div class="text-center mb-8">
+      <img src="logo2.jpg" alt="شعار MASHROU3Y" class="w-16 h-16 mx-auto rounded-xl shadow-2xl mb-4">
+      <h1 class="text-3xl font-bold text-white mb-2">مرحباً بك في MASHROU3Y</h1>
+      <p class="text-white/80">يرجى إكمال معلومات ملفك الشخصي للمتابعة</p>
+    </div>
+
+    <!-- Step Indicator -->
+    <div class="flex justify-center mb-8">
+      <div class="flex items-center space-x-4 space-x-reverse">
+        <div class="step-indicator active w-10 h-10 rounded-full flex items-center justify-center text-sm font-bold">
+          1
+        </div>
+        <div class="w-8 h-1 bg-white/20 rounded"></div>
+        <div class="step-indicator w-10 h-10 rounded-full flex items-center justify-center text-sm font-bold bg-white/20 text-white/60">
+          2
+        </div>
+        <div class="w-8 h-1 bg-white/20 rounded"></div>
+        <div class="step-indicator w-10 h-10 rounded-full flex items-center justify-center text-sm font-bold bg-white/20 text-white/60">
+          3
+        </div>
+      </div>
+    </div>
+
+    <!-- Profile Completion Form -->
+    <div class="glass-container p-8 rounded-2xl shadow-2xl">
+      <form id="profileForm" class="space-y-6">
+        <!-- Step 1: Basic Information -->
+        <div id="step1" class="space-y-6">
+          <h3 class="text-xl font-bold text-white text-center mb-6">المعلومات الأساسية</h3>
+          
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+            <div>
+              <label for="full_name" class="block text-white/90 text-sm font-medium mb-2">الاسم الكامل *</label>
+              <input 
+                type="text" 
+                id="full_name" 
+                placeholder="ادخل اسمك الكامل" 
+                class="form-input w-full p-4 rounded-lg" 
+                required
+              >
+            </div>
+            
+            <div>
+              <label for="phone" class="block text-white/90 text-sm font-medium mb-2">رقم التليفون *</label>
+              <input 
+                type="tel" 
+                id="phone" 
+                placeholder="01xxxxxxxxx" 
+                class="form-input w-full p-4 rounded-lg" 
+                required
+              >
+            </div>
+          </div>
+          
+          <div>
+            <label for="user_type" class="block text-white/90 text-sm font-medium mb-2">نوع الحساب *</label>
+            <select id="user_type" class="form-select w-full p-4 rounded-lg" required>
+              <option value="">اختر نوع الحساب</option>
+              <option value="student">طالب جامعي</option>
+              <option value="instructor">منشئ محتوى / مدرس</option>
+              <option value="freelancer">فريلانسر</option>
+              <option value="store_owner">صاحب متجر</option>
+            </select>
+          </div>
+          
+          <div>
+            <label for="location" class="block text-white/90 text-sm font-medium mb-2">المحافظة / المدينة *</label>
+            <select id="location" class="form-select w-full p-4 rounded-lg" required>
+              <option value="">اختر محافظتك</option>
+              <option value="cairo">القاهرة</option>
+              <option value="giza">الجيزة</option>
+              <option value="alexandria">الإسكندرية</option>
+              <option value="dakahlia">الدقهلية</option>
+              <option value="gharbia">الغربية</option>
+              <option value="menoufia">المنوفية</option>
+              <option value="qalyubia">القليوبية</option>
+              <option value="kafr_el_sheikh">كفر الشيخ</option>
+              <option value="beheira">البحيرة</option>
+              <option value="sharqia">الشرقية</option>
+              <option value="damietta">دمياط</option>
+              <option value="port_said">بورسعيد</option>
+              <option value="ismailia">الإسماعيلية</option>
+              <option value="suez">السويس</option>
+              <option value="north_sinai">شمال سيناء</option>
+              <option value="south_sinai">جنوب سيناء</option>
+              <option value="red_sea">البحر الأحمر</option>
+              <option value="luxor">الأقصر</option>
+              <option value="aswan">أسوان</option>
+              <option value="qena">قنا</option>
+              <option value="sohag">سوهاج</option>
+              <option value="assiut">أسيوط</option>
+              <option value="minya">المنيا</option>
+              <option value="beni_suef">بني سويف</option>
+              <option value="fayoum">الفيوم</option>
+              <option value="matrouh">مطروح</option>
+              <option value="new_valley">الوادي الجديد</option>
+            </select>
+          </div>
+        </div>
+
+        <!-- Step 2: Educational Information (for students/instructors) -->
+        <div id="step2" class="space-y-6 hidden">
+          <h3 class="text-xl font-bold text-white text-center mb-6">المعلومات التعليمية</h3>
+          
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+            <div>
+              <label for="university" class="block text-white/90 text-sm font-medium mb-2">الجامعة</label>
+              <select id="university" class="form-select w-full p-4 rounded-lg">
+                <option value="">اختر جامعتك</option>
+                <option value="cairo_university">جامعة القاهرة</option>
+                <option value="ain_shams_university">جامعة عين شمس</option>
+                <option value="helwan_university">جامعة حلوان</option>
+                <option value="alexandria_university">جامعة الإسكندرية</option>
+                <option value="mansoura_university">جامعة المنصورة</option>
+                <option value="zagazig_university">جامعة الزقازيق</option>
+                <option value="tanta_university">جامعة طنطا</option>
+                <option value="menoufia_university">جامعة المنوفية</option>
+                <option value="assiut_university">جامعة أسيوط</option>
+                <option value="minia_university">جامعة المنيا</option>
+                <option value="sohag_university">جامعة سوهاج</option>
+                <option value="beni_suef_university">جامعة بني سويف</option>
+                <option value="fayoum_university">جامعة الفيوم</option>
+                <option value="suez_canal_university">جامعة قناة السويس</option>
+                <option value="port_said_university">جامعة بورسعيد</option>
+                <option value="damietta_university">جامعة دمياط</option>
+                <option value="kafr_elsheikh_university">جامعة كفر الشيخ</option>
+                <option value="other">أخرى</option>
+              </select>
+            </div>
+            
+            <div>
+              <label for="faculty" class="block text-white/90 text-sm font-medium mb-2">الكلية</label>
+              <input 
+                type="text" 
+                id="faculty" 
+                placeholder="مثال: كلية الهندسة" 
+                class="form-input w-full p-4 rounded-lg"
+              >
+            </div>
+          </div>
+          
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+            <div>
+              <label for="specialization" class="block text-white/90 text-sm font-medium mb-2">التخصص</label>
+              <input 
+                type="text" 
+                id="specialization" 
+                placeholder="مثال: هندسة حاسبات" 
+                class="form-input w-full p-4 rounded-lg"
+              >
+            </div>
+            
+            <div>
+              <label for="academic_year" class="block text-white/90 text-sm font-medium mb-2">السنة الدراسية</label>
+              <select id="academic_year" class="form-select w-full p-4 rounded-lg">
+                <option value="">اختر السنة</option>
+                <option value="1">الأولى</option>
+                <option value="2">الثانية</option>
+                <option value="3">الثالثة</option>
+                <option value="4">الرابعة</option>
+                <option value="5">الخامسة</option>
+                <option value="graduate">خريج</option>
+                <option value="postgraduate">دراسات عليا</option>
+              </select>
+            </div>
+          </div>
+        </div>
+
+        <!-- Step 3: Professional Information (for freelancers/store owners) -->
+        <div id="step3" class="space-y-6 hidden">
+          <h3 class="text-xl font-bold text-white text-center mb-6">المعلومات المهنية</h3>
+          
+          <div id="skills-section" class="hidden">
+            <label for="skills" class="block text-white/90 text-sm font-medium mb-2">المهارات (للفريلانسرز)</label>
+            <textarea 
+              id="skills" 
+              placeholder="اكتب مهاراتك مفصولة بفواصل مثل: تصميم مواقع، برمجة، ترجمة"
+              class="form-input w-full p-4 rounded-lg h-24 resize-none"
+            ></textarea>
+          </div>
+          
+          <div id="store-section" class="hidden">
+            <div>
+              <label for="store_name" class="block text-white/90 text-sm font-medium mb-2">اسم المتجر</label>
+              <input 
+                type="text" 
+                id="store_name" 
+                placeholder="ادخل اسم متجرك" 
+                class="form-input w-full p-4 rounded-lg"
+              >
+            </div>
+            
+            <div>
+              <label for="store_category" class="block text-white/90 text-sm font-medium mb-2">فئة المتجر</label>
+              <select id="store_category" class="form-select w-full p-4 rounded-lg">
+                <option value="">اختر فئة المتجر</option>
+                <option value="books">كتب ومراجع</option>
+                <option value="electronics">إلكترونيات</option>
+                <option value="stationery">أدوات مكتبية</option>
+                <option value="clothing">ملابس</option>
+                <option value="food">طعام ومشروبات</option>
+                <option value="services">خدمات</option>
+                <option value="other">أخرى</option>
+              </select>
+            </div>
+          </div>
+          
+          <div>
+            <label for="bio" class="block text-white/90 text-sm font-medium mb-2">نبذة شخصية</label>
+            <textarea 
+              id="bio" 
+              placeholder="اكتب نبذة مختصرة عنك"
+              class="form-input w-full p-4 rounded-lg h-24 resize-none"
+            ></textarea>
+          </div>
+        </div>
+
+        <!-- Message Display -->
+        <div id="message" class="text-center p-3 rounded-lg hidden"></div>
+
+        <!-- Navigation Buttons -->
+        <div class="flex justify-between items-center pt-6">
+          <button type="button" id="prevBtn" class="px-6 py-3 bg-white/10 text-white rounded-lg hover:bg-white/20 transition-all duration-200 hidden">
+            <i class="fas fa-arrow-right ml-2"></i>
+            السابق
+          </button>
+          
+          <button type="button" id="nextBtn" class="px-6 py-3 bg-gradient-to-r from-blue-600 to-purple-600 text-white rounded-lg hover:from-blue-700 hover:to-purple-700 transition-all duration-200 transform hover:scale-105">
+            التالي
+            <i class="fas fa-arrow-left mr-2"></i>
+          </button>
+          
+          <button type="submit" id="submitBtn" class="px-6 py-3 bg-gradient-to-r from-green-600 to-blue-600 text-white rounded-lg hover:from-green-700 hover:to-blue-700 transition-all duration-200 transform hover:scale-105 hidden">
+            <i class="fas fa-check ml-2"></i>
+            إكمال التسجيل
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <script type="module">
+    import { getSupabaseClient } from './supabase-config.js';
+
+    class ProfileCompletion {
+      constructor() {
+        this.supabase = null;
+        this.currentStep = 1;
+        this.totalSteps = 3;
+        this.userData = {};
+        this.init();
+      }
+
+      async init() {
+        try {
+          // انتظار تحميل Supabase
+          while (!window.supabaseClient) {
+            await new Promise(resolve => setTimeout(resolve, 100));
+          }
+          
+          this.supabase = window.supabaseClient;
+          await this.checkAuthentication();
+          await this.loadUserData();
+          this.bindEvents();
+          this.updateStepVisibility();
+          console.log('✅ تم تهيئة صفحة إكمال الملف الشخصي');
+        } catch (error) {
+          console.error('❌ خطأ في تهيئة الصفحة:', error);
+          this.showMessage('خطأ في تحميل النظام، جرب إعادة تحميل الصفحة', 'error');
+        }
+      }
+
+      async checkAuthentication() {
+        const { data: { session } } = await this.supabase.auth.getSession();
+        if (!session) {
+          window.location.href = 'login.html';
+          return;
+        }
+        this.userData = session.user;
+      }
+
+      async loadUserData() {
+        if (this.userData.user_metadata) {
+          // ملء الحقول بالبيانات الموجودة
+          const metadata = this.userData.user_metadata;
+          
+          if (metadata.full_name) {
+            document.getElementById('full_name').value = metadata.full_name;
+          }
+          
+          if (metadata.email) {
+            document.getElementById('email').value = metadata.email;
+          }
+        }
+      }
+
+      bindEvents() {
+        // أزرار التنقل
+        document.getElementById('nextBtn').addEventListener('click', () => {
+          this.nextStep();
+        });
+        
+        document.getElementById('prevBtn').addEventListener('click', () => {
+          this.prevStep();
+        });
+        
+        // إرسال النموذج
+        document.getElementById('profileForm').addEventListener('submit', (e) => {
+          this.handleSubmit(e);
+        });
+        
+        // تغيير نوع الحساب
+        document.getElementById('user_type').addEventListener('change', (e) => {
+          this.handleUserTypeChange(e.target.value);
+        });
+      }
+
+      handleUserTypeChange(userType) {
+        const skillsSection = document.getElementById('skills-section');
+        const storeSection = document.getElementById('store-section');
+        
+        // إخفاء جميع الأقسام أولاً
+        skillsSection.classList.add('hidden');
+        storeSection.classList.add('hidden');
+        
+        // إظهار القسم المناسب
+        if (userType === 'freelancer') {
+          skillsSection.classList.remove('hidden');
+          this.totalSteps = 3;
+        } else if (userType === 'store_owner') {
+          storeSection.classList.remove('hidden');
+          this.totalSteps = 3;
+        } else if (userType === 'student' || userType === 'instructor') {
+          this.totalSteps = 3; // الخطوة الثانية مطلوبة للطلاب والمدرسين
+        } else {
+          this.totalSteps = 2; // خطوتان فقط للأنواع الأخرى
+        }
+        
+        this.updateStepIndicator();
+      }
+
+      nextStep() {
+        if (this.validateCurrentStep()) {
+          if (this.currentStep < this.totalSteps) {
+            this.currentStep++;
+            this.updateStepVisibility();
+            this.updateStepIndicator();
+          }
+        }
+      }
+
+      prevStep() {
+        if (this.currentStep > 1) {
+          this.currentStep--;
+          this.updateStepVisibility();
+          this.updateStepIndicator();
+        }
+      }
+
+      validateCurrentStep() {
+        const currentStepEl = document.getElementById(`step${this.currentStep}`);
+        const requiredFields = currentStepEl.querySelectorAll('[required]');
+        
+        for (let field of requiredFields) {
+          if (!field.value.trim()) {
+            field.focus();
+            this.showMessage(`يرجى ملء حقل ${field.previousElementSibling.textContent}`, 'error');
+            return false;
+          }
+        }
+        
+        // التحقق من رقم التليفون
+        if (this.currentStep === 1) {
+          const phone = document.getElementById('phone').value;
+          if (phone && !this.validatePhone(phone)) {
+            this.showMessage('رقم التليفون غير صحيح', 'error');
+            return false;
+          }
+        }
+        
+        return true;
+      }
+
+      validatePhone(phone) {
+        // التحقق من رقم التليفون المصري
+        const phoneRegex = /^(01)[0-9]{9}$/;
+        return phoneRegex.test(phone);
+      }
+
+      updateStepVisibility() {
+        // إخفاء جميع الخطوات
+        for (let i = 1; i <= 3; i++) {
+          document.getElementById(`step${i}`).classList.add('hidden');
+        }
+        
+        // إظهار الخطوة الحالية
+        const currentStepEl = document.getElementById(`step${this.currentStep}`);
+        currentStepEl.classList.remove('hidden');
+        currentStepEl.classList.add('slide-in');
+        
+        // تحديث الأزرار
+        const prevBtn = document.getElementById('prevBtn');
+        const nextBtn = document.getElementById('nextBtn');
+        const submitBtn = document.getElementById('submitBtn');
+        
+        prevBtn.classList.toggle('hidden', this.currentStep === 1);
+        nextBtn.classList.toggle('hidden', this.currentStep === this.totalSteps);
+        submitBtn.classList.toggle('hidden', this.currentStep !== this.totalSteps);
+        
+        // تحديد ما إذا كانت الخطوة الثانية مطلوبة
+        if (this.currentStep === 2) {
+          const userType = document.getElementById('user_type').value;
+          if (userType !== 'student' && userType !== 'instructor') {
+            this.nextStep(); // تخطي الخطوة الثانية
+          }
+        }
+      }
+
+      updateStepIndicator() {
+        const indicators = document.querySelectorAll('.step-indicator');
+        
+        indicators.forEach((indicator, index) => {
+          const stepNumber = index + 1;
+          
+          indicator.classList.remove('active', 'completed');
+          
+          if (stepNumber < this.currentStep) {
+            indicator.classList.add('completed');
+          } else if (stepNumber === this.currentStep) {
+            indicator.classList.add('active');
+          }
+        });
+      }
+
+      async handleSubmit(e) {
+        e.preventDefault();
+        
+        if (!this.validateCurrentStep()) {
+          return;
+        }
+
+        try {
+          this.setLoading(true);
+          this.showMessage('جاري حفظ البيانات...', 'info');
+
+          // جمع البيانات من النموذج
+          const formData = this.collectFormData();
+          
+          // تحديث ملف المستخدم في Supabase
+          const { error } = await this.supabase.auth.updateUser({
+            data: {
+              ...formData,
+              profile_completed: true,
+              completed_at: new Date().toISOString()
+            }
+          });
+
+          if (error) throw error;
+
+          // إنشاء سجل في جدول profiles
+          const { error: profileError } = await this.supabase
+            .from('profiles')
+            .upsert([{
+              id: this.userData.id,
+              email: this.userData.email,
+              ...formData,
+              updated_at: new Date().toISOString()
+            }]);
+
+          if (profileError) throw profileError;
+
+          this.showMessage('تم حفظ البيانات بنجاح! 🎉', 'success');
+          
+          // التوجيه إلى لوحة التحكم بعد ثانيتين
+          setTimeout(() => {
+            window.location.href = 'dashboard.html';
+          }, 2000);
+
+        } catch (error) {
+          console.error('خطأ في حفظ البيانات:', error);
+          this.showMessage('حدث خطأ في حفظ البيانات، جرب مرة أخرى', 'error');
+        } finally {
+          this.setLoading(false);
+        }
+      }
+
+      collectFormData() {
+        const formData = {
+          full_name: document.getElementById('full_name').value,
+          phone: document.getElementById('phone').value,
+          user_type: document.getElementById('user_type').value,
+          location: document.getElementById('location').value,
+          university: document.getElementById('university').value,
+          faculty: document.getElementById('faculty').value,
+          specialization: document.getElementById('specialization').value,
+          academic_year: document.getElementById('academic_year').value,
+          skills: document.getElementById('skills').value,
+          store_name: document.getElementById('store_name').value,
+          store_category: document.getElementById('store_category').value,
+          bio: document.getElementById('bio').value
+        };
+
+        // إزالة الحقول الفارغة
+        Object.keys(formData).forEach(key => {
+          if (!formData[key]) {
+            delete formData[key];
+          }
+        });
+
+        return formData;
+      }
+
+      setLoading(loading) {
+        const overlay = document.getElementById('loading-overlay');
+        const submitBtn = document.getElementById('submitBtn');
+        
+        if (loading) {
+          overlay.classList.remove('hidden');
+          submitBtn.disabled = true;
+          submitBtn.classList.add('opacity-50');
+        } else {
+          overlay.classList.add('hidden');
+          submitBtn.disabled = false;
+          submitBtn.classList.remove('opacity-50');
+        }
+      }
+
+      showMessage(text, type = 'info') {
+        const messageEl = document.getElementById('message');
+        messageEl.textContent = text;
+        messageEl.className = `text-center p-3 rounded-lg ${this.getMessageClasses(type)}`;
+        messageEl.classList.remove('hidden');
+        
+        if (type !== 'success') {
+          setTimeout(() => {
+            messageEl.classList.add('hidden');
+          }, 5000);
+        }
+      }
+
+      getMessageClasses(type) {
+        switch (type) {
+          case 'success':
+            return 'bg-green-500/20 border border-green-500/50 text-green-100';
+          case 'error':
+            return 'bg-red-500/20 border border-red-500/50 text-red-100';
+          case 'warning':
+            return 'bg-yellow-500/20 border border-yellow-500/50 text-yellow-100';
+          default:
+            return 'bg-blue-500/20 border border-blue-500/50 text-blue-100';
+        }
+      }
+    }
+
+    // تهيئة صفحة إكمال الملف الشخصي
+    document.addEventListener('DOMContentLoaded', () => {
+      window.profileCompletion = new ProfileCompletion();
+    });
+  </script>
+</body>
+</html>

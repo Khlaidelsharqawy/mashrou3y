@@ -15,125 +15,282 @@
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
 
   <!-- Custom Styles -->
-  <link rel="stylesheet" href="../styles/style.css" />
+  <link rel="stylesheet" href="style.css" />
+  <link rel="stylesheet" href="components/header.css" />
 
   <!-- Supabase -->
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 
   <!-- Scripts -->
-  <script type="module" src="../scripts/dashboard.js" defer></script>
-  <script type="module" src="../scripts/auth-guard.js" defer></script>
-  <script type="module" src="../scripts/supabase-config.js" defer></script>
-  <script type="module" src="../scripts/translations.js" defer></script>
-  <script type="module" src="../scripts/theme.js" defer></script>
-  <script type="module" src="../scripts/utils.js" defer></script>
+  <script type="module" src="dashboard.js" defer></script>
+  <script type="module" src="auth-guard.js" defer></script>
+  <script type="module" src="supabase-config.js" defer></script>
+  <script type="module" src="translations.js" defer></script>
+  <script type="module" src="theme.js" defer></script>
+  <script type="module" src="utils.js" defer></script>
+  <script type="module" src="components/header.js" defer></script>
   
   <!-- Preload Critical Assets -->
-  <link rel="preload" href="../images/logo2.jpg" as="image">
+  <link rel="preload" href="logo2.jpg" as="image">
 
   <style>
     body {
       font-family: 'Tajawal', sans-serif;
     }
-    .gradient-bg {
-      background: linear-gradient(135deg, #4f46e5, #7c3aed);
+    .dashboard-card {
+      background: white;
+      border-radius: 1rem;
+      padding: 1.5rem;
+      box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+      transition: all 0.3s ease;
     }
-    .text-gradient {
-      background: linear-gradient(90deg, #60a5fa, #a78bfa);
-      -webkit-background-clip: text;
-      -webkit-text-fill-color: transparent;
+    .dashboard-card:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 8px 15px rgba(0, 0, 0, 0.1);
+    }
+    .stat-card {
+      background: linear-gradient(135deg, var(--from-color), var(--to-color));
+      color: white;
+      border-radius: 1rem;
+      padding: 1.5rem;
+      position: relative;
+      overflow: hidden;
+    }
+    .stat-card::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      right: 0;
+      width: 100px;
+      height: 100px;
+      background: rgba(255, 255, 255, 0.1);
+      border-radius: 50%;
+      transform: translate(30px, -30px);
+    }
+    .chart-container {
+      height: 300px;
+      background: white;
+      border-radius: 1rem;
+      padding: 1rem;
+      box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
     }
   </style>
 </head>
 <body class="bg-gray-50 min-h-screen">
-  <!-- Header -->
-  <header class="gradient-bg text-white py-6">
-    <div class="container mx-auto px-4 flex justify-between items-center">
-      <div class="flex items-center space-x-3 space-x-reverse">
-        <img src="../images/logo2.jpg" alt="شعار MASHROU3Y" class="w-10 h-10 rounded-lg" />
-        <div>
-          <h1 class="text-2xl font-bold">
-            مرحباً، <span id="userName" data-translate="user">المستخدم</span>
-          </h1>
-          <a href="profile.html" class="text-sm text-blue-200 underline hover:text-white">
-            <i class="fas fa-user ml-1"></i> <span data-translate="profile">الملف الشخصي</span>
-          </a>
+  <!-- Main Dashboard Content -->
+  <main class="pt-20 min-h-screen bg-gray-50">
+    <div class="container mx-auto px-4 py-8">
+      <!-- Welcome Section -->
+      <div class="mb-8">
+        <h2 id="welcome-message" class="text-3xl font-bold text-gray-800 mb-2">مرحباً بك</h2>
+        <p class="text-gray-600">إليك نظرة عامة على نشاطك اليوم</p>
+      </div>
+
+      <!-- Stats Cards -->
+      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
+        <div class="stat-card" style="--from-color: #3b82f6; --to-color: #1d4ed8;">
+          <div class="relative z-10">
+            <div class="flex items-center justify-between mb-4">
+              <i class="fas fa-book text-3xl"></i>
+              <span class="text-sm opacity-75">المواد</span>
+            </div>
+            <div>
+              <h3 class="text-2xl font-bold" id="materials-count">0</h3>
+              <p class="text-sm opacity-75" data-translate="materials_available">مادة متاحة</p>
+            </div>
+          </div>
+        </div>
+
+        <div class="stat-card" style="--from-color: #10b981; --to-color: #059669;">
+          <div class="relative z-10">
+            <div class="flex items-center justify-between mb-4">
+              <i class="fas fa-download text-3xl"></i>
+              <span class="text-sm opacity-75">التحميلات</span>
+            </div>
+            <div>
+              <h3 class="text-2xl font-bold" id="downloads-count">0</h3>
+              <p class="text-sm opacity-75">تحميل هذا الشهر</p>
+            </div>
+          </div>
+        </div>
+
+        <div class="stat-card" style="--from-color: #8b5cf6; --to-color: #7c3aed;">
+          <div class="relative z-10">
+            <div class="flex items-center justify-between mb-4">
+              <i class="fas fa-shopping-cart text-3xl"></i>
+              <span class="text-sm opacity-75">المشتريات</span>
+            </div>
+            <div>
+              <h3 class="text-2xl font-bold" id="total-spent">0 ج.م</h3>
+              <p class="text-sm opacity-75">إجمالي الإنفاق</p>
+            </div>
+          </div>
+        </div>
+
+        <div class="stat-card" style="--from-color: #f59e0b; --to-color: #d97706;">
+          <div class="relative z-10">
+            <div class="flex items-center justify-between mb-4">
+              <i class="fas fa-star text-3xl"></i>
+              <span class="text-sm opacity-75">التقييم</span>
+            </div>
+            <div>
+              <h3 class="text-2xl font-bold" id="user-rating">5.0</h3>
+              <p class="text-sm opacity-75">متوسط التقييم</p>
+            </div>
+          </div>
         </div>
       </div>
-      <div class="flex items-center space-x-3 space-x-reverse">
-        <!-- Language Toggle -->
-        <button data-language-toggle class="bg-white/10 hover:bg-white/20 text-white px-3 py-2 rounded-lg transition-all duration-200 flex items-center space-x-2 space-x-reverse">
-          <i class="fas fa-globe"></i>
-          <span class="text-sm font-medium" data-translate="arabic">العربية</span>
-        </button>
-        
-        <!-- Theme Toggle -->
-        <button data-theme-toggle class="bg-white/10 hover:bg-white/20 text-white px-3 py-2 rounded-lg transition-all duration-200 flex items-center space-x-2 space-x-reverse">
-          <i class="fas fa-sun" data-theme-icon></i>
-          <span class="text-sm font-medium" data-translate="light">فاتح</span>
-        </button>
-        
-        <button id="logoutBtn" class="bg-white text-indigo-600 px-4 py-2 rounded-lg font-medium hover:bg-gray-100 transition">
-          <i class="fas fa-sign-out-alt ml-1"></i> <span data-translate="logout">تسجيل الخروج</span>
-        </button>
+
+      <!-- Quick Actions Grid -->
+      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6 mb-8">
+        <a href="materials.html" class="dashboard-card group">
+          <div class="flex items-center space-x-4 space-x-reverse">
+            <div class="w-12 h-12 bg-blue-100 rounded-lg flex items-center justify-center group-hover:bg-blue-200 transition-colors">
+              <i class="fas fa-book text-blue-600 text-xl"></i>
+            </div>
+            <div>
+              <h3 class="font-bold text-gray-800" data-translate="materials">المواد الدراسية</h3>
+              <p class="text-gray-600 text-sm">تصفح وتحميل المواد</p>
+            </div>
+          </div>
+        </a>
+
+        <a href="projects.html" class="dashboard-card group">
+          <div class="flex items-center space-x-4 space-x-reverse">
+            <div class="w-12 h-12 bg-green-100 rounded-lg flex items-center justify-center group-hover:bg-green-200 transition-colors">
+              <i class="fas fa-code text-green-600 text-xl"></i>
+            </div>
+            <div>
+              <h3 class="font-bold text-gray-800" data-translate="projects">المشاريع</h3>
+              <p class="text-gray-600 text-sm">مشاريع جاهزة للتحميل</p>
+            </div>
+          </div>
+        </a>
+
+        <a href="presentations.html" class="dashboard-card group">
+          <div class="flex items-center space-x-4 space-x-reverse">
+            <div class="w-12 h-12 bg-purple-100 rounded-lg flex items-center justify-center group-hover:bg-purple-200 transition-colors">
+              <i class="fas fa-presentation text-purple-600 text-xl"></i>
+            </div>
+            <div>
+              <h3 class="font-bold text-gray-800" data-translate="presentations">العروض التقديمية</h3>
+              <p class="text-gray-600 text-sm">عروض تقديمية احترافية</p>
+            </div>
+          </div>
+        </a>
+
+        <a href="stores.html" class="dashboard-card group">
+          <div class="flex items-center space-x-4 space-x-reverse">
+            <div class="w-12 h-12 bg-orange-100 rounded-lg flex items-center justify-center group-hover:bg-orange-200 transition-colors">
+              <i class="fas fa-store text-orange-600 text-xl"></i>
+            </div>
+            <div>
+              <h3 class="font-bold text-gray-800">المتجر</h3>
+              <p class="text-gray-600 text-sm">تسوق المنتجات المختلفة</p>
+            </div>
+          </div>
+        </a>
+
+        <a href="chat.html" class="dashboard-card group">
+          <div class="flex items-center space-x-4 space-x-reverse">
+            <div class="w-12 h-12 bg-pink-100 rounded-lg flex items-center justify-center group-hover:bg-pink-200 transition-colors">
+              <i class="fas fa-comments text-pink-600 text-xl"></i>
+            </div>
+            <div>
+              <h3 class="font-bold text-gray-800">المحادثات</h3>
+              <p class="text-gray-600 text-sm">تواصل مع الآخرين</p>
+            </div>
+          </div>
+        </a>
+
+        <a href="upload.html" class="dashboard-card group">
+          <div class="flex items-center space-x-4 space-x-reverse">
+            <div class="w-12 h-12 bg-indigo-100 rounded-lg flex items-center justify-center group-hover:bg-indigo-200 transition-colors">
+              <i class="fas fa-upload text-indigo-600 text-xl"></i>
+            </div>
+            <div>
+              <h3 class="font-bold text-gray-800">رفع المحتوى</h3>
+              <p class="text-gray-600 text-sm">رفع وبيع محتواك</p>
+            </div>
+          </div>
+        </a>
+
+        <a href="profile.html" class="dashboard-card group">
+          <div class="flex items-center space-x-4 space-x-reverse">
+            <div class="w-12 h-12 bg-gray-100 rounded-lg flex items-center justify-center group-hover:bg-gray-200 transition-colors">
+              <i class="fas fa-user text-gray-600 text-xl"></i>
+            </div>
+            <div>
+              <h3 class="font-bold text-gray-800">الملف الشخصي</h3>
+              <p class="text-gray-600 text-sm">إدارة حسابك</p>
+            </div>
+          </div>
+        </a>
+
+        <a href="payment.html" class="dashboard-card group">
+          <div class="flex items-center space-x-4 space-x-reverse">
+            <div class="w-12 h-12 bg-yellow-100 rounded-lg flex items-center justify-center group-hover:bg-yellow-200 transition-colors">
+              <i class="fas fa-credit-card text-yellow-600 text-xl"></i>
+            </div>
+            <div>
+              <h3 class="font-bold text-gray-800">المدفوعات</h3>
+              <p class="text-gray-600 text-sm">إدارة الدفع والمحفظة</p>
+            </div>
+          </div>
+        </a>
       </div>
-    </div>
-  </header>
 
-  <!-- Navigation -->
-  <nav class="bg-white shadow border-b">
-    <div class="container mx-auto px-4 flex space-x-8 space-x-reverse overflow-x-auto">
-      <a href="materials.html" class="py-4 px-2 border-b-2 border-transparent hover:border-indigo-500 text-gray-600 hover:text-indigo-600 transition"><i class="fas fa-book ml-2"></i> <span data-translate="materials">المواد الدراسية</span></a>
-      <a href="projects.html" class="py-4 px-2 border-b-2 border-transparent hover:border-indigo-500 text-gray-600 hover:text-indigo-600 transition"><i class="fas fa-code ml-2"></i> <span data-translate="projects">المشاريع الجاهزة</span></a>
-      <a href="presentations.html" class="py-4 px-2 border-b-2 border-transparent hover:border-indigo-500 text-gray-600 hover:text-indigo-600 transition"><i class="fas fa-presentation ml-2"></i> <span data-translate="presentations">العروض التقديمية</span></a>
-      <a href="store.html" class="py-4 px-2 border-b-2 border-transparent hover:border-indigo-500 text-gray-600 hover:text-indigo-600 transition"><i class="fas fa-store ml-2"></i> <span data-translate="store">المتجر</span></a>
-    </div>
-  </nav>
+      <!-- Content Grid -->
+      <div class="grid grid-cols-1 lg:grid-cols-2 gap-8 mb-8">
+        <!-- Recent Activity -->
+        <div class="dashboard-card">
+          <div class="flex items-center justify-between mb-6">
+            <h3 class="text-xl font-bold text-gray-800">النشاط الأخير</h3>
+            <button class="text-blue-600 hover:text-blue-800 text-sm font-medium">عرض الكل</button>
+          </div>
+          <div id="recent-activity" class="space-y-4">
+            <div class="text-center py-8 text-gray-500">
+              <i class="fas fa-spinner fa-spin text-2xl mb-4"></i>
+              <p data-translate="loading">جاري التحميل...</p>
+            </div>
+          </div>
+        </div>
 
-  <!-- Main Content -->
-  <main class="container mx-auto px-4 py-8">
-    <!-- Stats Cards -->
-    <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
-      <div class="bg-white rounded-xl shadow p-6 flex items-center">
-        <div class="p-4 rounded-full bg-blue-100 text-blue-600"><i class="fas fa-book text-2xl"></i></div>
-        <div class="mr-4">
-          <p class="text-sm text-gray-600" data-translate="materials_count">المواد المتاحة</p>
-          <p class="text-2xl font-bold" id="materialsCount">0</p>
+        <!-- Quick Stats Chart -->
+        <div class="dashboard-card">
+          <h3 class="text-xl font-bold text-gray-800 mb-6">إحصائيات سريعة</h3>
+          <div class="chart-container">
+            <canvas id="statsChart"></canvas>
+          </div>
         </div>
       </div>
 
-      <div class="bg-white rounded-xl shadow p-6 flex items-center">
-        <div class="p-4 rounded-full bg-green-100 text-green-600"><i class="fas fa-check-circle text-2xl"></i></div>
-        <div class="mr-4">
-          <p class="text-sm text-gray-600" data-translate="access_count">الصلاحيات الممنوحة</p>
-          <p class="text-2xl font-bold" id="accessCount">0</p>
+      <!-- Popular Content -->
+      <div class="dashboard-card">
+        <div class="flex items-center justify-between mb-6">
+          <h3 class="text-xl font-bold text-gray-800">المحتوى الشائع</h3>
+          <button class="text-blue-600 hover:text-blue-800 text-sm font-medium">عرض المزيد</button>
         </div>
-      </div>
-
-      <div class="bg-white rounded-xl shadow p-6 flex items-center">
-        <div class="p-4 rounded-full bg-purple-100 text-purple-600"><i class="fas fa-shopping-cart text-2xl"></i></div>
-        <div class="mr-4">
-          <p class="text-sm text-gray-600" data-translate="total_spent">إجمالي المشتريات</p>
-          <p class="text-2xl font-bold" id="totalSpent">0 جنيه</p>
-        </div>
-      </div>
-    </div>
-
-    <!-- Recent Purchases -->
-    <div class="bg-white rounded-xl shadow">
-      <div class="px-6 py-4 border-b">
-        <h2 class="text-xl font-bold"><i class="fas fa-history ml-2"></i> <span data-translate="recent_purchases">آخر المشتريات</span></h2>
-      </div>
-      <div class="p-6">
-        <div id="recentPurchases" class="space-y-4 text-center text-gray-500">
-          <i class="fas fa-spinner fa-spin ml-2"></i> <span data-translate="loading">جاري التحميل...</span>
+        <div id="popular-content" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+          <div class="text-center py-8 text-gray-500 col-span-full">
+            <i class="fas fa-spinner fa-spin text-2xl mb-4"></i>
+            <p data-translate="loading">جاري التحميل...</p>
+          </div>
         </div>
       </div>
     </div>
   </main>
 
-  <!-- WhatsApp Button -->
-  <a href="https://wa.me/201007289679" target="_blank" class="fixed bottom-6 left-6 bg-green-500 w-14 h-14 rounded-full flex items-center justify-center shadow-lg hover:bg-green-600 transition">
+  <!-- Loading Overlay -->
+  <div id="loading-overlay" class="fixed inset-0 bg-black/50 backdrop-blur-sm z-50 hidden flex items-center justify-center">
+    <div class="bg-white/10 backdrop-blur-md rounded-2xl p-8 text-center">
+      <div class="animate-spin rounded-full h-12 w-12 border-b-2 border-white mx-auto mb-4"></div>
+      <p class="text-white font-medium">جاري التحميل...</p>
+    </div>
+  </div>
+
+  <!-- WhatsApp Support Button -->
+  <a href="https://wa.me/201007289679" target="_blank" class="fixed bottom-6 left-6 bg-green-500 w-14 h-14 rounded-full flex items-center justify-center shadow-lg hover:bg-green-600 transition-all duration-300 z-40 hover:scale-110">
     <i class="fab fa-whatsapp text-white text-2xl"></i>
   </a>
 </body>
